@@ -1,2 +1,0 @@
-# wiki
-Personal Wiki Site
