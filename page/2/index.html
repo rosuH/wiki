@@ -76,7 +76,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -95,10 +95,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Entradas',
+            POSTS: 'Posts',
             PAGES: 'Pages',
-            CATEGORIES: 'Categorias',
-            TAGS: 'Etiquetas',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -131,7 +131,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
     </div>
 
                 </td>
@@ -148,7 +148,7 @@
         
     <div class="widget-wrap" id='categories'>
         <h3 class="widget-title">
-            <span>Categorias</span>
+            <span>categories</span>
             &nbsp;
             <a id='allExpand' href="#">
                 <i class="fa fa-angle-double-down fa-2x"></i>
@@ -158,6 +158,15 @@
         
         
          <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Linux & VPS
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a></li>  </ul> 
+                    </li> 
+                    
                     <li class="directory">
                         <a href="#" data-role="directory">
                             <i class="fa fa-folder"></i>
@@ -347,8 +356,108 @@
 
 
     
+        <article id="post-softwares" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Linux-VPS/">Linux & VPS</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Linux/">Linux</a>, <a class="tag-link" href="/tags/Ubuntu/">Ubuntu</a>, <a class="tag-link" href="/tags/VPS/">VPS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/Linux-VPS/softwares/">
+            <time datetime="2017-11-11T03:40:38.644Z" itemprop="datePublished">2017-11-11</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/softwares.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/softwares.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/softwares.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="记录 -Ubuntu- 平台下安装的部分软件。"><a href="# 记录 -Ubuntu- 平台下安装的部分软件。" class="headerlink" title="记录 Ubuntu 平台下安装的部分软件。"></a> 记录 Ubuntu 平台下安装的部分软件。</h2><p><a href="https://alim0x.gitbooks.io/awesome-linux-software-zh_cn/content/#%E7%9B%AE%E5%BD%95" target="_blank" rel="external">awesome-linux-software</a></p>
+<h1 id="Node-js-amp- 版本管理"><a href="#Node-js-amp- 版本管理" class="headerlink" title="Node.js &amp; 版本管理"></a>Node.js &amp; 版本管理 </h1><ul>
+<li> 推荐的安装方式是通过 nvm</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> verify installtion</span><br><span class="line">command -v nvm</span><br><span class="line"><span class="meta">#</span> print</span><br><span class="line">nvm</span><br><span class="line"><span class="meta">#</span> install nodejs</span><br><span class="line">nvm install node</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> special in o-my-zsh</span><br><span class="line"><span class="meta">#</span> install as plugin</span><br><span class="line">git clone https://github.com/lukechilds/zsh-nvm~/.oh-my-zsh/custom/plugins/zsh-nvm</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> edit ~/.zshrc</span><br><span class="line">plugins+=(zsh-nvm)</span><br></pre></td></tr></table></figure>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/Linux-VPS/softwares/#more">Read More</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
         <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/">&laquo; Anterior</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+        <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
         </nav>
     
 </section>

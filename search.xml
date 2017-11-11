@@ -3,6 +3,63 @@
   
     
     <entry>
+      <title><![CDATA[Ubuntu 安装软件合集]]></title>
+      <url>/Linux-VPS/softwares/</url>
+      <content type="html"><![CDATA[<h2 id="记录 -Ubuntu- 平台下安装的部分软件。"><a href="# 记录 -Ubuntu- 平台下安装的部分软件。" class="headerlink" title="记录 Ubuntu 平台下安装的部分软件。"></a> 记录 Ubuntu 平台下安装的部分软件。</h2><p><a href="https://alim0x.gitbooks.io/awesome-linux-software-zh_cn/content/#%E7%9B%AE%E5%BD%95" target="_blank" rel="external">awesome-linux-software</a></p>
+<h1 id="Node-js-amp- 版本管理"><a href="#Node-js-amp- 版本管理" class="headerlink" title="Node.js &amp; 版本管理"></a>Node.js &amp; 版本管理 </h1><ul>
+<li> 推荐的安装方式是通过 nvm</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> verify installtion</span><br><span class="line">command -v nvm</span><br><span class="line"><span class="meta">#</span> print</span><br><span class="line">nvm</span><br><span class="line"><span class="meta">#</span> install nodejs</span><br><span class="line">nvm install node</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> special in o-my-zsh</span><br><span class="line"><span class="meta">#</span> install as plugin</span><br><span class="line">git clone https://github.com/lukechilds/zsh-nvm~/.oh-my-zsh/custom/plugins/zsh-nvm</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> edit ~/.zshrc</span><br><span class="line">plugins+=(zsh-nvm)</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/creationix/nvm" target="_blank" rel="external">nvm</a></p>
+<h1 id="S-S-Libev"><a href="#S-S-Libev" class="headerlink" title="S-S-Libev"></a>S-S-Libev</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 提示 </span><br><span class="line">add-apt-repository: command not found</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装工具包 </span><br><span class="line">apt-get install software-properties-common</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 libev</span><br><span class="line">sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install shadowsocks-libev</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 启动时提示 </span><br><span class="line">This system doesn't provide enough entropy to quicklygenerate high-quality random numbers</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 rng-tools 工具 </span><br><span class="line"></span><br><span class="line">apt install rng-tools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 4 in 1</span><br><span class="line">wget --no-check-certificate -O shadowsocks-all.shhttps://raw.githubusercontentcom/teddysun/shadowsocks_install/master/shadowsocks-allsh</span><br><span class="line">chmod +x shadowsocks-all.sh</span><br><span class="line">./shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</span><br></pre></td></tr></table></figure>
+<h1 id="KeePass2"><a href="#KeePass2" class="headerlink" title="KeePass2"></a>KeePass2</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apt install keepass2</span><br></pre></td></tr></table></figure>
+<h1 id="Uget"><a href="#Uget" class="headerlink" title="Uget"></a>Uget</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo add-apt-repository ppa:plushuang-tw/uget-stable</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install uget</span><br></pre></td></tr></table></figure>
+<h1 id="Oracle-Java"><a href="#Oracle-Java" class="headerlink" title="Oracle Java"></a>Oracle Java</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 清除已经安装的 OpenJDK</span><br><span class="line">sudo apt-get purge openjdk-\*</span><br><span class="line"><span class="meta">#</span> 安装 Oracle JDK</span><br><span class="line">sudo add-apt-repository ppa:webupd8team/java</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install oracle-java8-installer</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04" target="_blank" rel="external">how to install java with apt get on ubuntu 16.04</a></p>
+<h1 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">sudo dpkg -i google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure>
+<h1 id="Typora"><a href="#Typora" class="headerlink" title="Typora"></a>Typora</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> optional, but recommended</span><br><span class="line">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE</span><br><span class="line"><span class="meta">#</span> add Typora's repository</span><br><span class="line">sudo add-apt-repository'deb https://typora.io ./linux/'</span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="meta">#</span> install typora</span><br><span class="line">sudo apt-get install typora</span><br></pre></td></tr></table></figure>
+<h1 id="you-get"><a href="#you-get" class="headerlink" title="you-get"></a>you-get</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> install ffmpeg</span><br><span class="line">sudo add-apt-repository ppa:mc3man/trusty-media</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install ffmpeg</span><br><span class="line"><span class="meta">#</span> install you-get</span><br><span class="line">pip3 install you-get</span><br><span class="line"><span class="meta">#</span>usage</span><br><span class="line">you-get url</span><br></pre></td></tr></table></figure>
+<h1 id="Guake- 终端"><a href="#Guake- 终端" class="headerlink" title="Guake 终端"></a>Guake 终端 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/unstable</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p> 到 Github 页面下载最新版本并解压，之后执行 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./dev.sh --install</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/Guake/guake" target="_blank" rel="external">Guake</a></p>
+<h1 id="BBR"><a href="#BBR" class="headerlink" title="BBR"></a>BBR</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh </span><br><span class="line">chmod +x bbr.sh </span><br><span class="line">./bbr.sh</span><br></pre></td></tr></table></figure>
+<h1 id="Coursera-dl"><a href="#Coursera-dl" class="headerlink" title="Coursera-dl"></a>Coursera-dl</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install coursera-dl</span><br><span class="line"><span class="meta">#</span> sometime you need to restart your shell</span><br><span class="line">exec $SHELL</span><br></pre></td></tr></table></figure>
+<h1 id="Firefox-beta"><a href="#Firefox-beta" class="headerlink" title="Firefox beta"></a>Firefox beta</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:mozillateam/firefox-next</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install firefox</span><br></pre></td></tr></table></figure>
+<h1 id="Telegram"><a href="#Telegram" class="headerlink" title="Telegram"></a>Telegram</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:atareao/telegram</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install telegram</span><br></pre></td></tr></table></figure>
+<h1 id="Wechat- 微信"><a href="#Wechat- 微信" class="headerlink" title="Wechat 微信"></a>Wechat 微信 </h1><p><a href="https://github.com/geeeeeeeeek/electronic-wechat" target="_blank" rel="external">electronic-wechat</a></p>
+<h1 id="网易云"><a href="# 网易云" class="headerlink" title="网易云"></a> 网易云 </h1><ul>
+<li><p> 魔改版 </p>
+<ul>
+<li><a href="https://github.com/trazyn/ieaseMusic" target="_blank" rel="external">ieaseMusic</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="电源管理"><a href="# 电源管理" class="headerlink" title="电源管理"></a> 电源管理 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-fast install tlp tlp-rdw</span><br><span class="line">sudo tlp start</span><br></pre></td></tr></table></figure>
+<h1 id="系统监视器"><a href="# 系统监视器" class="headerlink" title="系统监视器"></a> 系统监视器 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-psutil curl git gir1.2-appindicator3-0.1</span><br><span class="line">git clone https://github.com/fossfreedom/indicator-sysmonitor.git</span><br><span class="line">cd indicator-sysmonitor</span><br><span class="line">sudo make install</span><br><span class="line">nohup indicator-sysmonitor &amp;</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="external">indicator-sysmonitor</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux &amp; VPS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> VPS </tag>
+            
+            <tag> Ubuntu </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[11 习惯]]></title>
       <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/11-habit/</url>
       <content type="html"><![CDATA[<h2 id="自制力和成功"><a href="# 自制力和成功" class="headerlink" title="自制力和成功"></a>自制力和成功</h2><ul>
@@ -456,6 +513,177 @@
     </entry>
     
     <entry>
+      <title><![CDATA[6 乐观]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/6.0-positive/</url>
+      <content type="html"><![CDATA[<h2 id="如何创建积极的环境"><a href="# 如何创建积极的环境" class="headerlink" title="如何创建积极的环境"></a>如何创建积极的环境 </h2><p><strong> 相信改变会发生，相信即便微小的难以记住的东西也会对心理产生极大的暗示</strong>。</p>
+<ul>
+<li>欣赏你爱的人的图片</li>
+<li>欣赏美好的事物</li>
+<li>在目力所及的地方放上令你感觉温暖、能让你感受到爱和友善的东西</li>
+<li>名人名言</li>
+<li>音乐、电影</li>
+</ul>
+<h2 id="自我效能的力量"><a href="# 自我效能的力量" class="headerlink" title="自我效能的力量"></a>自我效能的力量</h2><ul>
+<li>“思考只是成功定律的一部分”<ul>
+<li>成功离不开自我效能、艰苦奋斗和不断的失败</li>
+</ul>
+</li>
+<li>“自我效能决定命运”<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E6%95%88%E8%83%BD" target="_blank" rel="external">自我效能</a>：用于衡量个体本身对完成任务和达成目标能力的信念的程度或强度</li>
+<li>“安慰剂效应”</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何平衡期许和现实"><a href="# 如何平衡期许和现实" class="headerlink" title="如何平衡期许和现实"></a>如何平衡期许和现实 </h2><h3 id="两种调节机制"><a href="# 两种调节机制" class="headerlink" title="两种调节机制"></a> 两种调节机制</h3><ul>
+<li>动力（motivation）：<ul>
+<li>如果相信在某方面能做得更好，你更有可能做得更好</li>
+</ul>
+</li>
+<li>统一性（consistency）<ul>
+<li>人们会对世界产生 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%9B%BE%E5%BC%8F" target="_blank" rel="external"> 心理图式</a><ul>
+<li><strong>自我图式 </strong>（self-schema）是指一个长期及稳定的<a href="https://zh.wikipedia.org/wiki/%E8%A8%98%E6%86%B6" target="_blank" rel="external"> 记忆 </a>，内容是有关在特定行为领域下的<a href="https://zh.wikipedia.org/wiki/%E4%BF%A1%E5%BF%B5" target="_blank" rel="external"> 信念 </a>、<a href="https://zh.wikipedia.org/wiki/%E7%B6%93%E9%A9%97" target="_blank" rel="external"> 经验 </a> 及对 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91" target="_blank" rel="external"> 自我 </a> 的总括；也作“过去知识和经验的表征形式”</li>
+<li>比如我们“知道”，如果把东西留着半空中，这个东西“就会掉下来”</li>
+<li>比如“主观印象”</li>
+</ul>
+</li>
+<li>心理图式对应的“客观世界”<ul>
+<li>比如，留在半空中的东西确实掉下去了，是为客观事实</li>
+</ul>
+</li>
+<li><strong>大脑不善于接受现实和理想之间的差距</strong><ul>
+<li><strong>甚至会逃避、忽视这样的差距</strong></li>
+</ul>
+</li>
+<li>为了让两者保持统一，要么 <strong> 改变客观事实 </strong>，<strong> 要么改变自己的想法</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="修复现实和理想的裂痕"><a href="# 修复现实和理想的裂痕" class="headerlink" title="修复现实和理想的裂痕"></a>修复现实和理想的裂痕</h3><ol>
+<li>更新我们的主观想法</li>
+<li>屏蔽客观信息</li>
+<li>主动证实信息</li>
+<li>创造一个新的现实 </li>
+</ol>
+<p>我们经常使用的是第二和第三种方法，因为我们不愿意“更新”我们的最初的想法，所以一旦发生了不符合我们预期的事情，我们会选择性忽略（不更新，屏蔽客观信息），然后去寻找支持我们原来想法的证据（主动证实信息）。</p>
+<p>比如，我们以前认为小明是坏人。而小明最近几天一直在做好事，有很多人不善于接受新的改变，而持有一种观点“小明以前做过什么坏事”，然后去证实这件事。</p>
+<p>也即是“问题创造现实”。这样的情况可以被避免。只要我们 <strong> 不要忽略掉积极的事情，并且小心求证消极的事情</strong>。</p>
+<ul>
+<li>客观现实的主观解释<ul>
+<li>失败 –&gt; 成功证明某事不成功</li>
+<li>成功 –&gt; 成功</li>
+</ul>
+</li>
+<li>信念的功用<ul>
+<li>“我相信” –&gt; “我会更努力工作” √</li>
+<li>“我相信” –&gt; “会成功” ×</li>
+<li>简言之：信念是为了更好地工作</li>
+</ul>
+</li>
+<li>“失败和成功的次数一样多”<ul>
+<li>迪安·西蒙顿（Dean Simonton）的研究：历史上最成功的科学家和艺术家也同样是那些失败最多次的</li>
+<li>注意逻辑关系！失败最多次并不代表就会变成最成功的</li>
+</ul>
+</li>
+<li>失败的功用<ul>
+<li>成功需要行动 –&gt; 行动会产生失败 –&gt; 失败是不可避免的</li>
+<li>不断从失败中汲取经验</li>
+</ul>
+</li>
+</ul>
+<h2 id="目标设立"><a href="# 目标设立" class="headerlink" title="目标设立"></a>目标设立 </h2><h3 id="积极和悲观主义者的区别"><a href="# 积极和悲观主义者的区别" class="headerlink" title="积极和悲观主义者的区别"></a> 积极和悲观主义者的区别</h3><ul>
+<li>悲观主义者：无论长期或是短期，其设立的目标都很现实<ul>
+<li>期望值不高, 信念不强 –&gt; 可能做得不好 &lt;-(思维一致性)-&gt; 调低目标难度<ul>
+<li><strong>表现平平</strong>：“我早就说过我做不好” &lt;–&gt; “是的，你早就说过了，你真实在”</li>
+<li><strong>表现优秀</strong>：“我这次可能是瞎猫碰上死耗子”“用尽了我一生的运气”</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>乐观主义者：短期目标 <strong> 天马行空</strong>，长期目标比较现实<ul>
+<li>期望值高，动力十足 –&gt; 我能做得很好 &lt;–(思维一致性)–&gt; 调高目标难度<ul>
+<li>表现平平：“我能从中学到什么？”“这是一次机会” &lt;–&gt; “为什么你就不能实际一点呢？稍微和 xx 学习一下吧” &lt;–&gt; 保持高度积极和高动力，不断努力直到把不可能化为可能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>解释客观现实<ul>
+<li>悲观主义者：将负面情况看成普遍现象<ul>
+<li>“这一次没有成功，我不可能成功”“我就是这样的人”</li>
+<li>“要么行，要么不行”</li>
+</ul>
+</li>
+<li>乐观主义者：现实可以被学习并改变<ul>
+<li>“我可以从中学到什么？”</li>
+<li>“这是一次机会”</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="心理健康与生理健康"><a href="# 心理健康与生理健康" class="headerlink" title="心理健康与生理健康"></a>心理健康与生理健康</h3><ul>
+<li>客观事实解释角度会影响人体的免疫系统和复原力水平</li>
+</ul>
+<h2 id="乐观的等级"><a href="# 乐观的等级" class="headerlink" title="乐观的等级"></a>乐观的等级 </h2><p><strong> 如何分辨现实与非现实？</strong></p>
+<ul>
+<li>斯托克代尔悖论（Stockdale Paradox）：不要把最终胜利的信念和现实的磨练这个两个因素混淆起来，其中前者 <strong> 必不可少</strong>，而后者无论如何都要接受</li>
+</ul>
+<h3 id="成功：乐观、激情和勤奋"><a href="# 成功：乐观、激情和勤奋" class="headerlink" title="成功：乐观、激情和勤奋"></a>成功：乐观、激情和勤奋</h3><ul>
+<li>乐观：相信自己能成功</li>
+<li>激情：对所做事业充满激情</li>
+<li>勤奋：努力地工作 –&gt; “勤奋没有替代品”</li>
+</ul>
+<h3 id="高期望和失望？"><a href="# 高期望和失望？" class="headerlink" title="高期望和失望？"></a>高期望和失望？</h3><ul>
+<li>为什么人不互相鼓励追求高的目标？<ul>
+<li>害怕伤及我们的自尊 &lt;–&gt; “期望和现实的比值为幸福值” &lt;–&gt; 期望低，幸福值高 （×）</li>
+</ul>
+</li>
+<li><strong>幸福有自己的稳态</strong><ul>
+<li>“现实不如期望” &lt;–&gt; 幸福感降低 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li>
+<li>“现实优于期望” &lt;–&gt; 幸福感升高 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li>
+</ul>
+</li>
+<li>“稳态的缺点”<ul>
+<li>幸福感是固定的吗？是由我的基因决定的吗？我无法一直提升我的幸福感吗？</li>
+</ul>
+</li>
+</ul>
+<h3 id="提升你的基础幸福感：解决问题而不是逃避问题"><a href="# 提升你的基础幸福感：解决问题而不是逃避问题" class="headerlink" title="提升你的基础幸福感：解决问题而不是逃避问题"></a>提升你的基础幸福感：解决问题而不是逃避问题</h3><ul>
+<li>解决问题：允许自己冒险，处于“学习区”中，承担失败的风险；处理、解决以及直面你的问题</li>
+<li>依据？<ul>
+<li>自我认知：“我们使用同一种方法来判断自己和他人”<ul>
+<li>你不敢做的事，不敢尝试的事情，往往会给与之高的评价，一旦自己做了，也会给自己高度评价</li>
+<li>比如，发表演讲、争取权利等等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[7 逆境和机遇]]></title>
       <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/</url>
       <content type="html"><![CDATA[<h2 id="如何变得更加乐观"><a href="# 如何变得更加乐观" class="headerlink" title="如何变得更加乐观"></a>如何变得更加乐观 </h2><h3 id="1- 付诸行动"><a href="#1- 付诸行动" class="headerlink" title="1. 付诸行动"></a>1. 付诸行动</h3><p><em> 基于 艾伯特·班杜拉(Albert Bandura) 的研究</em></p>
@@ -608,177 +836,6 @@
 <li>与“精英主义”的区别<ul>
 <li>研究最优秀的人同时也研究普通的人</li>
 <li>研究最优秀的人对所有人是有益的</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[6 乐观]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/6.0-positive/</url>
-      <content type="html"><![CDATA[<h2 id="如何创建积极的环境"><a href="# 如何创建积极的环境" class="headerlink" title="如何创建积极的环境"></a>如何创建积极的环境 </h2><p><strong> 相信改变会发生，相信即便微小的难以记住的东西也会对心理产生极大的暗示</strong>。</p>
-<ul>
-<li>欣赏你爱的人的图片</li>
-<li>欣赏美好的事物</li>
-<li>在目力所及的地方放上令你感觉温暖、能让你感受到爱和友善的东西</li>
-<li>名人名言</li>
-<li>音乐、电影</li>
-</ul>
-<h2 id="自我效能的力量"><a href="# 自我效能的力量" class="headerlink" title="自我效能的力量"></a>自我效能的力量</h2><ul>
-<li>“思考只是成功定律的一部分”<ul>
-<li>成功离不开自我效能、艰苦奋斗和不断的失败</li>
-</ul>
-</li>
-<li>“自我效能决定命运”<ul>
-<li><a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E6%95%88%E8%83%BD" target="_blank" rel="external">自我效能</a>：用于衡量个体本身对完成任务和达成目标能力的信念的程度或强度</li>
-<li>“安慰剂效应”</li>
-</ul>
-</li>
-</ul>
-<h2 id="如何平衡期许和现实"><a href="# 如何平衡期许和现实" class="headerlink" title="如何平衡期许和现实"></a>如何平衡期许和现实 </h2><h3 id="两种调节机制"><a href="# 两种调节机制" class="headerlink" title="两种调节机制"></a> 两种调节机制</h3><ul>
-<li>动力（motivation）：<ul>
-<li>如果相信在某方面能做得更好，你更有可能做得更好</li>
-</ul>
-</li>
-<li>统一性（consistency）<ul>
-<li>人们会对世界产生 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%9B%BE%E5%BC%8F" target="_blank" rel="external"> 心理图式</a><ul>
-<li><strong>自我图式 </strong>（self-schema）是指一个长期及稳定的<a href="https://zh.wikipedia.org/wiki/%E8%A8%98%E6%86%B6" target="_blank" rel="external"> 记忆 </a>，内容是有关在特定行为领域下的<a href="https://zh.wikipedia.org/wiki/%E4%BF%A1%E5%BF%B5" target="_blank" rel="external"> 信念 </a>、<a href="https://zh.wikipedia.org/wiki/%E7%B6%93%E9%A9%97" target="_blank" rel="external"> 经验 </a> 及对 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91" target="_blank" rel="external"> 自我 </a> 的总括；也作“过去知识和经验的表征形式”</li>
-<li>比如我们“知道”，如果把东西留着半空中，这个东西“就会掉下来”</li>
-<li>比如“主观印象”</li>
-</ul>
-</li>
-<li>心理图式对应的“客观世界”<ul>
-<li>比如，留在半空中的东西确实掉下去了，是为客观事实</li>
-</ul>
-</li>
-<li><strong>大脑不善于接受现实和理想之间的差距</strong><ul>
-<li><strong>甚至会逃避、忽视这样的差距</strong></li>
-</ul>
-</li>
-<li>为了让两者保持统一，要么 <strong> 改变客观事实 </strong>，<strong> 要么改变自己的想法</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="修复现实和理想的裂痕"><a href="# 修复现实和理想的裂痕" class="headerlink" title="修复现实和理想的裂痕"></a>修复现实和理想的裂痕</h3><ol>
-<li>更新我们的主观想法</li>
-<li>屏蔽客观信息</li>
-<li>主动证实信息</li>
-<li>创造一个新的现实 </li>
-</ol>
-<p>我们经常使用的是第二和第三种方法，因为我们不愿意“更新”我们的最初的想法，所以一旦发生了不符合我们预期的事情，我们会选择性忽略（不更新，屏蔽客观信息），然后去寻找支持我们原来想法的证据（主动证实信息）。</p>
-<p>比如，我们以前认为小明是坏人。而小明最近几天一直在做好事，有很多人不善于接受新的改变，而持有一种观点“小明以前做过什么坏事”，然后去证实这件事。</p>
-<p>也即是“问题创造现实”。这样的情况可以被避免。只要我们 <strong> 不要忽略掉积极的事情，并且小心求证消极的事情</strong>。</p>
-<ul>
-<li>客观现实的主观解释<ul>
-<li>失败 –&gt; 成功证明某事不成功</li>
-<li>成功 –&gt; 成功</li>
-</ul>
-</li>
-<li>信念的功用<ul>
-<li>“我相信” –&gt; “我会更努力工作” √</li>
-<li>“我相信” –&gt; “会成功” ×</li>
-<li>简言之：信念是为了更好地工作</li>
-</ul>
-</li>
-<li>“失败和成功的次数一样多”<ul>
-<li>迪安·西蒙顿（Dean Simonton）的研究：历史上最成功的科学家和艺术家也同样是那些失败最多次的</li>
-<li>注意逻辑关系！失败最多次并不代表就会变成最成功的</li>
-</ul>
-</li>
-<li>失败的功用<ul>
-<li>成功需要行动 –&gt; 行动会产生失败 –&gt; 失败是不可避免的</li>
-<li>不断从失败中汲取经验</li>
-</ul>
-</li>
-</ul>
-<h2 id="目标设立"><a href="# 目标设立" class="headerlink" title="目标设立"></a>目标设立 </h2><h3 id="积极和悲观主义者的区别"><a href="# 积极和悲观主义者的区别" class="headerlink" title="积极和悲观主义者的区别"></a> 积极和悲观主义者的区别</h3><ul>
-<li>悲观主义者：无论长期或是短期，其设立的目标都很现实<ul>
-<li>期望值不高, 信念不强 –&gt; 可能做得不好 &lt;-(思维一致性)-&gt; 调低目标难度<ul>
-<li><strong>表现平平</strong>：“我早就说过我做不好” &lt;–&gt; “是的，你早就说过了，你真实在”</li>
-<li><strong>表现优秀</strong>：“我这次可能是瞎猫碰上死耗子”“用尽了我一生的运气”</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>乐观主义者：短期目标 <strong> 天马行空</strong>，长期目标比较现实<ul>
-<li>期望值高，动力十足 –&gt; 我能做得很好 &lt;–(思维一致性)–&gt; 调高目标难度<ul>
-<li>表现平平：“我能从中学到什么？”“这是一次机会” &lt;–&gt; “为什么你就不能实际一点呢？稍微和 xx 学习一下吧” &lt;–&gt; 保持高度积极和高动力，不断努力直到把不可能化为可能</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>解释客观现实<ul>
-<li>悲观主义者：将负面情况看成普遍现象<ul>
-<li>“这一次没有成功，我不可能成功”“我就是这样的人”</li>
-<li>“要么行，要么不行”</li>
-</ul>
-</li>
-<li>乐观主义者：现实可以被学习并改变<ul>
-<li>“我可以从中学到什么？”</li>
-<li>“这是一次机会”</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="心理健康与生理健康"><a href="# 心理健康与生理健康" class="headerlink" title="心理健康与生理健康"></a>心理健康与生理健康</h3><ul>
-<li>客观事实解释角度会影响人体的免疫系统和复原力水平</li>
-</ul>
-<h2 id="乐观的等级"><a href="# 乐观的等级" class="headerlink" title="乐观的等级"></a>乐观的等级 </h2><p><strong> 如何分辨现实与非现实？</strong></p>
-<ul>
-<li>斯托克代尔悖论（Stockdale Paradox）：不要把最终胜利的信念和现实的磨练这个两个因素混淆起来，其中前者 <strong> 必不可少</strong>，而后者无论如何都要接受</li>
-</ul>
-<h3 id="成功：乐观、激情和勤奋"><a href="# 成功：乐观、激情和勤奋" class="headerlink" title="成功：乐观、激情和勤奋"></a>成功：乐观、激情和勤奋</h3><ul>
-<li>乐观：相信自己能成功</li>
-<li>激情：对所做事业充满激情</li>
-<li>勤奋：努力地工作 –&gt; “勤奋没有替代品”</li>
-</ul>
-<h3 id="高期望和失望？"><a href="# 高期望和失望？" class="headerlink" title="高期望和失望？"></a>高期望和失望？</h3><ul>
-<li>为什么人不互相鼓励追求高的目标？<ul>
-<li>害怕伤及我们的自尊 &lt;–&gt; “期望和现实的比值为幸福值” &lt;–&gt; 期望低，幸福值高 （×）</li>
-</ul>
-</li>
-<li><strong>幸福有自己的稳态</strong><ul>
-<li>“现实不如期望” &lt;–&gt; 幸福感降低 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li>
-<li>“现实优于期望” &lt;–&gt; 幸福感升高 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li>
-</ul>
-</li>
-<li>“稳态的缺点”<ul>
-<li>幸福感是固定的吗？是由我的基因决定的吗？我无法一直提升我的幸福感吗？</li>
-</ul>
-</li>
-</ul>
-<h3 id="提升你的基础幸福感：解决问题而不是逃避问题"><a href="# 提升你的基础幸福感：解决问题而不是逃避问题" class="headerlink" title="提升你的基础幸福感：解决问题而不是逃避问题"></a>提升你的基础幸福感：解决问题而不是逃避问题</h3><ul>
-<li>解决问题：允许自己冒险，处于“学习区”中，承担失败的风险；处理、解决以及直面你的问题</li>
-<li>依据？<ul>
-<li>自我认知：“我们使用同一种方法来判断自己和他人”<ul>
-<li>你不敢做的事，不敢尝试的事情，往往会给与之高的评价，一旦自己做了，也会给自己高度评价</li>
-<li>比如，发表演讲、争取权利等等</li>
 </ul>
 </li>
 </ul>

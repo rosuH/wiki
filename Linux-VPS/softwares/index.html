@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Ubuntu 安装软件合集 | rosu&#39;s wiki</title>
+    
+    
+        <meta name="keywords" content="Linux,VPS,Ubuntu" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="记录 Ubuntu 平台下安装的部分软件。awesome-linux-software Node.js &amp;amp; 版本管理   推荐的安装方式是通过 nvm  123456789101112131415curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash# verify insta">
+<meta name="keywords" content="Linux,VPS,Ubuntu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu 安装软件合集">
+<meta property="og:url" content="https://wiki.rosuh.me/Linux-VPS/softwares/index.html">
+<meta property="og:site_name" content="rosu&#39;s wiki">
+<meta property="og:description" content="记录 Ubuntu 平台下安装的部分软件。awesome-linux-software Node.js &amp;amp; 版本管理   推荐的安装方式是通过 nvm  123456789101112131415curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash# verify insta">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2017-11-11T03:40:38.644Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu 安装软件合集">
+<meta name="twitter:description" content="记录 Ubuntu 平台下安装的部分软件。awesome-linux-software Node.js &amp;amp; 版本管理   推荐的安装方式是通过 nvm  123456789101112131415curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash# verify insta">
+<meta name="twitter:creator" content="@rosu_h">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="rosu&#39;s wiki" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">rosu&#39;s wiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">此站点</a>
+                
+                    <a class="main-nav-link" href="https://rosuh.me">找我</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">此站点</a></td>
+                
+                    <td><a class="main-nav-link" href="https://rosuh.me">找我</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Linux & VPS
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            软技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            积极心理学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/软技能/积极心理学/11-habit/">11 习惯</a></li>  <li class="file"><a href="/软技能/积极心理学/10-change/">10 改变</a></li>  <li class="file"><a href="/软技能/积极心理学/9.0-positive-emotions/">9 积极情绪</a></li>  <li class="file"><a href="/软技能/积极心理学/8.0-appreciate/">8 感激</a></li>  <li class="file"><a href="/软技能/积极心理学/7.0-adversity-or-chance/">7 逆境和机遇</a></li>  <li class="file"><a href="/软技能/积极心理学/6.0-positive/">6 乐观</a></li>  <li class="file"><a href="/软技能/积极心理学/5.0-Faith-is-the-realistic-predictions/">5 信念是自我实现的预言</a></li>  <li class="file"><a href="/软技能/积极心理学/4.0-positive-environment-can-change-person/">4 积极的环境能改变人</a></li>  <li class="file"><a href="/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/">3 如何避免惬意的麻木</a></li>  <li class="file"><a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/">2 为什么要学习积极心理学</a></li>  <li class="file"><a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/">1 信息、变形和课程简介</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-softwares" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Linux-VPS/">Linux & VPS</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Linux/">Linux</a>, <a class="tag-link" href="/tags/Ubuntu/">Ubuntu</a>, <a class="tag-link" href="/tags/VPS/">VPS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/Linux-VPS/softwares/">
+            <time datetime="2017-11-11T03:40:38.644Z" itemprop="datePublished">2017-11-11</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/softwares.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/softwares.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/softwares.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Ubuntu 安装软件合集
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">Catalogue</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#记录 -Ubuntu- 平台下安装的部分软件。"><span class="toc-number">1.</span> <span class="toc-text"> 记录 Ubuntu 平台下安装的部分软件。</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Node-js-amp- 版本管理"><span class="toc-number"></span> <span class="toc-text">Node.js & 版本管理 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#S-S-Libev"><span class="toc-number"></span> <span class="toc-text">S-S-Libev</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#KeePass2"><span class="toc-number"></span> <span class="toc-text">KeePass2</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Uget"><span class="toc-number"></span> <span class="toc-text">Uget</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Oracle-Java"><span class="toc-number"></span> <span class="toc-text">Oracle Java</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Chrome"><span class="toc-number"></span> <span class="toc-text">Chrome</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Typora"><span class="toc-number"></span> <span class="toc-text">Typora</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#you-get"><span class="toc-number"></span> <span class="toc-text">you-get</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Guake- 终端"><span class="toc-number"></span> <span class="toc-text">Guake 终端 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#BBR"><span class="toc-number"></span> <span class="toc-text">BBR</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Coursera-dl"><span class="toc-number"></span> <span class="toc-text">Coursera-dl</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Firefox-beta"><span class="toc-number"></span> <span class="toc-text">Firefox beta</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Telegram"><span class="toc-number"></span> <span class="toc-text">Telegram</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Wechat- 微信"><span class="toc-number"></span> <span class="toc-text">Wechat 微信 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#网易云"><span class="toc-number"></span> <span class="toc-text"> 网易云 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#电源管理"><span class="toc-number"></span> <span class="toc-text"> 电源管理 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#系统监视器"><span class="toc-number"></span> <span class="toc-text"> 系统监视器 </span></a>
+                </div>
+            
+        
+        
+            <h2 id="记录 -Ubuntu- 平台下安装的部分软件。"><a href="# 记录 -Ubuntu- 平台下安装的部分软件。" class="headerlink" title="记录 Ubuntu 平台下安装的部分软件。"></a> 记录 Ubuntu 平台下安装的部分软件。</h2><p><a href="https://alim0x.gitbooks.io/awesome-linux-software-zh_cn/content/#%E7%9B%AE%E5%BD%95" target="_blank" rel="external">awesome-linux-software</a></p>
+<h1 id="Node-js-amp- 版本管理"><a href="#Node-js-amp- 版本管理" class="headerlink" title="Node.js &amp; 版本管理"></a>Node.js &amp; 版本管理 </h1><ul>
+<li> 推荐的安装方式是通过 nvm</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> verify installtion</span><br><span class="line">command -v nvm</span><br><span class="line"><span class="meta">#</span> print</span><br><span class="line">nvm</span><br><span class="line"><span class="meta">#</span> install nodejs</span><br><span class="line">nvm install node</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> special in o-my-zsh</span><br><span class="line"><span class="meta">#</span> install as plugin</span><br><span class="line">git clone https://github.com/lukechilds/zsh-nvm~/.oh-my-zsh/custom/plugins/zsh-nvm</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> edit ~/.zshrc</span><br><span class="line">plugins+=(zsh-nvm)</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/creationix/nvm" target="_blank" rel="external">nvm</a></p>
+<h1 id="S-S-Libev"><a href="#S-S-Libev" class="headerlink" title="S-S-Libev"></a>S-S-Libev</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 提示 </span><br><span class="line">add-apt-repository: command not found</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装工具包 </span><br><span class="line">apt-get install software-properties-common</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 libev</span><br><span class="line">sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install shadowsocks-libev</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 启动时提示 </span><br><span class="line">This system doesn't provide enough entropy to quicklygenerate high-quality random numbers</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 rng-tools 工具 </span><br><span class="line"></span><br><span class="line">apt install rng-tools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 4 in 1</span><br><span class="line">wget --no-check-certificate -O shadowsocks-all.shhttps://raw.githubusercontentcom/teddysun/shadowsocks_install/master/shadowsocks-allsh</span><br><span class="line">chmod +x shadowsocks-all.sh</span><br><span class="line">./shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</span><br></pre></td></tr></table></figure>
+<h1 id="KeePass2"><a href="#KeePass2" class="headerlink" title="KeePass2"></a>KeePass2</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apt install keepass2</span><br></pre></td></tr></table></figure>
+<h1 id="Uget"><a href="#Uget" class="headerlink" title="Uget"></a>Uget</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo add-apt-repository ppa:plushuang-tw/uget-stable</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install uget</span><br></pre></td></tr></table></figure>
+<h1 id="Oracle-Java"><a href="#Oracle-Java" class="headerlink" title="Oracle Java"></a>Oracle Java</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 清除已经安装的 OpenJDK</span><br><span class="line">sudo apt-get purge openjdk-\*</span><br><span class="line"><span class="meta">#</span> 安装 Oracle JDK</span><br><span class="line">sudo add-apt-repository ppa:webupd8team/java</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install oracle-java8-installer</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04" target="_blank" rel="external">how to install java with apt get on ubuntu 16.04</a></p>
+<h1 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">sudo dpkg -i google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure>
+<h1 id="Typora"><a href="#Typora" class="headerlink" title="Typora"></a>Typora</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> optional, but recommended</span><br><span class="line">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE</span><br><span class="line"><span class="meta">#</span> add Typora's repository</span><br><span class="line">sudo add-apt-repository'deb https://typora.io ./linux/'</span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="meta">#</span> install typora</span><br><span class="line">sudo apt-get install typora</span><br></pre></td></tr></table></figure>
+<h1 id="you-get"><a href="#you-get" class="headerlink" title="you-get"></a>you-get</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> install ffmpeg</span><br><span class="line">sudo add-apt-repository ppa:mc3man/trusty-media</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install ffmpeg</span><br><span class="line"><span class="meta">#</span> install you-get</span><br><span class="line">pip3 install you-get</span><br><span class="line"><span class="meta">#</span>usage</span><br><span class="line">you-get url</span><br></pre></td></tr></table></figure>
+<h1 id="Guake- 终端"><a href="#Guake- 终端" class="headerlink" title="Guake 终端"></a>Guake 终端 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/unstable</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p> 到 Github 页面下载最新版本并解压，之后执行 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./dev.sh --install</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/Guake/guake" target="_blank" rel="external">Guake</a></p>
+<h1 id="BBR"><a href="#BBR" class="headerlink" title="BBR"></a>BBR</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh </span><br><span class="line">chmod +x bbr.sh </span><br><span class="line">./bbr.sh</span><br></pre></td></tr></table></figure>
+<h1 id="Coursera-dl"><a href="#Coursera-dl" class="headerlink" title="Coursera-dl"></a>Coursera-dl</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install coursera-dl</span><br><span class="line"><span class="meta">#</span> sometime you need to restart your shell</span><br><span class="line">exec $SHELL</span><br></pre></td></tr></table></figure>
+<h1 id="Firefox-beta"><a href="#Firefox-beta" class="headerlink" title="Firefox beta"></a>Firefox beta</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:mozillateam/firefox-next</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install firefox</span><br></pre></td></tr></table></figure>
+<h1 id="Telegram"><a href="#Telegram" class="headerlink" title="Telegram"></a>Telegram</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:atareao/telegram</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install telegram</span><br></pre></td></tr></table></figure>
+<h1 id="Wechat- 微信"><a href="#Wechat- 微信" class="headerlink" title="Wechat 微信"></a>Wechat 微信 </h1><p><a href="https://github.com/geeeeeeeeek/electronic-wechat" target="_blank" rel="external">electronic-wechat</a></p>
+<h1 id="网易云"><a href="# 网易云" class="headerlink" title="网易云"></a> 网易云 </h1><ul>
+<li><p> 魔改版 </p>
+<ul>
+<li><a href="https://github.com/trazyn/ieaseMusic" target="_blank" rel="external">ieaseMusic</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="电源管理"><a href="# 电源管理" class="headerlink" title="电源管理"></a> 电源管理 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-fast install tlp tlp-rdw</span><br><span class="line">sudo tlp start</span><br></pre></td></tr></table></figure>
+<h1 id="系统监视器"><a href="# 系统监视器" class="headerlink" title="系统监视器"></a> 系统监视器 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-psutil curl git gir1.2-appindicator3-0.1</span><br><span class="line">git clone https://github.com/fossfreedom/indicator-sysmonitor.git</span><br><span class="line">cd indicator-sysmonitor</span><br><span class="line">sudo make install</span><br><span class="line">nohup indicator-sysmonitor &amp;</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="external">indicator-sysmonitor</a></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">1 信息、变形和课程简介</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            rosuh &copy; 2017 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+        </div>
+    </div>
+</footer>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
