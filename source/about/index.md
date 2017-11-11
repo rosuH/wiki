@@ -14,7 +14,7 @@ categories:
 
 此站点由我个人维护。
 
-此站点使用了 [Hexo](https://hexo.io) + [Github Page](Github.com) 搭建，使用了 [Wikitten](https://github.com/zthxxx/hexo-theme-Wikitten) 的主题。
+此站点使用了 [Hexo](https://hexo.io) + [Github Page](Github.com) 搭建，使用了 [Wikitten](https://github.com/rosuH/hexo-theme-Wikitten) 的主题。
 
 这是此站点的代码仓库：[Personal Wiki](https://github.com/rosuH/wiki-site)。
 
