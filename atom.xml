@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://wiki.rosuh.me/"/>
-  <updated>2017-11-11T11:22:56.956Z</updated>
+  <updated>2017-11-21T09:06:59.002Z</updated>
   <id>https://wiki.rosuh.me/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>华为 A199 救砖札记</title>
+    <link href="https://wiki.rosuh.me/%E7%8E%A9%E6%9C%BA%E6%8A%80%E5%B7%A7/save-blocked-in-A199/"/>
+    <id>https://wiki.rosuh.me/玩机技巧/save-blocked-in-A199/</id>
+    <published>2017-11-21T09:07:36.921Z</published>
+    <updated>2017-11-21T09:06:59.002Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="1- 前言"><a href="#1- 前言" class="headerlink" title="1. 前言"></a>1. 前言 </h2><p> 这货之前一直被我丢在柜子里。晚上想要注册多一个微信号，需要多一台设备来登陆。毕竟双开有被封号的风险。</p><p>之前已经刷入了第三方的 REC，所以本以为挺简单。想着先刷回官方版本，然后自己精简的。</p><p>于是安装官方的指引：</p><ol><li>官方的包解压出来，把 <code>dload</code> 放到了外置 SD 卡</li><li>设置–&gt; 关闭快速启动</li><li>设置–&gt; 关于手机–&gt; 系统更新–&gt; 本地升级</li><li>重启</li></ol><p><strong>然后就崩了</strong>…</p><p>第三方的 REC 无法识别，然后一直卡在 TWRP 的界面，重启或者试图进入 REC 都会一直卡在 TWEP 启动界面。</p><p>然后在官方论坛找了一下，没什么有用的帖子…刷机氛围真是不行…</p><p>直到看到某个官方教程帖子里说，华为的 fastboot 界面其实就是开机界面（麦芒 A199 的就是那个麦芽）。使用 <strong> 音量键减 + 开机键 </strong> 进入。</p><p>能进入 fastboot 说明还是有救的。</p><h2 id="2- 环境准备"><a href="#2- 环境准备" class="headerlink" title="2. 环境准备"></a>2. 环境准备 </h2><h3 id="2-1- 安装驱动"><a href="#2-1- 安装驱动" class="headerlink" title="2.1 安装驱动"></a>2.1 安装驱动</h3><p> 我使用的是 Win10，需要安装华为的驱动之后才能识别设备，不然 fastboot 是无法查找到设备的。</p><p><a href="http://consumer.huawei.com/cn/support/search/index.htm?keywords=%E9%BA%A6%E8%8A%92A199" target="_blank" rel="external">关键词搜索：麦芒 A199</a></p><p>华为官方的搜索界面都找不到这机子了…滑到列表最下面，看到 <code>HUAWEI Stick UTPS-V200R003B015D11SP01C983(for win10)</code> 这个选项：</p><p><img src="https://img.rosuh.me/wiki/58ca9d2bd48d2.png" alt="HUAWEI Stick UTPS-V200R003B015D11SP01C983( for win10)"></p><p>然后下载下来。如果官方撤了这个文件，可以到我分享的度盘下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1dFadWkT 密码: bdyd</span></span><br></pre></td></tr></table></figure><p>下载之后解压再解压，里面是一个 <code>iso</code> 镜像文件，可以选择装载到你的虚拟驱动器，或直接解压出来都没问题。</p><p>打开 <code>AutoRun.exe</code> 安装，就行了。</p><p>照道理现在应该已经装好了。我就是这么装的，并且之前我的系统也没有装过华为的其他驱动，所以我判断这样应该就可以。</p><h3 id="2-2- 刷入 -REC"><a href="#2-2- 刷入 -REC" class="headerlink" title="2.2 刷入 REC"></a>2.2 刷入 REC</h3><ol><li>获取 ADB 套件</li></ol><p>这一步需要用到 <code>adb</code> 套件。</p><p>点击下面的链接从 Google 官方下载：</p><p><a href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip" target="_blank" rel="external">https://dl.google.com/android/repository/platform-tools-latest-windows.zip</a></p><p>如果因为某些 <strong> 不可描述 </strong> 的原因导致你无法下载，可以通过我分享的度盘链接下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1miQCxnU 密码: kyum</span></span><br></pre></td></tr></table></figure><p><em>建议从官方下载，保证取得最新版的套件</em>。</p><p>下载之后解压出来，得到 <code>adb</code>套件。</p><ol><li>获取官方的 REC</li></ol><p>麦芒的官方 REC 我在论坛没找到。所以需要从官方的 ROM 中提取出来。</p><p>下面是提取的步骤，如果你不想自己提取，可以直接用我提取出来：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1eRO689O 密码: q4f9</span></span><br></pre></td></tr></table></figure><p><a href="http://www.emui.com/plugin.php?id=hwdownload&amp;mod=detail&amp;mid=1" target="_blank" rel="external">官方 ROM 下载</a></p><p>如果官方撤掉了，从我的盘下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1c21kqDq 密码: pi7u</span></span><br></pre></td></tr></table></figure><p>提取 REC 需要用到一个提取软件，直接点下面下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1boDhujH 密码: 5kun</span></span><br></pre></td></tr></table></figure><p>下载完解压出来，双击运行<code>HuaweiUpdateExtractor.exe</code>。</p><p>选择 <code>Update File</code> 右边的按钮选择官方 ROM</p><p><img src="https://img.rosuh.me/wiki/58ca9fa275ed9.png" alt="HuaweiUpdateExtractor"></p><p>选择 ROM 之后，右键单击 <code>RECOVERY</code> 解压出来：</p><p><img src="https://img.rosuh.me/wiki/58caa084186d0.png" alt="解压 REC"></p><p>然后把解压出来的 <code>RECOVERY</code> 放到第一步中 ADB 套件的文件夹中。</p><ol><li>刷入 REC</li></ol><p>进入 ADB 套件文件夹，可以看到诸如 <code>adb</code>, <code>fastboot</code> 等工具。</p><p>按住键盘的 <code>Shift</code> 键，同时鼠标右键单击该文件夹的空白处，选择“在此处打开命令行窗口”：</p><p><img src="https://img.rosuh.me/wiki/58caa1a512317.png" alt="open ps"></p><p>我这里是 <code>Powershell</code> 窗口，大部分时候显示为 <code>cmd</code> 窗口。</p><p>按住手机 <strong> 音量键减 + 开机键 </strong> 进入 <code>fastboot</code> 模式，显示为开机的那个麦芽 logo。</p><p>进入命令行界面，输入以下命令检查设备是否链接：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe devices</span><br></pre></td></tr></table></figure><p>如果有输入提示（一般是含有一串数字 + 英文字母），则意味着设备已经被识别了。如果没什么输出、提示，则意味着没有被识别。那么你要自行寻找其他驱动。</p><p>接着输入以下命令，进行刷入 REC</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe flash recovery RECOVERY.img</span><br></pre></td></tr></table></figure><p>输入回车之后应该就开始刷入了。命令行窗口会有提示：</p><p><img src="https://img.rosuh.me/wiki/58caa385361f6.png" alt="Flash REC"></p><p>由于我之前是升级过程卡住了，刷入 REC 之后自动开始了流程，这点还是很赞的：</p><p><img src="https://img.rosuh.me/wiki/58caa3eaaed61.jpg" alt="show time"></p><p>接着就可以进行愉快地玩耍啦~</p><hr><p><em>Best Wish.</em></p><p><em>by rosu</em></p><p><em>2017-3-16</em></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;1- 前言&quot;&gt;&lt;a href=&quot;#1- 前言&quot; class=&quot;headerlink&quot; title=&quot;1. 前言&quot;&gt;&lt;/a&gt;1. 前言 &lt;/h2&gt;&lt;p&gt; 这货之前一直被我丢在柜子里。晚上想要注册多一个微信号，需要多一台设备来登陆。毕竟双开有被封号的风险。&lt;/p&gt;
+&lt;
+      
+    
+    </summary>
+    
+      <category term="玩机技巧" scheme="https://wiki.rosuh.me/categories/%E7%8E%A9%E6%9C%BA%E6%8A%80%E5%B7%A7/"/>
+    
+    
+      <category term="Android" scheme="https://wiki.rosuh.me/tags/Android/"/>
+    
+      <category term="huawei" scheme="https://wiki.rosuh.me/tags/huawei/"/>
+    
+      <category term="A199" scheme="https://wiki.rosuh.me/tags/A199/"/>
+    
+  </entry>
   
   <entry>
     <title>积极心理学资料索引与声明</title>
@@ -75,25 +105,19 @@
   </entry>
   
   <entry>
-    <title>2 为什么要学习积极心理学</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/</id>
+    <title>1 信息、变形和课程简介</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/1.0-Information-transforation-and-introduction/</id>
     <published>2017-11-11T03:02:25.663Z</published>
-    <updated>2017-11-11T02:42:09.340Z</updated>
+    <updated>2017-11-11T02:40:18.200Z</updated>
     
-    <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p><ul><li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul><li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li></ul></li><li> 为什么要学习积极心理学？<ul><li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul><li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li></ul></li><li> 快乐并不只是对痛苦的否定 </li><li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li></ul></li></ul><ul><li> 如何研究出有效的方法？（如何探究积极心理学？<ul><li> 解决方法就在问题本身：特定问题创造特定现实 </li><li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul><li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li><li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li></ul></li><li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li></ul></li><li> 改善眼界 <ul><li> 关注优点、设立目标 –&gt; 内心理想主义 </li><li> 注意现实、立刻行动 –&gt; 客观现实主义 </li></ul></li><li> 利人利己的上升螺旋 <ul><li> 承认需要（承认弱点）</li><li> 接受帮助并帮助他人 </li><li> 善于选择优良的社会帮助 </li></ul></li><li> 适应力 <ul><li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li><li> 养成：<ul><li> 一个榜样 </li><li>“我们要好好树立自己的信念”<ul><li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li><li>“别再埋怨”“别再埋怨社会、老师、父母”</li></ul></li><li> 将目光放在长处和优点上并加以培养 </li><li> 自我激励 </li></ul></li><li>“如何让自己的大学时光变得更加有意义？”<ul><li> 你要为这段时光负起责任 </li></ul></li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p><ul><li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul><li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li></ul></li></ul><ul><li>关注点<ul><li>信息本身而不是信息的传递者</li></ul></li><li>以往“自助运动”的鄙陋<ul><li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li></ul></li><li>两个阶段<ul><li>学术阶段</li><li>应用阶段：我如何将这些东西应用到生活中</li></ul></li><li>积极心理学<ul><li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li></ul></li></ul><blockquote><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p></blockquote><ul><li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul><li><strong>什么是信息</strong><ul><li>人就像一个容器，接受外界的信息，直到填满整个容器</li><li>信息并不能提高人的生存、生活质量</li><li>信息是客观的，是多面的</li></ul></li><li><strong>什么是变形</strong><ul><li>改变容器的形状</li><li>让信息为我所用</li></ul></li><li><strong>利用信息</strong><ul><li>如何解读信息？如何理解以及关注点？</li><li>不止要获取信息，更要挖掘我们自己的潜能</li></ul></li><li><strong>挖掘潜能</strong><ul><li>“减法比加法更能让人的灵魂成长”</li><li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li></ul></li><li><strong>两面性</strong><ul><li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li></ul></li><li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li><li><strong>本课程的最终内容</strong>：让你成为最好的你</li></ul></li><li>保持向上的生活态度，自信并且保持提问</li></ul><hr><p><em>2017-8-1_第一节课</em></p><p>看了想睡觉…</p><p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p><p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p><p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;&lt;em&gt;2017-8-2 09:28:38&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt; 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 &lt;ul&gt;
-&lt;li&gt;1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 &lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;l
+        &lt;h1 id=&quot;01- 信息、变形与课程简介&quot;&gt;&lt;a href=&quot;#01- 信息、变形与课程简介&quot; class=&quot;headerlink&quot; title=&quot;01 信息、变形与课程简介&quot;&gt;&lt;/a&gt;01 信息、变形与课程简介&lt;/h1&gt;&lt;p&gt;&lt;em&gt;2017-8-1 11:36:36&lt;/e
       
     
     </summary>
@@ -114,21 +138,25 @@
   </entry>
   
   <entry>
-    <title>11 习惯</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/11-habit/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/11-habit/</id>
+    <title>2 为什么要学习积极心理学</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/</id>
     <published>2017-11-11T03:02:25.663Z</published>
-    <updated>2017-11-11T02:41:59.784Z</updated>
+    <updated>2017-11-11T02:42:09.340Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="自制力和成功"><a href="# 自制力和成功" class="headerlink" title="自制力和成功"></a>自制力和成功</h2><ul><li>自制力大小和成功没有必然联系<ul><li>大部分人的自制力都是固定的，不会发生改变的</li><li>仅有自制力比用不足以获得成功、获得改变或获得幸福</li><li>“自制力有限假说” &lt;–&gt; <em>罗伊·鲍迈斯特(Roy Baumeister) 研究</em> </li></ul></li></ul><h2 id="习惯成自然"><a href="# 习惯成自然" class="headerlink" title="习惯成自然"></a>习惯成自然</h2><blockquote><p>养成习惯需要定义严谨的行为模式，还要在特定的时间付诸行动、需要以深深扎根的价值观为驱动力 – 托尼·施瓦茨 (Tony Schwartz) 和吉姆·勒尔(Jim Loehr) </p></blockquote><ul><li>成功离不开孜孜不倦的训练和学习<ul><li>自制力有限所以并非全然依靠自制力去学习或行动</li><li>养成习惯之后更容易进行训练和学习 &lt;–&gt; 海明威和达芬奇</li></ul></li></ul><ul><li>将行为养成习惯之后，付出的自制力将大幅降低甚至为 0 <ul><li>早上起床刷牙</li><li>运动员长年累月的训练</li></ul></li><li>养成习惯需要足够的自制力<ul><li>不要尝试在一段时间内养成多个习惯，因为自制力是有限的，这样更容易导致全盘皆输</li><li>​</li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p><ul><li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul><li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li></ul></li><li> 为什么要学习积极心理学？<ul><li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul><li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li></ul></li><li> 快乐并不只是对痛苦的否定 </li><li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li></ul></li></ul><ul><li> 如何研究出有效的方法？（如何探究积极心理学？<ul><li> 解决方法就在问题本身：特定问题创造特定现实 </li><li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul><li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li><li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li></ul></li><li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li></ul></li><li> 改善眼界 <ul><li> 关注优点、设立目标 –&gt; 内心理想主义 </li><li> 注意现实、立刻行动 –&gt; 客观现实主义 </li></ul></li><li> 利人利己的上升螺旋 <ul><li> 承认需要（承认弱点）</li><li> 接受帮助并帮助他人 </li><li> 善于选择优良的社会帮助 </li></ul></li><li> 适应力 <ul><li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li><li> 养成：<ul><li> 一个榜样 </li><li>“我们要好好树立自己的信念”<ul><li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li><li>“别再埋怨”“别再埋怨社会、老师、父母”</li></ul></li><li> 将目光放在长处和优点上并加以培养 </li><li> 自我激励 </li></ul></li><li>“如何让自己的大学时光变得更加有意义？”<ul><li> 你要为这段时光负起责任 </li></ul></li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;自制力和成功&quot;&gt;&lt;a href=&quot;# 自制力和成功&quot; class=&quot;headerlink&quot; title=&quot;自制力和成功&quot;&gt;&lt;/a&gt;自制力和成功&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;自制力大小和成功没有必然联系&lt;ul&gt;
-&lt;li&gt;大部分人的自制力都是固定的，不会发生改变的&lt;/l
+        &lt;p&gt;&lt;em&gt;2017-8-2 09:28:38&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt; 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 &lt;ul&gt;
+&lt;li&gt;1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;l
       
     
     </summary>
@@ -224,19 +252,21 @@
   </entry>
   
   <entry>
-    <title>1 信息、变形和课程简介</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/1.0-Information-transforation-and-introduction/</id>
+    <title>11 习惯</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/11-habit/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/11-habit/</id>
     <published>2017-11-11T03:02:25.663Z</published>
-    <updated>2017-11-11T02:40:18.200Z</updated>
+    <updated>2017-11-11T02:41:59.784Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p><ul><li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul><li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li></ul></li></ul><ul><li>关注点<ul><li>信息本身而不是信息的传递者</li></ul></li><li>以往“自助运动”的鄙陋<ul><li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li></ul></li><li>两个阶段<ul><li>学术阶段</li><li>应用阶段：我如何将这些东西应用到生活中</li></ul></li><li>积极心理学<ul><li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li></ul></li></ul><blockquote><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p></blockquote><ul><li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul><li><strong>什么是信息</strong><ul><li>人就像一个容器，接受外界的信息，直到填满整个容器</li><li>信息并不能提高人的生存、生活质量</li><li>信息是客观的，是多面的</li></ul></li><li><strong>什么是变形</strong><ul><li>改变容器的形状</li><li>让信息为我所用</li></ul></li><li><strong>利用信息</strong><ul><li>如何解读信息？如何理解以及关注点？</li><li>不止要获取信息，更要挖掘我们自己的潜能</li></ul></li><li><strong>挖掘潜能</strong><ul><li>“减法比加法更能让人的灵魂成长”</li><li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li></ul></li><li><strong>两面性</strong><ul><li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li></ul></li><li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li><li><strong>本课程的最终内容</strong>：让你成为最好的你</li></ul></li><li>保持向上的生活态度，自信并且保持提问</li></ul><hr><p><em>2017-8-1_第一节课</em></p><p>看了想睡觉…</p><p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p><p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p><p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="自制力和成功"><a href="# 自制力和成功" class="headerlink" title="自制力和成功"></a>自制力和成功</h2><ul><li>自制力大小和成功没有必然联系<ul><li>大部分人的自制力都是固定的，不会发生改变的</li><li>仅有自制力比用不足以获得成功、获得改变或获得幸福</li><li>“自制力有限假说” &lt;–&gt; <em>罗伊·鲍迈斯特(Roy Baumeister) 研究</em> </li></ul></li></ul><h2 id="习惯成自然"><a href="# 习惯成自然" class="headerlink" title="习惯成自然"></a>习惯成自然</h2><blockquote><p>养成习惯需要定义严谨的行为模式，还要在特定的时间付诸行动、需要以深深扎根的价值观为驱动力 – 托尼·施瓦茨 (Tony Schwartz) 和吉姆·勒尔(Jim Loehr) </p></blockquote><ul><li>成功离不开孜孜不倦的训练和学习<ul><li>自制力有限所以并非全然依靠自制力去学习或行动</li><li>养成习惯之后更容易进行训练和学习 &lt;–&gt; 海明威和达芬奇</li></ul></li></ul><ul><li>将行为养成习惯之后，付出的自制力将大幅降低甚至为 0 <ul><li>早上起床刷牙</li><li>运动员长年累月的训练</li></ul></li><li>养成习惯需要足够的自制力<ul><li>不要尝试在一段时间内养成多个习惯，因为自制力是有限的，这样更容易导致全盘皆输</li><li>​</li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h1 id=&quot;01- 信息、变形与课程简介&quot;&gt;&lt;a href=&quot;#01- 信息、变形与课程简介&quot; class=&quot;headerlink&quot; title=&quot;01 信息、变形与课程简介&quot;&gt;&lt;/a&gt;01 信息、变形与课程简介&lt;/h1&gt;&lt;p&gt;&lt;em&gt;2017-8-1 11:36:36&lt;/e
+        &lt;h2 id=&quot;自制力和成功&quot;&gt;&lt;a href=&quot;# 自制力和成功&quot; class=&quot;headerlink&quot; title=&quot;自制力和成功&quot;&gt;&lt;/a&gt;自制力和成功&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;自制力大小和成功没有必然联系&lt;ul&gt;
+&lt;li&gt;大部分人的自制力都是固定的，不会发生改变的&lt;/l
       
     
     </summary>
@@ -257,19 +287,26 @@
   </entry>
   
   <entry>
-    <title>7 逆境和机遇</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/7.0-adversity-or-chance/</id>
+    <title>3 如何避免惬意的麻木</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
     <published>2017-11-11T03:02:25.659Z</published>
-    <updated>2017-11-11T02:42:09.340Z</updated>
+    <updated>2017-11-11T02:42:09.332Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="如何变得更加乐观"><a href="# 如何变得更加乐观" class="headerlink" title="如何变得更加乐观"></a>如何变得更加乐观 </h2><h3 id="1- 付诸行动"><a href="#1- 付诸行动" class="headerlink" title="1. 付诸行动"></a>1. 付诸行动</h3><p><em> 基于 艾伯特·班杜拉(Albert Bandura) 的研究</em></p><ul><li>不顾事实的夸奖会对目标产生伤害<ul><li>诸如早上起床对镜子里的自己说十句赞美自己的话之类的</li></ul></li><li>一味夸奖不如 <strong> 付诸行动</strong><ul><li><strong>努力和解决问题是通向成功的唯一途径</strong>：通过努力和实践会取得更大的成功</li><li>“让人看到自己的努力，看到自己步入正轨”</li><li>苏林·祁克果(Soren Kierkegarrd) –&gt; “敢于尝试只会暂时失去立足处，不敢尝试将失去自我”</li></ul></li></ul><h3 id="2- 想象：把目标呈现在心中"><a href="#2- 想象：把目标呈现在心中" class="headerlink" title="2. 想象：把目标呈现在心中"></a>2. 想象：把目标呈现在心中 </h3><p><em> 基于 斯蒂芬·科斯林(Stephen Kosslyn) 的研究</em></p><ul><li>“大脑可能分不清楚真实事物和想象事物的区别”</li><li>“模拟练习”<ul><li>引入各种器官，以便使想象更加地真实</li></ul></li></ul><h3 id="3- 认知疗法"><a href="#3- 认知疗法" class="headerlink" title="3. 认知疗法"></a>3. 认知疗法 </h3><p><em> 马丁·塞利格曼(Martin Seligman), 阿伦·贝克(Aaron Temkin Beck)</em></p><ul><li>“感情受思想的驱动”</li></ul><ul><li>Event –&gt; <strong>Evaluation(thought)</strong> –&gt; Emotion<ul><li>如果要想改变情绪，要从想法开始改变</li><li><strong>“重建理性和真实”</strong></li></ul></li></ul><h3 id="3Ms- 学说"><a href="#3Ms- 学说" class="headerlink" title="3Ms 学说"></a>3Ms 学说</h3><ul><li>3Ms：三个导致非理性思想的陷阱<ol><li>夸大理论：夸张了已发生的事实 &lt;–&gt; 归纳法与过度归纳<ul><li>归纳法：从已知的事情，来判断未知的类似的事情 –&gt; “这次干得不好” &lt;–&gt; “可能哪里出了问题”</li><li>过度归纳：“这次干得不好” &lt;–&gt; “我很蠢，这类事做不好” &lt;–&gt; “不成功便成仁”</li></ul></li><li>缩小理论：狭隘视野<ul><li>将注意力集中在某一个个体、个例上面</li></ul></li><li>伪造、捏造和情绪化推断<ul><li>推卸责任</li><li>“没人回来帮你把生活过得更美好，你必须承担起生活的责任”</li><li>“情绪不是现实，情绪只是对现实的推断”<ul><li>看清以及理性分析现实</li><li>作出正确的评估</li></ul></li></ul></li></ol></li><li>实践<ul><li>我的结论是否贴合现实？</li><li>它是否理性？</li><li>我是否忽略了重要的（现实）因素？</li><li>我仍需要考虑什么重要因素？</li><li>“我在哪里扭曲了事实？”</li><li>“我在哪里扭曲了自己的评价？扭曲了自己的思想？从而导致了不必要的负面情绪”</li></ul></li></ul><h3 id="危机和机遇"><a href="# 危机和机遇" class="headerlink" title="危机和机遇"></a>危机和机遇</h3><ul><li>几乎所有杰出的人，都是经历过巨大的考验才成就辉煌</li><li><strong>挖掘苦难中的价值</strong></li></ul>]]></content>
+    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;如何变得更加乐观&quot;&gt;&lt;a href=&quot;# 如何变得更加乐观&quot; class=&quot;headerlink&quot; title=&quot;如何变得更加乐观&quot;&gt;&lt;/a&gt;如何变得更加乐观 &lt;/h2&gt;&lt;h3 id=&quot;1- 付诸行动&quot;&gt;&lt;a href=&quot;#1- 付诸行动&quot; class=&quot;head
+        &lt;ul&gt;
+&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
+&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
+&lt;li&gt;Saluto-genesis&lt;/li&gt;
+&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;
       
     
     </summary>
@@ -323,26 +360,19 @@
   </entry>
   
   <entry>
-    <title>3 如何避免惬意的麻木</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
+    <title>7 逆境和机遇</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/7.0-adversity-or-chance/</id>
     <published>2017-11-11T03:02:25.659Z</published>
-    <updated>2017-11-11T02:42:09.332Z</updated>
+    <updated>2017-11-11T02:42:09.340Z</updated>
     
-    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="如何变得更加乐观"><a href="# 如何变得更加乐观" class="headerlink" title="如何变得更加乐观"></a>如何变得更加乐观 </h2><h3 id="1- 付诸行动"><a href="#1- 付诸行动" class="headerlink" title="1. 付诸行动"></a>1. 付诸行动</h3><p><em> 基于 艾伯特·班杜拉(Albert Bandura) 的研究</em></p><ul><li>不顾事实的夸奖会对目标产生伤害<ul><li>诸如早上起床对镜子里的自己说十句赞美自己的话之类的</li></ul></li><li>一味夸奖不如 <strong> 付诸行动</strong><ul><li><strong>努力和解决问题是通向成功的唯一途径</strong>：通过努力和实践会取得更大的成功</li><li>“让人看到自己的努力，看到自己步入正轨”</li><li>苏林·祁克果(Soren Kierkegarrd) –&gt; “敢于尝试只会暂时失去立足处，不敢尝试将失去自我”</li></ul></li></ul><h3 id="2- 想象：把目标呈现在心中"><a href="#2- 想象：把目标呈现在心中" class="headerlink" title="2. 想象：把目标呈现在心中"></a>2. 想象：把目标呈现在心中 </h3><p><em> 基于 斯蒂芬·科斯林(Stephen Kosslyn) 的研究</em></p><ul><li>“大脑可能分不清楚真实事物和想象事物的区别”</li><li>“模拟练习”<ul><li>引入各种器官，以便使想象更加地真实</li></ul></li></ul><h3 id="3- 认知疗法"><a href="#3- 认知疗法" class="headerlink" title="3. 认知疗法"></a>3. 认知疗法 </h3><p><em> 马丁·塞利格曼(Martin Seligman), 阿伦·贝克(Aaron Temkin Beck)</em></p><ul><li>“感情受思想的驱动”</li></ul><ul><li>Event –&gt; <strong>Evaluation(thought)</strong> –&gt; Emotion<ul><li>如果要想改变情绪，要从想法开始改变</li><li><strong>“重建理性和真实”</strong></li></ul></li></ul><h3 id="3Ms- 学说"><a href="#3Ms- 学说" class="headerlink" title="3Ms 学说"></a>3Ms 学说</h3><ul><li>3Ms：三个导致非理性思想的陷阱<ol><li>夸大理论：夸张了已发生的事实 &lt;–&gt; 归纳法与过度归纳<ul><li>归纳法：从已知的事情，来判断未知的类似的事情 –&gt; “这次干得不好” &lt;–&gt; “可能哪里出了问题”</li><li>过度归纳：“这次干得不好” &lt;–&gt; “我很蠢，这类事做不好” &lt;–&gt; “不成功便成仁”</li></ul></li><li>缩小理论：狭隘视野<ul><li>将注意力集中在某一个个体、个例上面</li></ul></li><li>伪造、捏造和情绪化推断<ul><li>推卸责任</li><li>“没人回来帮你把生活过得更美好，你必须承担起生活的责任”</li><li>“情绪不是现实，情绪只是对现实的推断”<ul><li>看清以及理性分析现实</li><li>作出正确的评估</li></ul></li></ul></li></ol></li><li>实践<ul><li>我的结论是否贴合现实？</li><li>它是否理性？</li><li>我是否忽略了重要的（现实）因素？</li><li>我仍需要考虑什么重要因素？</li><li>“我在哪里扭曲了事实？”</li><li>“我在哪里扭曲了自己的评价？扭曲了自己的思想？从而导致了不必要的负面情绪”</li></ul></li></ul><h3 id="危机和机遇"><a href="# 危机和机遇" class="headerlink" title="危机和机遇"></a>危机和机遇</h3><ul><li>几乎所有杰出的人，都是经历过巨大的考验才成就辉煌</li><li><strong>挖掘苦难中的价值</strong></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;ul&gt;
-&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
-&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
-&lt;li&gt;Saluto-genesis&lt;/li&gt;
-&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;
+        &lt;h2 id=&quot;如何变得更加乐观&quot;&gt;&lt;a href=&quot;# 如何变得更加乐观&quot; class=&quot;headerlink&quot; title=&quot;如何变得更加乐观&quot;&gt;&lt;/a&gt;如何变得更加乐观 &lt;/h2&gt;&lt;h3 id=&quot;1- 付诸行动&quot;&gt;&lt;a href=&quot;#1- 付诸行动&quot; class=&quot;head
       
     
     </summary>
