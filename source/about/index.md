@@ -16,7 +16,9 @@ categories:
 
 此站点使用了 [Hexo](https://hexo.io) + [Github Page](Github.com) 搭建，使用了 [Wikitten](https://github.com/rosuH/hexo-theme-Wikitten) 的主题。
 
-这是此站点的代码仓库：[Personal Wiki](https://github.com/rosuH/wiki-site)。
+后面我自己稍微修改了一下样式，[看看我的](https://github.com/rosuH/hexo-theme-Wikitten)。
+
+这是此站点的代码仓库：[Personal Wiki](https://github.com/rosuH/wiki)。
 
 此站点的内容主要是我个人在编程领域的技能树、个人管理以及一些生活的小 tips。
 
@@ -36,7 +38,7 @@ categories:
 
 ### 联系我（Contact me）
 
-Blog：[rosu's Blog](https://rosuh.me)
+Blog：[rosu's Blog](https://blog.rosuh.me)
 
 Telegram: [@rosuh](https://t.me/rosuh) 
 
