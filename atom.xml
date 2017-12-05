@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://wiki.rosuh.me/"/>
-  <updated>2017-11-21T09:06:59.002Z</updated>
+  <updated>2017-12-05T13:56:59.872Z</updated>
   <id>https://wiki.rosuh.me/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>7 UI Fragmnet 与 fragment 管理器</title>
+    <link href="https://wiki.rosuh.me/Android-%E5%BC%80%E5%8F%91/7-UI-Fragment-and-fragmen-manager/"/>
+    <id>https://wiki.rosuh.me/Android-开发/7-UI-Fragment-and-fragmen-manager/</id>
+    <published>2017-12-05T13:56:59.872Z</published>
+    <updated>2017-12-05T13:56:59.872Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="7-1-UI- 设计的灵活性需求"><a href="#7-1-UI- 设计的灵活性需求" class="headerlink" title="7.1 UI 设计的灵活性需求"></a>7.1 UI 设计的灵活性需求</h1><ul><li>复杂的用户界面呈现需求<ul><li>平板以及大尺寸手机显示问题</li><li>滑动屏幕等交互问题</li></ul></li><li>acticity 视图局限性<ul><li>我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性</li><li>activity 还得和特定的用户界面紧紧绑定</li></ul></li></ul><h1 id="7-2- 引入 -fragment"><a href="#7-2- 引入 -fragment" class="headerlink" title="7.2 引入 fragment"></a>7.2 引入 fragment</h1><ul><li>fragment 是一种控制器对象<ul><li>activity 可以委托它执行任务<ul><li>这些任务通常是管理用户界面</li><li>受管的用户界面可以时一整屏或时整屏的一部分</li></ul></li><li>采用 fragmnet 来管理 UI，可以绕开 android 系统 activity 使用规划的限制</li></ul></li><li>管理用户界面的 fragment 又称为 UI fragment<ul><li>它自己也有产生于布局文件的视图</li><li>fragment 视图包含了用户可以交互的可视化 UI 元素</li></ul></li><li>activity 视图能预留位置供 fragment 视图插入<ul><li>多个 fragment 则需要预留多个位置以供插入</li></ul></li><li>activity 视图和 fragment 的关系和切换如下</li></ul><p><img src="http://img.rosuh.me/wiki/wiki_2017_1.png" alt="明细 fragment 的切换"></p><ul><li>fragment 可以带来灵活多变的布局，代价就是复杂的应用、更多的组件以及大量实现的代码</li></ul><h1 id="7-3- 着手开发示例应用"><a href="#7-3- 着手开发示例应用" class="headerlink" title="7.3 着手开发示例应用"></a>7.3 着手开发示例应用</h1><p><em>CriminalIntent 就是本示例应用的名称咯。</em></p><p>我们先来梳理一下开发流程。</p><h5 id="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><a href="# 我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程" class="headerlink" title="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"></a>我们先来看一下整个 <code>CriminalIntent</code> 项目的对象图解，以便我们更好地理解开发流程</h5><p><img src="http://img.rosuh.me/wiki/wiki_2017_d.png" alt="项目对象图解"></p><p><strong>解析</strong>：</p><ul><li><code>CrimeFragment</code>的作用与 <code>activity</code> 在<code>GeoQuiz</code>应用中的作用差不多，都是负责创建并管理用户界面，以及与模型对象进行交互</li><li><code>Crime</code>实例代表某种办公室陋习<ul><li><code>crime</code>有一个标题、一个标志 ID，一个日期和一个布尔值</li><li>布尔值用来表示陋习是否被解决</li><li>简单起见，本章使用一个 <code>Crime</code> 实例，并将其存放在 <code>CrimeFragment</code> 类的成员变量 <code>mCrime</code> 中</li></ul></li><li><code>CrimeActivity</code>视图（其对应的 <code>.xml</code> 文件）由 <code>FragmentLayout</code> 组件组成，<code>FragmentLayout</code>组件为 <code>CrimeFragment</code> 视图安排了显示位置</li><li><code>CrimeFragment</code>视图由一个 <code>LineaLayout</code> 组件及其三个子视图组成；<code>CrimeFragment</code>类中由存储它们的成员变量，并设有监听器，会响应用户操作，更新模型数据<ul><li><code>EditText</code></li><li><code>Button</code></li><li><code>CheckBox</code></li></ul></li></ul><h4 id="CrimeFragment"><a href="#CrimeFragment" class="headerlink" title="CrimeFragment"></a>CrimeFragment</h4><ul><li>首先设计一个名为 <code>CrimeFragment</code> 的 UI  fragment 来管理用户界面</li><li>再设计一个名为 <code>CrimeActivity</code> 的 activity 来托管 <code>CrimeFragment</code> 实例<ul><li>activity 在其视图层内提供一处位置，用来放置 <code>fragment</code> 视图</li><li><code>fragment</code>视图本身没有在屏幕上显示视图的能力；只有将它放置在 activiti 视图层级结构中，<code>fragment</code>视图才能显示在屏幕上</li></ul></li></ul><p><img src="http://img.rosuh.me/wiki/wiki_2017_4.png" alt="CrimeActivity 托管 CrimeFragment"></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;7-1-UI- 设计的灵活性需求&quot;&gt;&lt;a href=&quot;#7-1-UI- 设计的灵活性需求&quot; class=&quot;headerlink&quot; title=&quot;7.1 UI 设计的灵活性需求&quot;&gt;&lt;/a&gt;7.1 UI 设计的灵活性需求&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;复杂的用户界面呈现需
+      
+    
+    </summary>
+    
+      <category term="Android 开发" scheme="https://wiki.rosuh.me/categories/Android-%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="Android" scheme="https://wiki.rosuh.me/tags/Android/"/>
+    
+  </entry>
   
   <entry>
     <title>华为 A199 救砖札记</title>
@@ -101,39 +127,6 @@
       <category term="VPS" scheme="https://wiki.rosuh.me/tags/VPS/"/>
     
       <category term="Ubuntu" scheme="https://wiki.rosuh.me/tags/Ubuntu/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>1 信息、变形和课程简介</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/1.0-Information-transforation-and-introduction/</id>
-    <published>2017-11-11T03:02:25.663Z</published>
-    <updated>2017-11-11T02:40:18.200Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p><ul><li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul><li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li></ul></li></ul><ul><li>关注点<ul><li>信息本身而不是信息的传递者</li></ul></li><li>以往“自助运动”的鄙陋<ul><li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li></ul></li><li>两个阶段<ul><li>学术阶段</li><li>应用阶段：我如何将这些东西应用到生活中</li></ul></li><li>积极心理学<ul><li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li></ul></li></ul><blockquote><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p></blockquote><ul><li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul><li><strong>什么是信息</strong><ul><li>人就像一个容器，接受外界的信息，直到填满整个容器</li><li>信息并不能提高人的生存、生活质量</li><li>信息是客观的，是多面的</li></ul></li><li><strong>什么是变形</strong><ul><li>改变容器的形状</li><li>让信息为我所用</li></ul></li><li><strong>利用信息</strong><ul><li>如何解读信息？如何理解以及关注点？</li><li>不止要获取信息，更要挖掘我们自己的潜能</li></ul></li><li><strong>挖掘潜能</strong><ul><li>“减法比加法更能让人的灵魂成长”</li><li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li></ul></li><li><strong>两面性</strong><ul><li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li></ul></li><li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li><li><strong>本课程的最终内容</strong>：让你成为最好的你</li></ul></li><li>保持向上的生活态度，自信并且保持提问</li></ul><hr><p><em>2017-8-1_第一节课</em></p><p>看了想睡觉…</p><p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p><p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p><p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;01- 信息、变形与课程简介&quot;&gt;&lt;a href=&quot;#01- 信息、变形与课程简介&quot; class=&quot;headerlink&quot; title=&quot;01 信息、变形与课程简介&quot;&gt;&lt;/a&gt;01 信息、变形与课程简介&lt;/h1&gt;&lt;p&gt;&lt;em&gt;2017-8-1 11:36:36&lt;/e
-      
-    
-    </summary>
-    
-      <category term="软技能" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
-    
-      <category term="积极心理学" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/"/>
-    
-    
-      <category term="哈佛幸福课" scheme="https://wiki.rosuh.me/tags/%E5%93%88%E4%BD%9B%E5%B9%B8%E7%A6%8F%E8%AF%BE/"/>
-    
-      <category term="笔记" scheme="https://wiki.rosuh.me/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="视频" scheme="https://wiki.rosuh.me/tags/%E8%A7%86%E9%A2%91/"/>
-    
-      <category term="幸福" scheme="https://wiki.rosuh.me/tags/%E5%B9%B8%E7%A6%8F/"/>
     
   </entry>
   
@@ -287,26 +280,19 @@
   </entry>
   
   <entry>
-    <title>3 如何避免惬意的麻木</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
-    <published>2017-11-11T03:02:25.659Z</published>
-    <updated>2017-11-11T02:42:09.332Z</updated>
+    <title>1 信息、变形和课程简介</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/1.0-Information-transforation-and-introduction/</id>
+    <published>2017-11-11T03:02:25.663Z</published>
+    <updated>2017-11-11T02:40:18.200Z</updated>
     
-    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p><ul><li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul><li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li></ul></li></ul><ul><li>关注点<ul><li>信息本身而不是信息的传递者</li></ul></li><li>以往“自助运动”的鄙陋<ul><li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li></ul></li><li>两个阶段<ul><li>学术阶段</li><li>应用阶段：我如何将这些东西应用到生活中</li></ul></li><li>积极心理学<ul><li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li></ul></li></ul><blockquote><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p></blockquote><ul><li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul><li><strong>什么是信息</strong><ul><li>人就像一个容器，接受外界的信息，直到填满整个容器</li><li>信息并不能提高人的生存、生活质量</li><li>信息是客观的，是多面的</li></ul></li><li><strong>什么是变形</strong><ul><li>改变容器的形状</li><li>让信息为我所用</li></ul></li><li><strong>利用信息</strong><ul><li>如何解读信息？如何理解以及关注点？</li><li>不止要获取信息，更要挖掘我们自己的潜能</li></ul></li><li><strong>挖掘潜能</strong><ul><li>“减法比加法更能让人的灵魂成长”</li><li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li></ul></li><li><strong>两面性</strong><ul><li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li></ul></li><li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li><li><strong>本课程的最终内容</strong>：让你成为最好的你</li></ul></li><li>保持向上的生活态度，自信并且保持提问</li></ul><hr><p><em>2017-8-1_第一节课</em></p><p>看了想睡觉…</p><p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p><p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p><p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;ul&gt;
-&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
-&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
-&lt;li&gt;Saluto-genesis&lt;/li&gt;
-&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;
+        &lt;h1 id=&quot;01- 信息、变形与课程简介&quot;&gt;&lt;a href=&quot;#01- 信息、变形与课程简介&quot; class=&quot;headerlink&quot; title=&quot;01 信息、变形与课程简介&quot;&gt;&lt;/a&gt;01 信息、变形与课程简介&lt;/h1&gt;&lt;p&gt;&lt;em&gt;2017-8-1 11:36:36&lt;/e
       
     
     </summary>
@@ -360,6 +346,46 @@
   </entry>
   
   <entry>
+    <title>3 如何避免惬意的麻木</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
+    <published>2017-11-11T03:02:25.659Z</published>
+    <updated>2017-11-11T02:42:09.332Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
+&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
+&lt;li&gt;Saluto-genesis&lt;/li&gt;
+&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;
+      
+    
+    </summary>
+    
+      <category term="软技能" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
+    
+      <category term="积极心理学" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/"/>
+    
+    
+      <category term="哈佛幸福课" scheme="https://wiki.rosuh.me/tags/%E5%93%88%E4%BD%9B%E5%B9%B8%E7%A6%8F%E8%AF%BE/"/>
+    
+      <category term="笔记" scheme="https://wiki.rosuh.me/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="视频" scheme="https://wiki.rosuh.me/tags/%E8%A7%86%E9%A2%91/"/>
+    
+      <category term="幸福" scheme="https://wiki.rosuh.me/tags/%E5%B9%B8%E7%A6%8F/"/>
+    
+  </entry>
+  
+  <entry>
     <title>7 逆境和机遇</title>
     <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/"/>
     <id>https://wiki.rosuh.me/软技能/积极心理学/7.0-adversity-or-chance/</id>
@@ -393,19 +419,19 @@
   </entry>
   
   <entry>
-    <title>8 感激</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/8.0-appreciate/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/8.0-appreciate/</id>
+    <title>9 积极情绪</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/9.0-positive-emotions/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/9.0-positive-emotions/</id>
     <published>2017-11-11T03:02:25.655Z</published>
-    <updated>2017-11-11T02:42:09.340Z</updated>
+    <updated>2017-11-11T02:42:09.332Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="是什么阻止我们乐观？"><a href="# 是什么阻止我们乐观？" class="headerlink" title="是什么阻止我们乐观？"></a>是什么阻止我们乐观？</h2><h3 id="舆论是乐观的杀手"><a href="# 舆论是乐观的杀手" class="headerlink" title="舆论是乐观的杀手"></a>舆论是乐观的杀手</h3><blockquote><p>媒体的职能之一就是突出那些本可以被纠正的错误，并发动大家一起去纠正，去改善。</p></blockquote><ul><li>媒体报道那些糟糕的、负面的信息，加上现在信息过载，加剧了负面信息的传播<ul><li>这是媒体的责任亦是媒体的“偏见”</li><li>过度聚焦负面信息只会加剧负面情绪</li><li>让人对现实产生负面联系<ul><li>过度报道某大公司非法交易 –&gt; 你想变得成功吗？那就得坑蒙拐骗</li><li>过度报道政客丑闻 –&gt; 政客都是骗子</li></ul></li></ul></li><li>“我们需要直面现实，直面负面消息的存在”</li></ul><h2 id="感激"><a href="# 感激" class="headerlink" title="感激"></a>感激</h2><ul><li>发自肺腑的感激能让积极情绪升值</li><li>感激帮助我们创造更积极的环境</li><li>感激能创造“积极情绪的螺旋上升”</li></ul><h3 id="适应性"><a href="# 适应性" class="headerlink" title="适应性"></a>适应性</h3><ul><li>对负面、异常情况的警觉是生存的本能</li><li>对异常情况产生适应性亦是生存本能</li><li>不要对生活“习以为常”<ul><li>不要认为那些平常的事物是“理所当然”的</li></ul></li></ul><h3 id="寻找值得感激的事物"><a href="# 寻找值得感激的事物" class="headerlink" title="寻找值得感激的事物"></a>寻找值得感激的事物</h3><ul><li>让自己更多地关注与生活中美的、积极的事物上</li><li>感激自己身上、周围值得感激的事物</li><li><strong>养成寻找幸福和感激 </strong> 的习惯<ul><li>一旦我们学会感激，我们就不会变得“理所当然”</li></ul></li></ul><h4 id="行动"><a href="# 行动" class="headerlink" title="行动"></a>行动</h4><ul><li>感受每一天<ul><li>“你通常干什么事情会不由自主地专心致志？”</li><li>认真地去做这些事情，不只是做这些事，同时你还在感激生活</li></ul></li></ul><h5 id="在每晚睡前写下五件让你感激的事物"><a href="# 在每晚睡前写下五件让你感激的事物" class="headerlink" title="在每晚睡前写下五件让你感激的事物"></a>在每晚睡前写下五件让你感激的事物</h5><ul><li>如何解决“习以为常”？当这件事已经失去新鲜感之后呢？当这件事已经变成例行公事之后呢？</li><li><p>解决方法：</p><ul><li>引入多种多样的人和事物</li><li>同样的事情多角度描写</li><li><em>艾伦·朗格</em> –&gt; “用心法则”：用心 –&gt; 创造新的区别<ul><li>用心观察，专注于此，发现新的区别</li><li>从专注中保持新鲜感</li></ul></li><li>词语形象化</li></ul><hr><blockquote><p>善用你的眼睛吧，犹如明天你将遭到失明的灾难；聆听乐曲的妙音，似乎你明天就会失聪。<br>抚摸每一件你想要抚摸的物品吧，犹如你明天的触觉将会衰减。嗅闻每一件你想要抚摸的物件 <br> 吧，犹如你明天即将失去嗅觉和味觉一样。 – 海伦·凯勒</p></blockquote></li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="处理痛苦和积极情绪"><a href="# 处理痛苦和积极情绪" class="headerlink" title="处理痛苦和积极情绪"></a>处理痛苦和积极情绪 </h2><p><em> 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究</em></p><ul><li>痛苦情绪表达<ul><li>写、说更能化解痛苦情绪</li><li>在脑海中回忆会加剧痛苦情绪</li></ul></li><li>积极情绪<ul><li>说和写反而减弱积极情绪的持续化</li><li>回忆能让积极情绪变得更多</li></ul></li></ul><h3 id="分析和重现情绪"><a href="# 分析和重现情绪" class="headerlink" title="分析和重现情绪"></a>分析和重现情绪</h3><ul><li>分析经历有助于改善痛苦以及消极经历<ul><li>而分析美好的经历并不能增加很多积极情绪</li></ul></li><li>回忆积极情绪能让积极情绪持续更久<ul><li>单纯在脑海里思考只会让该消极情绪更甚<ul><li>PTSD 发生的区域调查</li></ul></li></ul></li></ul><ul><li><strong>感激练习就是重现经历的练习</strong></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;是什么阻止我们乐观？&quot;&gt;&lt;a href=&quot;# 是什么阻止我们乐观？&quot; class=&quot;headerlink&quot; title=&quot;是什么阻止我们乐观？&quot;&gt;&lt;/a&gt;是什么阻止我们乐观？&lt;/h2&gt;&lt;h3 id=&quot;舆论是乐观的杀手&quot;&gt;&lt;a href=&quot;# 舆论是乐观的杀手&quot; c
+        &lt;h2 id=&quot;处理痛苦和积极情绪&quot;&gt;&lt;a href=&quot;# 处理痛苦和积极情绪&quot; class=&quot;headerlink&quot; title=&quot;处理痛苦和积极情绪&quot;&gt;&lt;/a&gt;处理痛苦和积极情绪 &lt;/h2&gt;&lt;p&gt;&lt;em&gt; 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究&lt;
       
     
     </summary>
@@ -426,19 +452,19 @@
   </entry>
   
   <entry>
-    <title>9 积极情绪</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/9.0-positive-emotions/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/9.0-positive-emotions/</id>
+    <title>8 感激</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/8.0-appreciate/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/8.0-appreciate/</id>
     <published>2017-11-11T03:02:25.655Z</published>
-    <updated>2017-11-11T02:42:09.332Z</updated>
+    <updated>2017-11-11T02:42:09.340Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="处理痛苦和积极情绪"><a href="# 处理痛苦和积极情绪" class="headerlink" title="处理痛苦和积极情绪"></a>处理痛苦和积极情绪 </h2><p><em> 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究</em></p><ul><li>痛苦情绪表达<ul><li>写、说更能化解痛苦情绪</li><li>在脑海中回忆会加剧痛苦情绪</li></ul></li><li>积极情绪<ul><li>说和写反而减弱积极情绪的持续化</li><li>回忆能让积极情绪变得更多</li></ul></li></ul><h3 id="分析和重现情绪"><a href="# 分析和重现情绪" class="headerlink" title="分析和重现情绪"></a>分析和重现情绪</h3><ul><li>分析经历有助于改善痛苦以及消极经历<ul><li>而分析美好的经历并不能增加很多积极情绪</li></ul></li><li>回忆积极情绪能让积极情绪持续更久<ul><li>单纯在脑海里思考只会让该消极情绪更甚<ul><li>PTSD 发生的区域调查</li></ul></li></ul></li></ul><ul><li><strong>感激练习就是重现经历的练习</strong></li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="是什么阻止我们乐观？"><a href="# 是什么阻止我们乐观？" class="headerlink" title="是什么阻止我们乐观？"></a>是什么阻止我们乐观？</h2><h3 id="舆论是乐观的杀手"><a href="# 舆论是乐观的杀手" class="headerlink" title="舆论是乐观的杀手"></a>舆论是乐观的杀手</h3><blockquote><p>媒体的职能之一就是突出那些本可以被纠正的错误，并发动大家一起去纠正，去改善。</p></blockquote><ul><li>媒体报道那些糟糕的、负面的信息，加上现在信息过载，加剧了负面信息的传播<ul><li>这是媒体的责任亦是媒体的“偏见”</li><li>过度聚焦负面信息只会加剧负面情绪</li><li>让人对现实产生负面联系<ul><li>过度报道某大公司非法交易 –&gt; 你想变得成功吗？那就得坑蒙拐骗</li><li>过度报道政客丑闻 –&gt; 政客都是骗子</li></ul></li></ul></li><li>“我们需要直面现实，直面负面消息的存在”</li></ul><h2 id="感激"><a href="# 感激" class="headerlink" title="感激"></a>感激</h2><ul><li>发自肺腑的感激能让积极情绪升值</li><li>感激帮助我们创造更积极的环境</li><li>感激能创造“积极情绪的螺旋上升”</li></ul><h3 id="适应性"><a href="# 适应性" class="headerlink" title="适应性"></a>适应性</h3><ul><li>对负面、异常情况的警觉是生存的本能</li><li>对异常情况产生适应性亦是生存本能</li><li>不要对生活“习以为常”<ul><li>不要认为那些平常的事物是“理所当然”的</li></ul></li></ul><h3 id="寻找值得感激的事物"><a href="# 寻找值得感激的事物" class="headerlink" title="寻找值得感激的事物"></a>寻找值得感激的事物</h3><ul><li>让自己更多地关注与生活中美的、积极的事物上</li><li>感激自己身上、周围值得感激的事物</li><li><strong>养成寻找幸福和感激 </strong> 的习惯<ul><li>一旦我们学会感激，我们就不会变得“理所当然”</li></ul></li></ul><h4 id="行动"><a href="# 行动" class="headerlink" title="行动"></a>行动</h4><ul><li>感受每一天<ul><li>“你通常干什么事情会不由自主地专心致志？”</li><li>认真地去做这些事情，不只是做这些事，同时你还在感激生活</li></ul></li></ul><h5 id="在每晚睡前写下五件让你感激的事物"><a href="# 在每晚睡前写下五件让你感激的事物" class="headerlink" title="在每晚睡前写下五件让你感激的事物"></a>在每晚睡前写下五件让你感激的事物</h5><ul><li>如何解决“习以为常”？当这件事已经失去新鲜感之后呢？当这件事已经变成例行公事之后呢？</li><li><p>解决方法：</p><ul><li>引入多种多样的人和事物</li><li>同样的事情多角度描写</li><li><em>艾伦·朗格</em> –&gt; “用心法则”：用心 –&gt; 创造新的区别<ul><li>用心观察，专注于此，发现新的区别</li><li>从专注中保持新鲜感</li></ul></li><li>词语形象化</li></ul><hr><blockquote><p>善用你的眼睛吧，犹如明天你将遭到失明的灾难；聆听乐曲的妙音，似乎你明天就会失聪。<br>抚摸每一件你想要抚摸的物品吧，犹如你明天的触觉将会衰减。嗅闻每一件你想要抚摸的物件 <br> 吧，犹如你明天即将失去嗅觉和味觉一样。 – 海伦·凯勒</p></blockquote></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;处理痛苦和积极情绪&quot;&gt;&lt;a href=&quot;# 处理痛苦和积极情绪&quot; class=&quot;headerlink&quot; title=&quot;处理痛苦和积极情绪&quot;&gt;&lt;/a&gt;处理痛苦和积极情绪 &lt;/h2&gt;&lt;p&gt;&lt;em&gt; 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究&lt;
+        &lt;h2 id=&quot;是什么阻止我们乐观？&quot;&gt;&lt;a href=&quot;# 是什么阻止我们乐观？&quot; class=&quot;headerlink&quot; title=&quot;是什么阻止我们乐观？&quot;&gt;&lt;/a&gt;是什么阻止我们乐观？&lt;/h2&gt;&lt;h3 id=&quot;舆论是乐观的杀手&quot;&gt;&lt;a href=&quot;# 舆论是乐观的杀手&quot; c
       
     
     </summary>

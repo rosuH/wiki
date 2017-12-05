@@ -3,6 +3,92 @@
   
     
     <entry>
+      <title><![CDATA[7 UI Fragmnet 与 fragment 管理器]]></title>
+      <url>/Android-%E5%BC%80%E5%8F%91/7-UI-Fragment-and-fragmen-manager/</url>
+      <content type="html"><![CDATA[<h1 id="7-1-UI- 设计的灵活性需求"><a href="#7-1-UI- 设计的灵活性需求" class="headerlink" title="7.1 UI 设计的灵活性需求"></a>7.1 UI 设计的灵活性需求</h1><ul>
+<li>复杂的用户界面呈现需求<ul>
+<li>平板以及大尺寸手机显示问题</li>
+<li>滑动屏幕等交互问题</li>
+</ul>
+</li>
+<li>acticity 视图局限性<ul>
+<li>我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性</li>
+<li>activity 还得和特定的用户界面紧紧绑定</li>
+</ul>
+</li>
+</ul>
+<h1 id="7-2- 引入 -fragment"><a href="#7-2- 引入 -fragment" class="headerlink" title="7.2 引入 fragment"></a>7.2 引入 fragment</h1><ul>
+<li>fragment 是一种控制器对象<ul>
+<li>activity 可以委托它执行任务<ul>
+<li>这些任务通常是管理用户界面</li>
+<li>受管的用户界面可以时一整屏或时整屏的一部分</li>
+</ul>
+</li>
+<li>采用 fragmnet 来管理 UI，可以绕开 android 系统 activity 使用规划的限制</li>
+</ul>
+</li>
+<li>管理用户界面的 fragment 又称为 UI fragment<ul>
+<li>它自己也有产生于布局文件的视图</li>
+<li>fragment 视图包含了用户可以交互的可视化 UI 元素</li>
+</ul>
+</li>
+<li>activity 视图能预留位置供 fragment 视图插入<ul>
+<li>多个 fragment 则需要预留多个位置以供插入</li>
+</ul>
+</li>
+<li>activity 视图和 fragment 的关系和切换如下</li>
+</ul>
+<p><img src="http://img.rosuh.me/wiki/wiki_2017_1.png" alt="明细 fragment 的切换"></p>
+<ul>
+<li>fragment 可以带来灵活多变的布局，代价就是复杂的应用、更多的组件以及大量实现的代码</li>
+</ul>
+<h1 id="7-3- 着手开发示例应用"><a href="#7-3- 着手开发示例应用" class="headerlink" title="7.3 着手开发示例应用"></a>7.3 着手开发示例应用</h1><p><em>CriminalIntent 就是本示例应用的名称咯。</em></p>
+<p>我们先来梳理一下开发流程。</p>
+<h5 id="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><a href="# 我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程" class="headerlink" title="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"></a>我们先来看一下整个 <code>CriminalIntent</code> 项目的对象图解，以便我们更好地理解开发流程</h5><p><img src="http://img.rosuh.me/wiki/wiki_2017_d.png" alt="项目对象图解"></p>
+<p><strong>解析</strong>：</p>
+<ul>
+<li><code>CrimeFragment</code>的作用与 <code>activity</code> 在<code>GeoQuiz</code>应用中的作用差不多，都是负责创建并管理用户界面，以及与模型对象进行交互</li>
+<li><code>Crime</code>实例代表某种办公室陋习<ul>
+<li><code>crime</code>有一个标题、一个标志 ID，一个日期和一个布尔值</li>
+<li>布尔值用来表示陋习是否被解决</li>
+<li>简单起见，本章使用一个 <code>Crime</code> 实例，并将其存放在 <code>CrimeFragment</code> 类的成员变量 <code>mCrime</code> 中</li>
+</ul>
+</li>
+<li><code>CrimeActivity</code>视图（其对应的 <code>.xml</code> 文件）由 <code>FragmentLayout</code> 组件组成，<code>FragmentLayout</code>组件为 <code>CrimeFragment</code> 视图安排了显示位置</li>
+<li><code>CrimeFragment</code>视图由一个 <code>LineaLayout</code> 组件及其三个子视图组成；<code>CrimeFragment</code>类中由存储它们的成员变量，并设有监听器，会响应用户操作，更新模型数据<ul>
+<li><code>EditText</code></li>
+<li><code>Button</code></li>
+<li><code>CheckBox</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="CrimeFragment"><a href="#CrimeFragment" class="headerlink" title="CrimeFragment"></a>CrimeFragment</h4><ul>
+<li>首先设计一个名为 <code>CrimeFragment</code> 的 UI  fragment 来管理用户界面</li>
+<li>再设计一个名为 <code>CrimeActivity</code> 的 activity 来托管 <code>CrimeFragment</code> 实例<ul>
+<li>activity 在其视图层内提供一处位置，用来放置 <code>fragment</code> 视图</li>
+<li><code>fragment</code>视图本身没有在屏幕上显示视图的能力；只有将它放置在 activiti 视图层级结构中，<code>fragment</code>视图才能显示在屏幕上</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://img.rosuh.me/wiki/wiki_2017_4.png" alt="CrimeActivity 托管 CrimeFragment"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Android 开发 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[华为 A199 救砖札记]]></title>
       <url>/%E7%8E%A9%E6%9C%BA%E6%8A%80%E5%B7%A7/save-blocked-in-A199/</url>
       <content type="html"><![CDATA[<h2 id="1- 前言"><a href="#1- 前言" class="headerlink" title="1. 前言"></a>1. 前言 </h2><p> 这货之前一直被我丢在柜子里。晚上想要注册多一个微信号，需要多一台设备来登陆。毕竟双开有被封号的风险。</p>
@@ -427,95 +513,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[5 信念是自我实现的预言]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/5.0-Faith-is-the-realistic-predictions/</url>
-      <content type="html"><![CDATA[<h2 id="追求幸福"><a href="# 追求幸福" class="headerlink" title="追求幸福"></a>追求幸福 </h2><p><strong> 幸福之作用：</strong> </p>
-<ul>
-<li>幸福让人感觉很好<ul>
-<li>幸福就是幸福</li>
-</ul>
-</li>
-<li>幸福对我们的生活、我们的人际关系也产生了积极的影响<ul>
-<li>开拓思路，帮助我们和其他人建立联系，提示自身潜力</li>
-</ul>
-</li>
-<li>“积极情绪的扩展建设理论”<ul>
-<li>积极情绪似乎会扩展人们暂时的想法，充实行动的库存并建立持久的个人资源</li>
-<li>“通过体验积极情绪，人们变得更加富有创造力、更加博学多才、更有韧性、更具社交能力以及更加健康向上”</li>
-</ul>
-</li>
-<li>“积极情绪帮助我们客服消极情绪”<ul>
-<li>当我们被负面情绪所困时，我们的思考变得狭隘和压抑；我们的注意力仅停滞在事情本身</li>
-</ul>
-</li>
-</ul>
-<h4 id="情绪转换"><a href="# 情绪转换" class="headerlink" title="情绪转换"></a>情绪转换</h4><ul>
-<li>糟糕情绪的 “N &amp; C” 循环<ul>
-<li>Narrow and Constrict &lt;–&gt; 遭受痛苦</li>
-</ul>
-</li>
-<li>积极情绪的 “B &amp; B” 循环<ul>
-<li>Broaden and Build &lt;–&gt; 积极情绪 &lt;–&gt; 扩展思路和视野</li>
-<li>来源可能是一部喜剧电影、一次深呼吸、一次与朋友间的互动</li>
-</ul>
-</li>
-<li>挑战在于：如何将积极情绪和“允许自己成为普通人”的想法结合起来，去体会情绪，转移情绪；不再不如恶性循环之中</li>
-</ul>
-<h4 id="解决问题而非逃避问题"><a href="# 解决问题而非逃避问题" class="headerlink" title="解决问题而非逃避问题"></a>解决问题而非逃避问题</h4><ul>
-<li>接受自己的糟糕的情绪</li>
-<li>选择一种方式转换为积极情绪</li>
-</ul>
-<p>这样的过程会提高我们对情绪的调控能力，进而提高我们对糟糕情绪的免疫力；使我们的思路更加清晰和开阔。</p>
-<h4 id="追求自我的幸福是自私的行为吗？"><a href="# 追求自我的幸福是自私的行为吗？" class="headerlink" title="追求自我的幸福是自私的行为吗？"></a>追求自我的幸福是自私的行为吗？</h4><ul>
-<li>幸福是一个正和博弈<ul>
-<li>幸福会传染，助人亦助己</li>
-</ul>
-</li>
-<li>自私 ≠ 不道德</li>
-</ul>
-<h5 id="传播幸福最好的方式就是经营好自己的幸福"><a href="# 传播幸福最好的方式就是经营好自己的幸福" class="headerlink" title="传播幸福最好的方式就是经营好自己的幸福"></a>传播幸福最好的方式就是经营好自己的幸福 </h5><h2 id="信念是自我实现的预言"><a href="# 信念是自我实现的预言" class="headerlink" title="信念是自我实现的预言"></a> 信念是自我实现的预言</h2><ul>
-<li>信念常常决定我们的行为、决定我们表现的优劣<ul>
-<li>它是我们成功和幸福最精准的预测</li>
-</ul>
-</li>
-<li>“期待效应”<ul>
-<li>“皮格马利翁”实验</li>
-</ul>
-</li>
-<li>“积极情景创造积极效应”<ul>
-<li>“阿希从众实验”</li>
-<li>“菲利普津巴多监狱实验”</li>
-<li>“艾伦·蓝格实验”</li>
-<li>巴吉（Barge）研究</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[4 积极的环境能改变人]]></title>
       <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/4.0-positive-environment-can-change-person/</url>
       <content type="html"><![CDATA[<h3 id="改变"><a href="# 改变" class="headerlink" title="改变"></a>改变</h3><ul>
@@ -611,6 +608,95 @@
 <li>思考世界和我们的联系、纽带</li>
 <li>深呼吸</li>
 <li>注意力转移到情绪上，接受你的情绪改变，让你的情绪随呼吸流出</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[5 信念是自我实现的预言]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/5.0-Faith-is-the-realistic-predictions/</url>
+      <content type="html"><![CDATA[<h2 id="追求幸福"><a href="# 追求幸福" class="headerlink" title="追求幸福"></a>追求幸福 </h2><p><strong> 幸福之作用：</strong> </p>
+<ul>
+<li>幸福让人感觉很好<ul>
+<li>幸福就是幸福</li>
+</ul>
+</li>
+<li>幸福对我们的生活、我们的人际关系也产生了积极的影响<ul>
+<li>开拓思路，帮助我们和其他人建立联系，提示自身潜力</li>
+</ul>
+</li>
+<li>“积极情绪的扩展建设理论”<ul>
+<li>积极情绪似乎会扩展人们暂时的想法，充实行动的库存并建立持久的个人资源</li>
+<li>“通过体验积极情绪，人们变得更加富有创造力、更加博学多才、更有韧性、更具社交能力以及更加健康向上”</li>
+</ul>
+</li>
+<li>“积极情绪帮助我们客服消极情绪”<ul>
+<li>当我们被负面情绪所困时，我们的思考变得狭隘和压抑；我们的注意力仅停滞在事情本身</li>
+</ul>
+</li>
+</ul>
+<h4 id="情绪转换"><a href="# 情绪转换" class="headerlink" title="情绪转换"></a>情绪转换</h4><ul>
+<li>糟糕情绪的 “N &amp; C” 循环<ul>
+<li>Narrow and Constrict &lt;–&gt; 遭受痛苦</li>
+</ul>
+</li>
+<li>积极情绪的 “B &amp; B” 循环<ul>
+<li>Broaden and Build &lt;–&gt; 积极情绪 &lt;–&gt; 扩展思路和视野</li>
+<li>来源可能是一部喜剧电影、一次深呼吸、一次与朋友间的互动</li>
+</ul>
+</li>
+<li>挑战在于：如何将积极情绪和“允许自己成为普通人”的想法结合起来，去体会情绪，转移情绪；不再不如恶性循环之中</li>
+</ul>
+<h4 id="解决问题而非逃避问题"><a href="# 解决问题而非逃避问题" class="headerlink" title="解决问题而非逃避问题"></a>解决问题而非逃避问题</h4><ul>
+<li>接受自己的糟糕的情绪</li>
+<li>选择一种方式转换为积极情绪</li>
+</ul>
+<p>这样的过程会提高我们对情绪的调控能力，进而提高我们对糟糕情绪的免疫力；使我们的思路更加清晰和开阔。</p>
+<h4 id="追求自我的幸福是自私的行为吗？"><a href="# 追求自我的幸福是自私的行为吗？" class="headerlink" title="追求自我的幸福是自私的行为吗？"></a>追求自我的幸福是自私的行为吗？</h4><ul>
+<li>幸福是一个正和博弈<ul>
+<li>幸福会传染，助人亦助己</li>
+</ul>
+</li>
+<li>自私 ≠ 不道德</li>
+</ul>
+<h5 id="传播幸福最好的方式就是经营好自己的幸福"><a href="# 传播幸福最好的方式就是经营好自己的幸福" class="headerlink" title="传播幸福最好的方式就是经营好自己的幸福"></a>传播幸福最好的方式就是经营好自己的幸福 </h5><h2 id="信念是自我实现的预言"><a href="# 信念是自我实现的预言" class="headerlink" title="信念是自我实现的预言"></a> 信念是自我实现的预言</h2><ul>
+<li>信念常常决定我们的行为、决定我们表现的优劣<ul>
+<li>它是我们成功和幸福最精准的预测</li>
+</ul>
+</li>
+<li>“期待效应”<ul>
+<li>“皮格马利翁”实验</li>
+</ul>
+</li>
+<li>“积极情景创造积极效应”<ul>
+<li>“阿希从众实验”</li>
+<li>“菲利普津巴多监狱实验”</li>
+<li>“艾伦·蓝格实验”</li>
+<li>巴吉（Barge）研究</li>
 </ul>
 </li>
 </ul>
