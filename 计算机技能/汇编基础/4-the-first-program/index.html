@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>4 第一个程序 | rosu&#39;s wiki</title>
+    
+    
+        <meta name="keywords" content="assembly" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="4.1 一个源程序从写出到执行的过程 编写汇编源程序 产生一个存储源程序的文本文件   对源程序进行编译链接 使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件     可执行文件包含两部分内容 程序和数据 程序：从源程序中的汇编指令翻译过来的机器码 数据：源程序中定义的数据   相关的描述信息 描述类似程序多大、占用多少内存空间等等">
+<meta name="keywords" content="assembly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4 第一个程序">
+<meta property="og:url" content="https://wiki.rosuh.me/计算机技能/汇编基础/4-the-first-program/index.html">
+<meta property="og:site_name" content="rosu&#39;s wiki">
+<meta property="og:description" content="4.1 一个源程序从写出到执行的过程 编写汇编源程序 产生一个存储源程序的文本文件   对源程序进行编译链接 使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件     可执行文件包含两部分内容 程序和数据 程序：从源程序中的汇编指令翻译过来的机器码 数据：源程序中定义的数据   相关的描述信息 描述类似程序多大、占用多少内存空间等等">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_2017_f.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_2017_7.png">
+<meta property="og:updated_time" content="2017-12-07T05:02:55.535Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4 第一个程序">
+<meta name="twitter:description" content="4.1 一个源程序从写出到执行的过程 编写汇编源程序 产生一个存储源程序的文本文件   对源程序进行编译链接 使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件     可执行文件包含两部分内容 程序和数据 程序：从源程序中的汇编指令翻译过来的机器码 数据：源程序中定义的数据   相关的描述信息 描述类似程序多大、占用多少内存空间等等">
+<meta name="twitter:image" content="https://img.rosuh.me/wiki/wiki_2017_f.png">
+<meta name="twitter:creator" content="@rosu_h">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="rosu&#39;s wiki" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">rosu&#39;s wiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">此站点</a>
+                
+                    <a class="main-nav-link" href="https://rosuh.me">找我</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Rechercher" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Articles',
+            PAGES: 'Pages',
+            CATEGORIES: 'Catégories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">此站点</a></td>
+                
+                    <td><a class="main-nav-link" href="https://rosuh.me">找我</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Rechercher" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>Catégories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Android 开发
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Linux & VPS
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            玩机技巧
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/玩机技巧/save-blocked-in-A199/">华为 A199 救砖札记</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            计算机技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            汇编基础
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file active"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            软技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            积极心理学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/软技能/积极心理学/11-habit/">11 习惯</a></li>  <li class="file"><a href="/软技能/积极心理学/10-change/">10 改变</a></li>  <li class="file"><a href="/软技能/积极心理学/9.0-positive-emotions/">9 积极情绪</a></li>  <li class="file"><a href="/软技能/积极心理学/8.0-appreciate/">8 感激</a></li>  <li class="file"><a href="/软技能/积极心理学/7.0-adversity-or-chance/">7 逆境和机遇</a></li>  <li class="file"><a href="/软技能/积极心理学/6.0-positive/">6 乐观</a></li>  <li class="file"><a href="/软技能/积极心理学/5.0-Faith-is-the-realistic-predictions/">5 信念是自我实现的预言</a></li>  <li class="file"><a href="/软技能/积极心理学/4.0-positive-environment-can-change-person/">4 积极的环境能改变人</a></li>  <li class="file"><a href="/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/">3 如何避免惬意的麻木</a></li>  <li class="file"><a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/">2 为什么要学习积极心理学</a></li>  <li class="file"><a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/">1 信息、变形和课程简介</a></li>  <li class="file"><a href="/软技能/积极心理学/积极心理学资料索引与声明/">积极心理学资料索引与声明</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-4-the-first-program" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/assembly/">assembly</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/计算机技能/汇编基础/4-the-first-program/">
+            <time datetime="2017-12-07T05:02:55.535Z" itemprop="datePublished">2017-12-07</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/4-the-first-program.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/4-the-first-program.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/4-the-first-program.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            4 第一个程序
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">Catalogue</strong>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#4-1- 一个源程序从写出到执行的过程"><span class="toc-number">1.</span> <span class="toc-text">4.1 一个源程序从写出到执行的过程</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-2- 源程序"><span class="toc-number">2.</span> <span class="toc-text">4.2 源程序 </span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#伪指令"><span class="toc-number">2.1.</span> <span class="toc-text">伪指令 </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#源程序中的“程序”"><span class="toc-number">2.2.</span> <span class="toc-text">源程序中的“程序”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#标号"><span class="toc-number">2.3.</span> <span class="toc-text">标号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序的结构"><span class="toc-number">2.4.</span> <span class="toc-text">程序的结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#程序返回"><span class="toc-number">2.5.</span> <span class="toc-text">程序返回</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#语法错误和逻辑错误"><span class="toc-number">2.6.</span> <span class="toc-text">语法错误和逻辑错误</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-3- 编辑源程序"><span class="toc-number">3.</span> <span class="toc-text">4.3 编辑源程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-4- 编译"><span class="toc-number">4.</span> <span class="toc-text">4.4 编译</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-5- 链接"><span class="toc-number">5.</span> <span class="toc-text">4.5 链接</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-6- 谁来执行可执行文件？"><span class="toc-number">6.</span> <span class="toc-text">4.6 谁来执行可执行文件？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#操作系统的 -Shell"><span class="toc-number">6.0.1.</span> <span class="toc-text">操作系统的 Shell</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-9- 程序执行过程的跟踪"><span class="toc-number">7.</span> <span class="toc-text">4.9 程序执行过程的跟踪</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#程序被藏在了哪里？"><span class="toc-number">7.0.1.</span> <span class="toc-text">程序被藏在了哪里？</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <h1 id="4-1- 一个源程序从写出到执行的过程"><a href="#4-1- 一个源程序从写出到执行的过程" class="headerlink" title="4.1 一个源程序从写出到执行的过程"></a>4.1 一个源程序从写出到执行的过程</h1><ol>
+<li>编写汇编源程序<ul>
+<li>产生一个存储源程序的文本文件</li>
+</ul>
+</li>
+<li>对源程序进行编译链接<ul>
+<li>使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>可执行文件包含两部分内容<ul>
+<li>程序和数据<ul>
+<li>程序：从源程序中的汇编指令翻译过来的机器码</li>
+<li>数据：源程序中定义的数据</li>
+</ul>
+</li>
+<li>相关的描述信息<ul>
+<li>描述类似程序多大、占用多少内存空间等等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>执行可执行文件中的程序<ul>
+<li>操作系统依照可执行文件中的描述信息，将可执行文件中的机器码和数据加载入内存，并进行相关的初始化（比如设置 CS:IP 指向第一条要执行的指令），容纳后由 CPU 执行程序</li>
+</ul>
+</li>
+</ol>
+<h1 id="4-2- 源程序"><a href="#4-2- 源程序" class="headerlink" title="4.2 源程序"></a>4.2 源程序 </h1><p> 下面时一段简单的汇编程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line">codesg segment</span><br><span class="line">    mov ax, 0123H</span><br><span class="line">    mov bx, 0456H</span><br><span class="line">    add ax, bx</span><br><span class="line">    add ax, ax</span><br><span class="line"></span><br><span class="line">    mov ax, 4c00H</span><br><span class="line">    int 21H</span><br><span class="line">codesg ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><strong>程序说明</strong></p>
+<h2 id="伪指令"><a href="# 伪指令" class="headerlink" title="伪指令"></a>伪指令 </h2><p> 在汇编程序中有两种指令：</p>
+<ul>
+<li>汇编指令<ul>
+<li>对应机器码，被编译为机器指令，最终被 CPU 执行</li>
+</ul>
+</li>
+<li>伪指令<ul>
+<li>编译器执行伪指令。编译器将根据伪指令来进行相关的编译工作</li>
+</ul>
+</li>
+</ul>
+<p>在上面的例子中的伪指令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">XXX segment</span><br><span class="line">	:</span><br><span class="line">	:</span><br><span class="line">	:</span><br><span class="line">XXX ends</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p><code>segment</code>和 <code>ends</code> 是成对使用的伪指令</p>
+<ul>
+<li><p>这是在写可被编译器编译的汇编程序时必须要用到的一对伪指令</p>
+</li>
+<li><p><code>segmnet</code>和 <code>ends</code> 的功能是定义一个段</p>
+<ul>
+<li><code>segment</code>说明一个段的开始</li>
+<li><code>ends</code>说明一个段的结束</li>
+</ul>
+</li>
+<li><p>使用格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">段名 segment</span><br><span class="line">	:</span><br><span class="line">段名 ends</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p><em>一个汇编程序由多个段组成，这些段被用来存放代码、数据或当作栈空间来使用</em></p>
+<ul>
+<li><code>end</code><ul>
+<li>汇编程序的结束标记</li>
+<li>如果程序写完了，就要在结尾处加上指令<code>end</code>，否则编译器无法知道程序在何处结束</li>
+</ul>
+</li>
+<li><code>assume</code><ul>
+<li>这条伪指令的含义为“假设”。他假设某一段寄存器和程序中的某一个 <code>segment...ends</code> 定义的段相关联，通过 <code>assume</code> 说明这种关联</li>
+<li>在需要的情况下，编译程序可以将段寄存器和某一个具体的段相联系</li>
+</ul>
+</li>
+</ul>
+<p><em>在例子中，<code>code segment...codeseg ends</code>定义了一个名为 <code>codeseg</code> 的段，在这个段中存放代码，所以这个段是一个代码段。在程序的开头，用 <code>assume cs:codeseg</code> 将用作代码段的段 <code>codeseg</code> 和 CPU 中的段寄存器 <code>cs</code> 联系起来</em>。</p>
+<h2 id="源程序中的“程序”"><a href="# 源程序中的“程序”" class="headerlink" title="源程序中的“程序”"></a>源程序中的“程序”</h2><p>用汇编语言写的源程序，包括伪指令和汇编指令：</p>
+<ul>
+<li>汇编指令组成了最终由计算机执行的程序</li>
+<li>源程序中的伪指令由编译器执行</li>
+</ul>
+<p><strong>源程序汇总最终由计算机执行、处理的程序或数据，称为程序 </strong>。<strong> 程序最先以汇编指令的形式存在于源程序中，经过编译、链接后转变为机器码，存储在可执行文件中</strong>。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_f.png" alt="程序经编译链接后变为机器码"></p>
+<h2 id="标号"><a href="# 标号" class="headerlink" title="标号"></a>标号</h2><ul>
+<li>源程序中除了汇编指令和伪指令外，还有一些标号，比如<code>codeseg</code></li>
+<li>一个标号指代了一个地址<ul>
+<li><code>codeseg</code>在 <code>segment</code> 的前面，作为一个段的名称，这个段最终将被编译、链接程序处理为一个段的段地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="程序的结构"><a href="# 程序的结构" class="headerlink" title="程序的结构"></a>程序的结构</h2><ol>
+<li><p>定义一个程序段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	:</span><br><span class="line">abc ends</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>在段中写入指令，实现任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>指出程序在何时结束</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>将程序段和寄存器联系起来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">assume cs:abc</span><br><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="程序返回"><a href="# 程序返回" class="headerlink" title="程序返回"></a>程序返回</h2><ul>
+<li>当一个程序结束后，将 CPU 的控制权交还给是他得以运行的程序，这个过程就叫程序返回</li>
+<li>在程序的末尾添加返回的程序段以实现程序返回</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 4c00H</span><br><span class="line">int 21H</span><br></pre></td></tr></table></figure>
+<h2 id="语法错误和逻辑错误"><a href="# 语法错误和逻辑错误" class="headerlink" title="语法错误和逻辑错误"></a>语法错误和逻辑错误</h2><h1 id="4-3- 编辑源程序"><a href="#4-3- 编辑源程序" class="headerlink" title="4.3 编辑源程序"></a>4.3 编辑源程序</h1><ul>
+<li>可以使用 <code>Edit</code> 的方式编辑源程序</li>
+<li>也可以使用其他类型文本编辑器，然后保存后缀为 <code>asm</code> 文件</li>
+</ul>
+<h1 id="4-4- 编译"><a href="#4-4- 编译" class="headerlink" title="4.4 编译"></a>4.4 编译</h1><ul>
+<li><code>source.asm</code>–&gt;<code>target.obj</code><ul>
+<li>源文件编译之后产生目标文件</li>
+<li>中途可以选择生成 <strong> 列表文件</strong>，这个文件是编译器将源程序编译为目标文件的过程中产生的中间结果</li>
+<li>中途还可以加入 <strong> 交叉引用文件</strong></li>
+</ul>
+</li>
+<li>编译环境 <br> 编译的环境，从 windows 的 <code>masm</code>和 <code>ml</code> 到 Linux 的<code>fasm</code>，不一而足。不同的环境对编译伪指令的支持不一样，需要查阅文档。</li>
+</ul>
+<h1 id="4-5- 链接"><a href="#4-5- 链接" class="headerlink" title="4.5 链接"></a>4.5 链接</h1><ul>
+<li><code>target.obj</code> –&gt; <em>Linked</em> –&gt; <code>execute.exe</code><ul>
+<li>将目标文件链接之后产生可执行文件</li>
+</ul>
+</li>
+<li>链接环境 <br>windows 下的<code>link.exe</code> 和<code>ml.exe</code></li>
+<li>链接的作用是什么？<ul>
+<li>如果源程序很大，可以将它分为多个源程序来编译，每个源程序编译成目标文件后，再用链接程序将它们链接到一起，生成一个可执行文件</li>
+<li>程序中调用了某个库文件中的子程序，需要将这个库文件和该程序生成的目标文件链接到一起，生成一个可执行文件</li>
+<li>一个源程序编译后，得到了存有机器码的目标文件，目标文件中的有些内容不能直接用来生成可执行文件，链接程序将这些内容处理为最终的可执行信息</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-6- 谁来执行可执行文件？"><a href="#4-6- 谁来执行可执行文件？" class="headerlink" title="4.6 谁来执行可执行文件？"></a>4.6 谁来执行可执行文件？</h1><ul>
+<li>CPU 控制权<ul>
+<li>在 DOS 中，可执行文件中的程序 <code>P1</code> 若要运行，必须由一个正在运行的程序 <code>P2</code>，将<code>P1</code> 从可执行文件中载入内存，将 CPU 的控制权交给它；当 <code>P1</code> 运行完毕后，<code>P1</code>将 CPU 控制权交还<code>P2</code></li>
+</ul>
+</li>
+</ul>
+<p>在上述程序中，将 <code>1.exe</code> 载入内存的，就是<code>shell</code>。</p>
+<h3 id="操作系统的 -Shell"><a href="# 操作系统的 -Shell" class="headerlink" title="操作系统的 Shell"></a>操作系统的 Shell</h3><ul>
+<li>任何通用的操作系统，都要提供一个 shell （外壳）程序，供操作人员使用这个程序来操作计算机</li>
+<li>DOS 的 shell<ul>
+<li>DOS 中有一个<code>command.com</code>，这个被称为命令解释器的东西就是 DOS 系统的 shell 了</li>
+<li>DOS 启动完成初始化之后，就会运行<code>command.com</code></li>
+<li><code>command.com</code>运行后，执行完其他任务之后，在屏幕上显示出当前盘符和路径组成的提示符，等待用户输入</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-9- 程序执行过程的跟踪"><a href="#4-9- 程序执行过程的跟踪" class="headerlink" title="4.9 程序执行过程的跟踪"></a>4.9 程序执行过程的跟踪</h1><ul>
+<li>为了查看程序运行过程的细节，以便跟踪错误，我们可以使用 <code>debug</code> 来查看单步执行的过程</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debug 1.exe</span><br></pre></td></tr></table></figure>
+<p>进入 <code>debug</code> 环境后，就可以使用 <code>debug</code> 的指令来控制程序的运行了。</p>
+<ul>
+<li><code>r</code><ul>
+<li><code>CX</code>寄存器表示当前程序的长度</li>
+</ul>
+</li>
+</ul>
+<h3 id="程序被藏在了哪里？"><a href="# 程序被藏在了哪里？" class="headerlink" title="程序被藏在了哪里？"></a>程序被藏在了哪里？</h3><ul>
+<li><code>debug</code>会先找一个单元作为起止地址为<code>SA:0000</code>（即起止地址的偏移地址为 0）的容量足够的空闲内存区</li>
+<li>在这段内存区的前 256 个字节中，创建一个称为程序段前缀（PSP）的数据区，DOS 要利用 PSP 来和被加载的程序进行通信</li>
+<li>从这段内存区的 256 字节处开始（在 PSP 的后面），将程序装入，程序的地址被设为<code>SA+10H:0</code></li>
+<li>将该段内存区的段地址存入 <code>ds</code> 中，初始化其他相关寄存器后，设置 <code>CS:IP</code> 指向程序的入口</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_7.png" alt="EXE 文件中程序的加载过程"></p>
+<ul>
+<li><code>int 21</code> 执行之后，程序显示出 <code>Program terminated normally</code> 返回到 <code>debug</code> 中，则表示程序正常结束了<ul>
+<li>要使用 <code>P</code> 命令执行<code>int 21</code></li>
+</ul>
+</li>
+</ul>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Plus récent</strong>
+            <div class="article-nav-title">
+                
+                    5 [BX] 和 loop 指令
+                
+            </div>
+        </a>
+    
+    
+        <a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Plus ancien</strong>
+            <div class="article-nav-title">7 UI Fragmnet 与 fragment 管理器</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            rosuh &copy; 2017 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+        </div>
+    </div>
+</footer>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

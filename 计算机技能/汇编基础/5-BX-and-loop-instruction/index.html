@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>5 [BX] 和 loop 指令 | rosu&#39;s wiki</title>
+    
+    
+        <meta name="keywords" content="assembly" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言 1. [bx]和内存单元的描述 描述一个内存单元所需的两种信息 内存单元的地址 内存单元的长度（类型）    [0] 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 ds寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。  [bx] 是一个内存单元的地址 它的偏移地址存放在 bx中    1mov ax, [bx]  表示将一个内存单元的内容送入 ax">
+<meta name="keywords" content="assembly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5 [BX] 和 loop 指令">
+<meta property="og:url" content="https://wiki.rosuh.me/计算机技能/汇编基础/5-BX-and-loop-instruction/index.html">
+<meta property="og:site_name" content="rosu&#39;s wiki">
+<meta property="og:description" content="前言 1. [bx]和内存单元的描述 描述一个内存单元所需的两种信息 内存单元的地址 内存单元的长度（类型）    [0] 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 ds寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。  [bx] 是一个内存单元的地址 它的偏移地址存放在 bx中    1mov ax, [bx]  表示将一个内存单元的内容送入 ax">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:updated_time" content="2017-12-07T05:02:55.535Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5 [BX] 和 loop 指令">
+<meta name="twitter:description" content="前言 1. [bx]和内存单元的描述 描述一个内存单元所需的两种信息 内存单元的地址 内存单元的长度（类型）    [0] 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 ds寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。  [bx] 是一个内存单元的地址 它的偏移地址存放在 bx中    1mov ax, [bx]  表示将一个内存单元的内容送入 ax">
+<meta name="twitter:creator" content="@rosu_h">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="rosu&#39;s wiki" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">rosu&#39;s wiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">此站点</a>
+                
+                    <a class="main-nav-link" href="https://rosuh.me">找我</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Rechercher" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Articles',
+            PAGES: 'Pages',
+            CATEGORIES: 'Catégories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">此站点</a></td>
+                
+                    <td><a class="main-nav-link" href="https://rosuh.me">找我</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Rechercher" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>Catégories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Android 开发
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Linux & VPS
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            玩机技巧
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/玩机技巧/save-blocked-in-A199/">华为 A199 救砖札记</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            计算机技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            汇编基础
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            软技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            积极心理学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/软技能/积极心理学/11-habit/">11 习惯</a></li>  <li class="file"><a href="/软技能/积极心理学/10-change/">10 改变</a></li>  <li class="file"><a href="/软技能/积极心理学/9.0-positive-emotions/">9 积极情绪</a></li>  <li class="file"><a href="/软技能/积极心理学/8.0-appreciate/">8 感激</a></li>  <li class="file"><a href="/软技能/积极心理学/7.0-adversity-or-chance/">7 逆境和机遇</a></li>  <li class="file"><a href="/软技能/积极心理学/6.0-positive/">6 乐观</a></li>  <li class="file"><a href="/软技能/积极心理学/5.0-Faith-is-the-realistic-predictions/">5 信念是自我实现的预言</a></li>  <li class="file"><a href="/软技能/积极心理学/4.0-positive-environment-can-change-person/">4 积极的环境能改变人</a></li>  <li class="file"><a href="/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/">3 如何避免惬意的麻木</a></li>  <li class="file"><a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/">2 为什么要学习积极心理学</a></li>  <li class="file"><a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/">1 信息、变形和课程简介</a></li>  <li class="file"><a href="/软技能/积极心理学/积极心理学资料索引与声明/">积极心理学资料索引与声明</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-5-BX-and-loop-instruction" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/assembly/">assembly</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">
+            <time datetime="2017-12-07T05:02:55.535Z" itemprop="datePublished">2017-12-07</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/5-BX-and-loop-instruction.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/5-BX-and-loop-instruction.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/5-BX-and-loop-instruction.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            5 [BX] 和 loop 指令
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">Catalogue</strong>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言 </span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-bx- 和内存单元的描述"><span class="toc-number">1.1.</span> <span class="toc-text">1. [bx]和内存单元的描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-loop"><span class="toc-number">1.2.</span> <span class="toc-text">2. loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3- 我们定义的描述性符号："><span class="toc-number">1.3.</span> <span class="toc-text">3. 我们定义的描述性符号：()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4- 约定符号 -idata 表示常量"><span class="toc-number">1.4.</span> <span class="toc-text">4. 约定符号 idata表示常量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-1-BX"><span class="toc-number">2.</span> <span class="toc-text">5.1 [BX]</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2-Loop 指令"><span class="toc-number">3.</span> <span class="toc-text">5.2 Loop指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#示例一"><span class="toc-number">3.1.</span> <span class="toc-text">示例一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例二"><span class="toc-number">3.2.</span> <span class="toc-text">示例二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例三"><span class="toc-number">3.3.</span> <span class="toc-text">示例三</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序"><span class="toc-number">4.</span> <span class="toc-text">5.3 在 Debug 中跟踪用 loop 指令实现的循环程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理"><span class="toc-number">5.</span> <span class="toc-text">5.4 Debug和汇编编译器 masm 对指令的不同处理</span></a></li></ol>
+                </div>
+            
+        
+        
+            <h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><h2 id="1-bx- 和内存单元的描述"><a href="#1-bx- 和内存单元的描述" class="headerlink" title="1. [bx] 和内存单元的描述"></a>1. <code>[bx]</code>和内存单元的描述</h2><ul>
+<li>描述一个内存单元所需的两种信息<ul>
+<li>内存单元的地址</li>
+<li>内存单元的长度（类型）</li>
+</ul>
+</li>
+</ul>
+<p><code>[0]</code> 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 <code>ds</code>寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。</p>
+<ul>
+<li><code>[bx]</code> 是一个内存单元的地址<ul>
+<li>它的偏移地址存放在 <code>bx</code>中</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>表示将一个内存单元的内容送入 <code>ax</code>，这个内存单元的长度位 2 字节（字单元），存放一个字节，偏移地址在 <code>bx</code> 中 ，段地址在 <code>ds</code>中</li>
+</ul>
+<h2 id="2-loop"><a href="#2-loop" class="headerlink" title="2. loop"></a>2. <code>loop</code></h2><p>循环指令。</p>
+<h2 id="3- 我们定义的描述性符号："><a href="#3- 我们定义的描述性符号：" class="headerlink" title="3. 我们定义的描述性符号：()"></a>3. 我们定义的描述性符号：<code>()</code></h2><p>为了描述上的简洁，在后续的学习中，我们将使用 <code>()</code> 来表示一个寄存器或一个内存单元中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(ax) ; 表示 ax 中的内容</span><br><span class="line">(al) ; 表示 al 中的内容</span><br></pre></td></tr></table></figure>
+<h2 id="4- 约定符号 -idata 表示常量"><a href="#4- 约定符号 -idata 表示常量" class="headerlink" title="4. 约定符号 idata 表示常量"></a>4. 约定符号 <code>idata</code>表示常量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [idata] ; 代表 mov ax,[1]、mov ax,[2]、或 mov ax,[3] 等</span><br><span class="line">mov bx, idata	; 代表 mov bx 1、mov bx, 2 或 mov bx, 3 等</span><br></pre></td></tr></table></figure>
+<h1 id="5-1-BX"><a href="#5-1-BX" class="headerlink" title="5.1 [BX]"></a>5.1 <code>[BX]</code></h1><p>2 个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>bx</code>中存放的数据作为一个偏移地址 <code>EA</code>，段地址<code>SA</code> 默认在 <code>ds</code> 中，将 <code>SA:EA</code> 处的数据送入 <code>ax</code> 中。即：<code>(ax) = ((ds)* 16 + (bx))</code>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov [bx], ax</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>bx</code>中存放的数据作为一个偏移地址 <code>EA</code>，段地址<code>SA</code> 默认在 <code>ds</code> 中，将 <code>ax</code> 中的数据送入内存 <code>SA:EA</code> 处。即：<code>((ds)*16 + (bx) = ax)</code></li>
+</ul>
+<h1 id="5-2-Loop 指令"><a href="#5-2-Loop 指令" class="headerlink" title="5.2 Loop 指令"></a>5.2 <code>Loop</code>指令</h1><ul>
+<li><code>loop</code>指令的格式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop 标号</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>loop</code>被执行的过程</p>
+<ul>
+<li><code>(cx) = (cx) - 1</code></li>
+<li>判断 <code>cx</code> 中的值，如果不为零则转至标号处执行程序，如果为零则向下执行</li>
+<li><code>cx</code>中存放循环次数</li>
+</ul>
+</li>
+</ul>
+<h2 id="示例一"><a href="# 示例一" class="headerlink" title="示例一"></a>示例一</h2><ul>
+<li>任务：编程计算 <code>2^2</code>，结果存放在<code>ax</code> 中</li>
+<li>分析<ul>
+<li>设 <code>(ax) = 2</code>，可计算<code>(ax) = (ax) * 2</code>，最后<code>(ax)</code> 中为 <code>2^2</code> 的值</li>
+<li><code>N*2</code> 可用 <code>N+N</code> 实现</li>
+</ul>
+</li>
+</ul>
+<p>程序如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="示例二"><a href="# 示例二" class="headerlink" title="示例二"></a>示例二</h2><ul>
+<li>任务：计算 <code>2^3</code></li>
+<li>分析：<ul>
+<li><code>2^3 = 2*2*2</code>，若设 <code>(ax) = 2</code>，可计算<code>(ax) = (ax) * 2 * 2</code>，最后<code>(ax)</code> 中为 <code>2^3</code> 的值</li>
+<li><code>N*2</code>可用 <code>N+N</code> 实现</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">assume  cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="示例三"><a href="# 示例三" class="headerlink" title="示例三"></a>示例三</h2><ul>
+<li>任务：编程计算<code>2^12</code></li>
+<li>分析<ul>
+<li>类似之前的例子</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	; 作 11 次 add ax, ax</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>我们可以使用 <code>loop</code> 来简化我们的程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	mov cx, 11</span><br><span class="line">s: 	add ax, ax</span><br><span class="line">	loop s</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><em>分析</em>：</p>
+<ul>
+<li>标号<code>s</code><ul>
+<li>这个标号标识了一个地址，这个地址处有一条指令<code>add ax, ax</code></li>
+</ul>
+</li>
+<li><code>loop s</code><ul>
+<li>CPU <strong>执行 <code>loop s</code> 的时候</strong>，要进行两步操作<ul>
+<li><code>(cx) = (cx) - 1</code></li>
+<li>判断 <code>cx</code> 中的值，不为 <code>0</code> 则转至标号 <code>s</code> 所标识的地址；如果为零则执行下一条</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>以下 3 条指令</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	mov cx, 11</span><br><span class="line">s:  add ax, ax</span><br><span class="line">	loop s</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行 <code>loop s</code> 时，首先要将 <code>(cx)</code> 减 1，然后若 <code>(cx)</code> 不为 0，则向前转至 <code>s</code> 处执行<code>add ax, ax</code><ul>
+<li>利用 <code>cx</code> 可以用来控制 <code>add ax,ax</code> 的执行次数</li>
+</ul>
+</li>
+</ul>
+<h1 id="5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序"><a href="#5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序" class="headerlink" title="5.3 在 Debug 中跟踪用 loop 指令实现的循环程序"></a>5.3 在 Debug 中跟踪用 <code>loop</code> 指令实现的循环程序</h1><ul>
+<li>问题</li>
+</ul>
+<p>计算 <code>ffff:0006</code> 单元中的数乘以 3，结果存储在 <code>dx</code> 中。</p>
+<ul>
+<li>考虑三个事项<ul>
+<li>运算后结果会否超出 <code>dx</code> 所能存储的范围？<ul>
+<li><code>ffff:0006</code>单元中的数是一个字节型的数据，范围是 <code>0~255</code> 之间，则用它和 3 相乘结果不会大于 65535，可以在 <code>dx</code> 中存放下</li>
+</ul>
+</li>
+<li>用循环累加来实现乘法，用哪个寄存器进行累加<ul>
+<li>将 <code>ffff:0006</code> 单元中的赋值给 <code>ax</code>，用<code>dx</code> 进行累加。</li>
+<li>先设<code>(dx) = 0</code>，然后作 3 次<code>(dx) = (dx)+(ax)</code></li>
+</ul>
+</li>
+<li><code>ffff:0006</code>单元是一个字节单元，<code>ax</code>是一个 16 位寄存器，数据长度不一样，如何赋值？<ul>
+<li>要想实现 <code>ffff:0006</code> 单元向 <code>ax</code> 赋值，应该令<code>(ah) = 0, (al) = (ffff6h)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>代码实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 0ffffh</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov bx, 6		; 以上，设置 ds:bx 指向 ffff:6</span><br><span class="line">	</span><br><span class="line">	mov al, [bx]</span><br><span class="line">	mov ah, 0		; 以上，设置(al)=((ds*16)+(bx)), (ah)=0</span><br><span class="line">	</span><br><span class="line">	mov dx, 0		; 累计寄存器清 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 3		; 循环 3 次 </span><br><span class="line">s:	add dx, ax</span><br><span class="line">	loop s			; 以上累加计算(ax)*3</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h			; 返回</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在汇编源程序中，数据不能以字母开头，所以要在前面加  0</li>
+</ul>
+<p>对上面的程序编译、链接之后，使用 <code>debug.exe</code> 对程序执行过程进行观察。</p>
+<ul>
+<li><code>u</code>查看被 <code>Debug</code> 加载入内存的程序可以看到 <code>loop s</code> 语句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 源代码语句</span><br><span class="line">s:	add  dx, ax</span><br><span class="line">	loop s</span><br><span class="line"># 载入内存的语句</span><br><span class="line">0B3D:0012 ADD DX,AX</span><br><span class="line">0B3D:0014 LOOP, 0012</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>s</code> 已经被具体的地址所替代。</p>
+<ul>
+<li>访问内存地址时，<code>Debug</code>的显示方式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0B44:0008 8A07	MOV AL,[BX]			DS:0006=35</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>debug</code> 右边出现了内存地址 <code>[bx]</code> 中的内容。根据我们设置的，段地址 <code>ds = ffff, bx=6</code>，所以我们可知道<code>ffff:6</code> 内存单元中的值为<code>35h</code>。</p>
+<p>接着就是 <code>loop</code> 指令的执行，注意 <code>cx</code> 寄存器中的值，当该值等于 0 时，就跳出循环。</p>
+<p>现在我们知道，修改 <code>cx</code> 寄存器中的内容可以间接实现乘法算术，对于在 <code>debug</code> 中的跟踪技巧而言，我们可以使用 <code>g</code> 指令，来快速执行到某一指令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g 0012</span><br></pre></td></tr></table></figure>
+<p>这样就可以略过 <code>ds:0012</code> 之前的代码了。对于循环语句，就可以直接将地址改为循环后一句地址即可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g 0016	# 假设循环语句地址为 0014</span><br></pre></td></tr></table></figure>
+<p>此外，我们也可以使用 <code>p</code> 指令来自动执行循环。</p>
+<p><em>遇到 <code>int 21h</code> 语句时应该使用 <code>p</code> 指令来正常结束程序哦。</em></p>
+<h1 id="5-4-Debug 和汇编编译器 masm 对指令的不同处理"><a href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理" class="headerlink" title="5.4 Debug 和汇编编译器 masm 对指令的不同处理"></a>5.4 <code>Debug</code>和汇编编译器 <code>masm</code> 对指令的不同处理</h1>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/计算机技能/汇编基础/4-the-first-program/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Plus ancien</strong>
+            <div class="article-nav-title">4 第一个程序</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            rosuh &copy; 2017 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+        </div>
+    </div>
+</footer>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
