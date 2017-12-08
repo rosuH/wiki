@@ -3,6 +3,202 @@
   
     
     <entry>
+      <title><![CDATA[7 UI Fragmnet 与 fragment 管理器]]></title>
+      <url>/Android-%E5%BC%80%E5%8F%91/7-UI-Fragment-and-fragmen-manager/</url>
+      <content type="html"><![CDATA[<h1 id="7-1-UI- 设计的灵活性需求"><a href="#7-1-UI- 设计的灵活性需求" class="headerlink" title="7.1 UI 设计的灵活性需求"></a>7.1 UI 设计的灵活性需求</h1><ul>
+<li>复杂的用户界面呈现需求<ul>
+<li>平板以及大尺寸手机显示问题</li>
+<li>滑动屏幕等交互问题</li>
+</ul>
+</li>
+<li>acticity 视图局限性<ul>
+<li>我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性</li>
+<li>activity 还得和特定的用户界面紧紧绑定</li>
+</ul>
+</li>
+</ul>
+<h1 id="7-2- 引入 -fragment"><a href="#7-2- 引入 -fragment" class="headerlink" title="7.2 引入 fragment"></a>7.2 引入 fragment</h1><ul>
+<li>fragment 是一种控制器对象<ul>
+<li>activity 可以委托它执行任务<ul>
+<li>这些任务通常是管理用户界面</li>
+<li>受管的用户界面可以时一整屏或时整屏的一部分</li>
+</ul>
+</li>
+<li>采用 fragmnet 来管理 UI，可以绕开 android 系统 activity 使用规划的限制</li>
+</ul>
+</li>
+<li>管理用户界面的 fragment 又称为 UI fragment<ul>
+<li>它自己也有产生于布局文件的视图</li>
+<li>fragment 视图包含了用户可以交互的可视化 UI 元素</li>
+</ul>
+</li>
+<li>activity 视图能预留位置供 fragment 视图插入<ul>
+<li>多个 fragment 则需要预留多个位置以供插入</li>
+</ul>
+</li>
+<li>activity 视图和 fragment 的关系和切换如下</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_1.png" alt="明细 fragment 的切换"></p>
+<ul>
+<li>fragment 可以带来灵活多变的布局，代价就是复杂的应用、更多的组件以及大量实现的代码</li>
+</ul>
+<h1 id="7-3- 着手开发示例应用"><a href="#7-3- 着手开发示例应用" class="headerlink" title="7.3 着手开发示例应用"></a>7.3 着手开发示例应用</h1><p><em>CriminalIntent 就是本示例应用的名称咯。</em></p>
+<p>我们先来梳理一下开发流程。</p>
+<h5 id="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><a href="# 我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程" class="headerlink" title="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"></a>我们先来看一下整个 <code>CriminalIntent</code> 项目的对象图解，以便我们更好地理解开发流程</h5><p><img src="https://img.rosuh.me/wiki/wiki_2017_d.png" alt="项目对象图解"></p>
+<p><strong>解析</strong>：</p>
+<ul>
+<li><code>CrimeFragment</code>的作用与 <code>activity</code> 在<code>GeoQuiz</code>应用中的作用差不多，都是负责创建并管理用户界面，以及与模型对象进行交互</li>
+<li><code>Crime</code>实例代表某种办公室陋习<ul>
+<li><code>crime</code>有一个标题、一个标志 ID，一个日期和一个布尔值</li>
+<li>布尔值用来表示陋习是否被解决</li>
+<li>简单起见，本章使用一个 <code>Crime</code> 实例，并将其存放在 <code>CrimeFragment</code> 类的成员变量 <code>mCrime</code> 中</li>
+</ul>
+</li>
+<li><code>CrimeActivity</code>视图（其对应的 <code>.xml</code> 文件）由 <code>FragmentLayout</code> 组件组成，<code>FragmentLayout</code>组件为 <code>CrimeFragment</code> 视图安排了显示位置</li>
+<li><code>CrimeFragment</code>视图由一个 <code>LineaLayout</code> 组件及其三个子视图组成；<code>CrimeFragment</code>类中由存储它们的成员变量，并设有监听器，会响应用户操作，更新模型数据<ul>
+<li><code>EditText</code></li>
+<li><code>Button</code></li>
+<li><code>CheckBox</code></li>
+</ul>
+</li>
+</ul>
+<h4 id="CrimeFragment"><a href="#CrimeFragment" class="headerlink" title="CrimeFragment"></a>CrimeFragment</h4><ul>
+<li>首先设计一个名为 <code>CrimeFragment</code> 的 UI  fragment 来管理用户界面</li>
+<li>再设计一个名为 <code>CrimeActivity</code> 的 activity 来托管 <code>CrimeFragment</code> 实例<ul>
+<li>activity 在其视图层内提供一处位置，用来放置 <code>fragment</code> 视图</li>
+<li><code>fragment</code>视图本身没有在屏幕上显示视图的能力；只有将它放置在 activiti 视图层级结构中，<code>fragment</code>视图才能显示在屏幕上</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_4.png" alt="CrimeActivity 托管 CrimeFragment"></p>
+<h4 id="两类 -fragment"><a href="# 两类 -fragment" class="headerlink" title="两类 fragment"></a>两类 fragment</h4><ul>
+<li>原生版本的<code>fragment</code><ul>
+<li>内置于设备系统中，如果应用要支持各个系统版本，在不同设备上运行的 <code>fragment</code> 可能会有不同的表现（因为各个版本的维护有差异）</li>
+</ul>
+</li>
+<li>支持库里的<code>fragment</code><ul>
+<li>发布时，内置于应用中；使用支持库的 <code>fragment</code> 在不同设备上都会由相同的表现</li>
+<li>我们使用的支持库版本来自 <code>AppCompat</code> 库</li>
+</ul>
+</li>
+</ul>
+<p>一般选用支持库中的 <code>fragment</code> 实现，因为考虑到 <code>fragment API</code> 不断引入新特性以及支持库不断更新的现状。</p>
+<h4 id="在 -Android-Studio- 中增加依赖关系"><a href="# 在 -Android-Studio- 中增加依赖关系" class="headerlink" title="在 Android Studio 中增加依赖关系"></a>在 Android Studio 中增加依赖关系 </h4><p> 要使用 <code>AppCompat</code> 库，项目必须加入依赖关系：</p>
+<ul>
+<li>打开应用模块的 <code>build.gradle</code> 文件<ul>
+<li><code>app/build.gradle</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="function">implementation <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></span><br><span class="line"><span class="function">    implementation 'com.android.support:appcompat-v7:26.1.0'</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><em>Android Studio 在 <code>build.gradle</code>中将原来的 <code>compile</code>改为了 <code>api</code>和<code>implementation</code>。</em></p>
+<p>参看：<a href="https://stackoverflow.com/questions/44402024/why-android-change-compile-task-to-implementation-task-in-gradle-build" target="_blank" rel="external">Why Android change ‘compile’ task to ‘implementation’ task in gradle build?</a></p>
+<p>接着我们先创建模型层的 <code>Crime</code> 类。</p>
+<h4 id="创建 Crime 类"><a href="# 创建 Crime 类" class="headerlink" title="创建 Crime 类"></a>创建 <code>Crime</code> 类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Crime</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> UUID mId;</span><br><span class="line">    <span class="keyword">private</span> String mTitle;</span><br><span class="line">    <span class="keyword">private</span> Date mDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mSolved;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Crime</span><span class="params">()</span></span>&#123;</span><br><span class="line">        mId = UUID.randomUUID();</span><br><span class="line">        mDate = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 略去 getter() 和 setter() 方法</span></span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><code>UUID</code>类是 Android 框架里的 Java 工具类<ul>
+<li>在构造方法里，调用 <code>UUID.randomUUID()</code> 会产生一个随机唯一 ID 值</li>
+</ul>
+</li>
+<li>使用默认的 <code>Date</code> 构造方法初始化 <code>DAte</code> 变量<ul>
+<li>作为 <code>crime</code> 的默认发生时间，设置 <code>mDate</code> 变量值为当前日期</li>
+</ul>
+</li>
+</ul>
+<h1 id="7-4- 托管 UI-fragment"><a href="#7-4- 托管 UI-fragment" class="headerlink" title="7.4 托管 UI fragment"></a>7.4 托管 <code>UI fragment</code></h1><p> 为了托管 <code>UI fragment</code>，<code>activity</code> 必须：</p>
+<ul>
+<li>在其布局中为 <code>fragment</code> 的视图安排位置</li>
+<li>管理 <code>fragment</code> 实例的生命周期</li>
+</ul>
+<h4 id="fragment 的生命周期"><a href="#fragment 的生命周期" class="headerlink" title="fragment 的生命周期"></a><code>fragment</code>的生命周期 </h4><p> 下图展示了 <code>fragment</code> 的生命周期：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_724ee3.png" alt="fragment 的生命周期图解"></p>
+<ul>
+<li><code>fragment</code>的生命周期类似于 <code>activity</code> 的生命周期，它具有停止、暂停以及运行状态，也拥有覆盖方法，用来在一些关键节点完成一些任务</li>
+<li><code>fragment</code>生命周期和 <code>activity</code> 的方法的对应关系<ul>
+<li>因为 <code>fragment</code> 代表 <code>activity</code> 工作，所以它的状态应该反映 <code>activity</code> 的状态</li>
+</ul>
+</li>
+<li><code>fragment</code>生命周期与 <code>activity</code> 生命周期的一个关键不同在于：<ul>
+<li><code>fragment</code>的生命周期方法由托管 <code>activity</code> 而不是操作系统调用的</li>
+<li>操作系统不关心 <code>activity</code> 用来管理视图的 <code>fragment</code>；易言之，<code>fragment</code> 的使用是 <code>activity</code> 内部的事情</li>
+</ul>
+</li>
+</ul>
+<h4 id="托管的两种方式"><a href="# 托管的两种方式" class="headerlink" title="托管的两种方式"></a>托管的两种方式 </h4><p><code>activity</code> 托管 <code>UI fragment</code> 有如下两种方式：</p>
+<ul>
+<li>在 <code>activity</code> 布局中添加<code>fragment</code><ul>
+<li>使用布局<code>fragment</code></li>
+<li>简单但不灵活：在 <code>activity</code> 布局中添加 <code>fragment</code>，就等同于将<code>fragment</code> 及其视图与 <code>activity</code> 的视图绑定在一起，并且在 <code>activity</code> 的生命周期过程中，无法替换 <code>fragment</code> 视图</li>
+</ul>
+</li>
+<li>在 <code>activity</code> 代码中添加<code>fragment</code><ul>
+<li>比较复杂，但是也是唯一可以动态控制 <code>fragment</code> 的方式</li>
+<li>何时添加 <code>fragment</code> 以及随后可以完成何种具体任务由你自己决定；也可以移除、替换和重新添加当前 <code>fragment</code> 等等</li>
+</ul>
+</li>
+</ul>
+<p>为了追求真正灵活的 UI 设计，就必须通过代码的方式添加<code>fragment</code>。</p>
+<p>接下来我们将定义 <code>CrimeActivity</code> 的布局。</p>
+<h4 id="定义容器布局"><a href="# 定义容器布局" class="headerlink" title="定义容器布局"></a>定义容器布局 </h4><p> 尽管我们选择的是在 <code>activity</code> 代码中添加 <code>UI fragment</code>，但是我们依旧<strong> 要在 <code>activity</code> 视图层级结构中为 <code>fragment</code> 视图安排位置</strong>。</p>
+<p>在 <code>CrimeActivity</code> 的布局中，该位置就是下图所示的<code>FrameLayout</code>：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_d7c848.png" alt="CrimeActivity 类的 fragment 托管布局"></p>
+<ul>
+<li><code>FragmentLayout</code>是服务于 <code>CrimeFragment</code> 的容器视图<ul>
+<li>此容器视图是个通用性视图，不单用于 <code>CrimeFragment</code> 类，你还可以用它托管其他的<code>fragment</code></li>
+</ul>
+</li>
+</ul>
+<p>我们会在 <code>activity_crime.xml</code> 文件中使用 <code>FragmentLayout</code> 作为默认布局：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">FrameLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"https://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:id</span>=<span class="string">"@+id/fragment_container"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>当前的 <code>activity_crime.xml</code> 布局文件仅由一个服务于单个 <code>fragment</code> 的容器视图组成<ul>
+<li>除了自身组件之外，托管 <code>activity</code> 布局还可定义多个容器视图</li>
+</ul>
+</li>
+</ul>
+<h1 id="7-5- 创建 UI-fragment"><a href="#7-5- 创建 UI-fragment" class="headerlink" title="7.5 创建 UI fragment"></a>7.5 创建 <code>UI fragment</code></h1><p> 创建 <code>UI fragment</code> 的步骤与创建 <code>activity</code> 的步骤相同：</p>
+<ul>
+<li>定义用户界面布局文件</li>
+<li>创建 <code>fragment</code> 类并设置其视图为定义的布局</li>
+<li>编写代码以实例化组件</li>
+</ul>
+<h4 id="定义 CrimeFragment 的布局"><a href="# 定义 CrimeFragment 的布局" class="headerlink" title="定义 CrimeFragment 的布局"></a>定义 <code>CrimeFragment</code> 的布局</h4><ul>
+<li><code>CrimeFragment</code>视图用来显示包含在 <code>Crime</code> 类实例中的信息</li>
+</ul>
+<p>balabala…</p>
+<h4 id="创建 CrimeFragment 类"><a href="# 创建 CrimeFragment 类" class="headerlink" title="创建 CrimeFragment 类"></a>创建 <code>CrimeFragment</code> 类</h4><ol>
+<li>实现 <code>fragment</code> 生命周期方法</li>
+</ol>
+<p><code>CrimeFragment</code>类是与模型及视图对象交互的控制器，用于显示特定的 <code>cirme</code> 的明确信息。并在用户修改这些信息立即进行更新。</p>
+<p>我们上一个例子中，<code>activity</code>通过其生命周期方法完成了大部分逻辑控制工作。在本个例子中，这些工作 <code>fragment</code> 的生命周期方法完成的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.support.v4.app.Fragment;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Crime mCrime;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        mCrime = <span class="keyword">new</span> Crime();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><code>Fragment.onCreate(Bundle)</code>是公共方法，而 <code>Activity.onCreate(Bundle)</code> 是受保护方法<ul>
+<li><code>Fragment.onCreate(Bundle)</code>方法及其他 <code>Fragment</code> 生命周期方法必须是公共方法，因为托管 <code>fragment</code> 的<code>activity</code>要调用它们</li>
+</ul>
+</li>
+<li>​</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> Android 开发 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[5 [BX] 和 loop 指令]]></title>
       <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/5-BX-and-loop-instruction/</url>
       <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><h2 id="1-bx- 和内存单元的描述"><a href="#1-bx- 和内存单元的描述" class="headerlink" title="1. [bx] 和内存单元的描述"></a>1. <code>[bx]</code>和内存单元的描述</h2><ul>
@@ -366,446 +562,101 @@
     </entry>
     
     <entry>
-      <title><![CDATA[7 UI Fragmnet 与 fragment 管理器]]></title>
-      <url>/Android-%E5%BC%80%E5%8F%91/7-UI-Fragment-and-fragmen-manager/</url>
-      <content type="html"><![CDATA[<h1 id="7-1-UI- 设计的灵活性需求"><a href="#7-1-UI- 设计的灵活性需求" class="headerlink" title="7.1 UI 设计的灵活性需求"></a>7.1 UI 设计的灵活性需求</h1><ul>
-<li>复杂的用户界面呈现需求<ul>
-<li>平板以及大尺寸手机显示问题</li>
-<li>滑动屏幕等交互问题</li>
+      <title><![CDATA[4 积极的环境能改变人]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/4.0-positive-environment-can-change-person/</url>
+      <content type="html"><![CDATA[<h3 id="改变"><a href="# 改变" class="headerlink" title="改变"></a>改变</h3><ul>
+<li>传播真正有用的东西<ul>
+<li>传播真实的知识</li>
+<li>研究</li>
 </ul>
 </li>
-<li>acticity 视图局限性<ul>
-<li>我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性</li>
-<li>activity 还得和特定的用户界面紧紧绑定</li>
+<li>“精英民主化”<ul>
+<li>学习优秀的，让全体都变得优秀</li>
 </ul>
 </li>
-</ul>
-<h1 id="7-2- 引入 -fragment"><a href="#7-2- 引入 -fragment" class="headerlink" title="7.2 引入 fragment"></a>7.2 引入 fragment</h1><ul>
-<li>fragment 是一种控制器对象<ul>
-<li>activity 可以委托它执行任务<ul>
-<li>这些任务通常是管理用户界面</li>
-<li>受管的用户界面可以时一整屏或时整屏的一部分</li>
+<li>“阻止改变的障碍”<ul>
+<li>低估了自己带来变化的能力</li>
 </ul>
 </li>
-<li>采用 fragmnet 来管理 UI，可以绕开 android 系统 activity 使用规划的限制</li>
+<li>“改变如何发生”？<ul>
+<li>改变可以呈几何级数扩散 &lt;–&gt; 理解人群中的指数效应 &lt;–&gt; 扩大影响力</li>
+<li>“蝴蝶效应”</li>
+<li>“六度分离现象”</li>
+<li>“微笑效应”</li>
 </ul>
 </li>
-<li>管理用户界面的 fragment 又称为 UI fragment<ul>
-<li>它自己也有产生于布局文件的视图</li>
-<li>fragment 视图包含了用户可以交互的可视化 UI 元素</li>
+<li>“凭外因无法令人幸福”<ul>
+<li>剧烈的外界环境变化对幸福感的影响只持续一段时间，之后将会回到原来的水平</li>
+<li>一旦满足基本需求之后，幸福感将不会再有很大提升</li>
+<li>并不是说毫无变化，只是外界某一因素 剧烈变化，易会导致其他因素协同变化，人生会出现新的体验，会让你开心亦会让你伤心，所以幸福值又回到了原来水平<ul>
+<li>社会制度影响除外，民主制度下的人们比独裁统治下的人们更幸福（可能是后者没有得到基本的满足</li>
 </ul>
 </li>
-<li>activity 视图能预留位置供 fragment 视图插入<ul>
-<li>多个 fragment 则需要预留多个位置以供插入</li>
-</ul>
-</li>
-<li>activity 视图和 fragment 的关系和切换如下</li>
-</ul>
-<p><img src="http://img.rosuh.me/wiki/wiki_2017_1.png" alt="明细 fragment 的切换"></p>
-<ul>
-<li>fragment 可以带来灵活多变的布局，代价就是复杂的应用、更多的组件以及大量实现的代码</li>
-</ul>
-<h1 id="7-3- 着手开发示例应用"><a href="#7-3- 着手开发示例应用" class="headerlink" title="7.3 着手开发示例应用"></a>7.3 着手开发示例应用</h1><p><em>CriminalIntent 就是本示例应用的名称咯。</em></p>
-<p>我们先来梳理一下开发流程。</p>
-<h5 id="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><a href="# 我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程" class="headerlink" title="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"></a>我们先来看一下整个 <code>CriminalIntent</code> 项目的对象图解，以便我们更好地理解开发流程</h5><p><img src="http://img.rosuh.me/wiki/wiki_2017_d.png" alt="项目对象图解"></p>
-<p><strong>解析</strong>：</p>
-<ul>
-<li><code>CrimeFragment</code>的作用与 <code>activity</code> 在<code>GeoQuiz</code>应用中的作用差不多，都是负责创建并管理用户界面，以及与模型对象进行交互</li>
-<li><code>Crime</code>实例代表某种办公室陋习<ul>
-<li><code>crime</code>有一个标题、一个标志 ID，一个日期和一个布尔值</li>
-<li>布尔值用来表示陋习是否被解决</li>
-<li>简单起见，本章使用一个 <code>Crime</code> 实例，并将其存放在 <code>CrimeFragment</code> 类的成员变量 <code>mCrime</code> 中</li>
-</ul>
-</li>
-<li><code>CrimeActivity</code>视图（其对应的 <code>.xml</code> 文件）由 <code>FragmentLayout</code> 组件组成，<code>FragmentLayout</code>组件为 <code>CrimeFragment</code> 视图安排了显示位置</li>
-<li><code>CrimeFragment</code>视图由一个 <code>LineaLayout</code> 组件及其三个子视图组成；<code>CrimeFragment</code>类中由存储它们的成员变量，并设有监听器，会响应用户操作，更新模型数据<ul>
-<li><code>EditText</code></li>
-<li><code>Button</code></li>
-<li><code>CheckBox</code></li>
+<li>“降低期望不能根本性提高幸福值”<ul>
+<li>只能维持一段时间</li>
 </ul>
 </li>
 </ul>
-<h4 id="CrimeFragment"><a href="#CrimeFragment" class="headerlink" title="CrimeFragment"></a>CrimeFragment</h4><ul>
-<li>首先设计一个名为 <code>CrimeFragment</code> 的 UI  fragment 来管理用户界面</li>
-<li>再设计一个名为 <code>CrimeActivity</code> 的 activity 来托管 <code>CrimeFragment</code> 实例<ul>
-<li>activity 在其视图层内提供一处位置，用来放置 <code>fragment</code> 视图</li>
-<li><code>fragment</code>视图本身没有在屏幕上显示视图的能力；只有将它放置在 activiti 视图层级结构中，<code>fragment</code>视图才能显示在屏幕上</li>
+</li>
+<li>“正确的期望才能获得幸福”<ul>
+<li>感受幸福的意愿和可能性主要取决于 <strong> 我们的精神状态</strong><ul>
+<li>而不是银行存款或其他</li>
+</ul>
+</li>
+<li>关键在于：<ul>
+<li>改变我们的观念和精神状态</li>
+<li>在于改变我们看待这个世界的方式、看待成败的方式</li>
+<li>在于我们选择去理解什么、去关注什么</li>
 </ul>
 </li>
 </ul>
-<p><img src="http://img.rosuh.me/wiki/wiki_2017_4.png" alt="CrimeActivity 托管 CrimeFragment"></p>
-<h4 id="两类 -fragment"><a href="# 两类 -fragment" class="headerlink" title="两类 fragment"></a>两类 fragment</h4><ul>
-<li>原生版本的<code>fragment</code><ul>
-<li>内置于设备系统中，如果应用要支持各个系统版本，在不同设备上运行的 <code>fragment</code> 可能会有不同的表现（因为各个版本的维护有差异）</li>
-</ul>
-</li>
-<li>支持库里的<code>fragment</code><ul>
-<li>发布时，内置于应用中；使用支持库的 <code>fragment</code> 在不同设备上都会由相同的表现</li>
-<li>我们使用的支持库版本来自 <code>AppCompat</code> 库</li>
-</ul>
 </li>
 </ul>
-<p>一般选用支持库中的 <code>fragment</code> 实现，因为考虑到 <code>fragment API</code> 不断引入新特性以及支持库不断更新的现状。</p>
-<h4 id="在 -Android-Studio- 中增加依赖关系"><a href="# 在 -Android-Studio- 中增加依赖关系" class="headerlink" title="在 Android Studio 中增加依赖关系"></a>在 Android Studio 中增加依赖关系 </h4><p> 要使用 <code>AppCompat</code> 库，项目必须加入依赖关系：</p>
-<ul>
-<li>打开应用模块的 <code>build.gradle</code> 文件<ul>
-<li><code>app/build.gradle</code></li>
+<h3 id="人性"><a href="# 人性" class="headerlink" title="人性"></a>人性</h3><ul>
+<li>人性是否应该受到限制？<ul>
+<li>人性约束观：认为人性无法改变，他是恒定的。我们有特定的本能、偏好，他们是固定不变的；作为一个物种，与生俱来的；我们身上的缺点无法被改变<ul>
+<li>除了放弃之外，可以选择对其进行引导；建立体制引导缺陷</li>
+</ul>
+</li>
+<li>非人性约束观：认为人性可以不断进步；人性可以得到完善<ul>
+<li>建立体制完善缺陷、改善缺陷</li>
 </ul>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="function">implementation <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></span><br><span class="line"><span class="function">    implementation 'com.android.support:appcompat-v7:26.1.0'</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
-<p><em>Android Studio 在 <code>build.gradle</code>中将原来的 <code>compile</code>改为了 <code>api</code>和<code>implementation</code>。</em></p>
-<p>参看：<a href="https://stackoverflow.com/questions/44402024/why-android-change-compile-task-to-implementation-task-in-gradle-build" target="_blank" rel="external">Why Android change ‘compile’ task to ‘implementation’ task in gradle build?</a></p>
-<p>接着我们先创建模型层的 <code>Crime</code> 类。</p>
-<h4 id="创建 Crime 类"><a href="# 创建 Crime 类" class="headerlink" title="创建 Crime 类"></a>创建 <code>Crime</code> 类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Crime</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> UUID mId;</span><br><span class="line">    <span class="keyword">private</span> String mTitle;</span><br><span class="line">    <span class="keyword">private</span> Date mDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mSolved;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Crime</span><span class="params">()</span></span>&#123;</span><br><span class="line">        mId = UUID.randomUUID();</span><br><span class="line">        mDate = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 略去 getter() 和 setter() 方法</span></span><br></pre></td></tr></table></figure>
-<p><em>解析</em>：</p>
-<ul>
-<li><code>UUID</code>类是 Android 框架里的 Java 工具类<ul>
-<li>在构造方法里，调用 <code>UUID.randomUUID()</code> 会产生一个随机唯一 ID 值</li>
+</li>
+<li>“成为平凡人”  – 人性约束观<ul>
+<li>生活具有多样性，不是一直都是积极的</li>
+<li>不要为了“积极”而积极，这样会付出极大的成本并且往往不遂人意</li>
+<li>留给自己一个私人的空间，在这个房间里做一个凡人</li>
+<li>“动机悖论”：善于接受自己的情绪，不要过度压抑</li>
 </ul>
 </li>
-<li>使用默认的 <code>Date</code> 构造方法初始化 <code>DAte</code> 变量<ul>
-<li>作为 <code>crime</code> 的默认发生时间，设置 <code>mDate</code> 变量值为当前日期</li>
+<li>情感、行为和认知<ul>
+<li>情感 &lt;–&gt; 情绪：情绪没有正邪之分；糟糕的情绪亦是人的本性<ul>
+<li>问题在于：<strong>我用什么态度对待和表达情绪</strong>？ </li>
 </ul>
 </li>
-</ul>
-<h1 id="7-4- 托管 UI-fragment"><a href="#7-4- 托管 UI-fragment" class="headerlink" title="7.4 托管 UI fragment"></a>7.4 托管 <code>UI fragment</code></h1><p> 为了托管 <code>UI fragment</code>，<code>activity</code> 必须：</p>
-<ul>
-<li>在其布局中为 <code>fragment</code> 的视图安排位置</li>
-<li>管理 <code>fragment</code> 实例的生命周期</li>
-</ul>
-<h4 id="fragment 的生命周期"><a href="#fragment 的生命周期" class="headerlink" title="fragment 的生命周期"></a><code>fragment</code>的生命周期 </h4><p> 下图展示了 <code>fragment</code> 的生命周期：</p>
-<p><img src="http://img.rosuh.me/wiki/wiki_2017_724ee3.png" alt="fragment 的生命周期图解"></p>
-<ul>
-<li><code>fragment</code>的生命周期类似于 <code>activity</code> 的生命周期，它具有停止、暂停以及运行状态，也拥有覆盖方法，用来在一些关键节点完成一些任务</li>
-<li><code>fragment</code>生命周期和 <code>activity</code> 的方法的对应关系<ul>
-<li>因为 <code>fragment</code> 代表 <code>activity</code> 工作，所以它的状态应该反映 <code>activity</code> 的状态</li>
+<li>行为：表达情绪的方式<ul>
+<li>这个问题就涉及到道德领域，即有好坏之分；我们可以选择道德或不道德的方式对待其他人</li>
 </ul>
 </li>
-<li><code>fragment</code>生命周期与 <code>activity</code> 生命周期的一个关键不同在于：<ul>
-<li><code>fragment</code>的生命周期方法由托管 <code>activity</code> 而不是操作系统调用的</li>
-<li>操作系统不关心 <code>activity</code> 用来管理视图的 <code>fragment</code>；易言之，<code>fragment</code> 的使用是 <code>activity</code> 内部的事情</li>
+<li>认知：改变自己对糟糕情绪的看法<ul>
+<li>真诚地面对好坏情绪</li>
 </ul>
 </li>
 </ul>
-<h4 id="托管的两种方式"><a href="# 托管的两种方式" class="headerlink" title="托管的两种方式"></a>托管的两种方式 </h4><p><code>activity</code> 托管 <code>UI fragment</code> 有如下两种方式：</p>
-<ul>
-<li>在 <code>activity</code> 布局中添加<code>fragment</code><ul>
-<li>使用布局<code>fragment</code></li>
-<li>简单但不灵活：在 <code>activity</code> 布局中添加 <code>fragment</code>，就等同于将<code>fragment</code> 及其视图与 <code>activity</code> 的视图绑定在一起，并且在 <code>activity</code> 的生命周期过程中，无法替换 <code>fragment</code> 视图</li>
+</li>
+<li>“主动接受”<ul>
+<li>识别好坏的能力</li>
 </ul>
 </li>
-<li>在 <code>activity</code> 代码中添加<code>fragment</code><ul>
-<li>比较复杂，但是也是唯一可以动态控制 <code>fragment</code> 的方式</li>
-<li>何时添加 <code>fragment</code> 以及随后可以完成何种具体任务由你自己决定；也可以移除、替换和重新添加当前 <code>fragment</code> 等等</li>
-</ul>
-</li>
-</ul>
-<p>为了追求真正灵活的 UI 设计，就必须通过代码的方式添加<code>fragment</code>。</p>
-<p>接下来我们将定义 <code>CrimeActivity</code> 的布局。</p>
-<h4 id="定义容器布局"><a href="# 定义容器布局" class="headerlink" title="定义容器布局"></a>定义容器布局 </h4><p> 尽管我们选择的是在 <code>activity</code> 代码中添加 <code>UI fragment</code>，但是我们依旧<strong> 要在 <code>activity</code> 视图层级结构中为 <code>fragment</code> 视图安排位置</strong>。</p>
-<p>在 <code>CrimeActivity</code> 的布局中，该位置就是下图所示的<code>FrameLayout</code>：</p>
-<p><img src="http://img.rosuh.me/wiki/wiki_201712_d7c848.png" alt="CrimeActivity 类的 fragment 托管布局"></p>
-<ul>
-<li><code>FragmentLayout</code>是服务于 <code>CrimeFragment</code> 的容器视图<ul>
-<li>此容器视图是个通用性视图，不单用于 <code>CrimeFragment</code> 类，你还可以用它托管其他的<code>fragment</code></li>
-</ul>
-</li>
-</ul>
-<p>我们会在 <code>activity_crime.xml</code> 文件中使用 <code>FragmentLayout</code> 作为默认布局：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">FrameLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:id</span>=<span class="string">"@+id/fragment_container"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>当前的 <code>activity_crime.xml</code> 布局文件仅由一个服务于单个 <code>fragment</code> 的容器视图组成<ul>
-<li>除了自身组件之外，托管 <code>activity</code> 布局还可定义多个容器视图</li>
-</ul>
-</li>
-</ul>
-<h1 id="7-5- 创建 UI-fragment"><a href="#7-5- 创建 UI-fragment" class="headerlink" title="7.5 创建 UI fragment"></a>7.5 创建 <code>UI fragment</code></h1><p> 创建 <code>UI fragment</code> 的步骤与创建 <code>activity</code> 的步骤相同：</p>
-<ul>
-<li>定义用户界面布局文件</li>
-<li>创建 <code>fragment</code> 类并设置其视图为定义的布局</li>
-<li>编写代码以实例化组件</li>
-</ul>
-<h4 id="定义 CrimeFragment 的布局"><a href="# 定义 CrimeFragment 的布局" class="headerlink" title="定义 CrimeFragment 的布局"></a>定义 <code>CrimeFragment</code> 的布局</h4><ul>
-<li><code>CrimeFragment</code>视图用来显示包含在 <code>Crime</code> 类实例中的信息</li>
-</ul>
-<p>balabala…</p>
-<h4 id="创建 CrimeFragment 类"><a href="# 创建 CrimeFragment 类" class="headerlink" title="创建 CrimeFragment 类"></a>创建 <code>CrimeFragment</code> 类</h4><ol>
-<li>实现 <code>fragment</code> 生命周期方法</li>
-</ol>
-<p><code>CrimeFragment</code>类是与模型及视图对象交互的控制器，用于显示特定的 <code>cirme</code> 的明确信息。并在用户修改这些信息立即进行更新。</p>
-<p>我们上一个例子中，<code>activity</code>通过其生命周期方法完成了大部分逻辑控制工作。在本个例子中，这些工作 <code>fragment</code> 的生命周期方法完成的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.support.v4.app.Fragment;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Crime mCrime;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        mCrime = <span class="keyword">new</span> Crime();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><em>解析</em>：</p>
-<ul>
-<li><code>Fragment.onCreate(Bundle)</code>是公共方法，而 <code>Activity.onCreate(Bundle)</code> 是受保护方法<ul>
-<li><code>Fragment.onCreate(Bundle)</code>方法及其他 <code>Fragment</code> 生命周期方法必须是公共方法，因为托管 <code>fragment</code> 的<code>activity</code>要调用它们</li>
-</ul>
-</li>
-<li>​</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> Android 开发 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Android </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[华为 A199 救砖札记]]></title>
-      <url>/%E7%8E%A9%E6%9C%BA%E6%8A%80%E5%B7%A7/save-blocked-in-A199/</url>
-      <content type="html"><![CDATA[<h2 id="1- 前言"><a href="#1- 前言" class="headerlink" title="1. 前言"></a>1. 前言 </h2><p> 这货之前一直被我丢在柜子里。晚上想要注册多一个微信号，需要多一台设备来登陆。毕竟双开有被封号的风险。</p>
-<p>之前已经刷入了第三方的 REC，所以本以为挺简单。想着先刷回官方版本，然后自己精简的。</p>
-<p>于是安装官方的指引：</p>
-<ol>
-<li>官方的包解压出来，把 <code>dload</code> 放到了外置 SD 卡</li>
-<li>设置–&gt; 关闭快速启动</li>
-<li>设置–&gt; 关于手机–&gt; 系统更新–&gt; 本地升级</li>
-<li>重启</li>
-</ol>
-<p><strong>然后就崩了</strong>…</p>
-<p>第三方的 REC 无法识别，然后一直卡在 TWRP 的界面，重启或者试图进入 REC 都会一直卡在 TWEP 启动界面。</p>
-<p>然后在官方论坛找了一下，没什么有用的帖子…刷机氛围真是不行…</p>
-<p>直到看到某个官方教程帖子里说，华为的 fastboot 界面其实就是开机界面（麦芒 A199 的就是那个麦芽）。使用 <strong> 音量键减 + 开机键 </strong> 进入。</p>
-<p>能进入 fastboot 说明还是有救的。</p>
-<h2 id="2- 环境准备"><a href="#2- 环境准备" class="headerlink" title="2. 环境准备"></a>2. 环境准备 </h2><h3 id="2-1- 安装驱动"><a href="#2-1- 安装驱动" class="headerlink" title="2.1 安装驱动"></a>2.1 安装驱动</h3><p> 我使用的是 Win10，需要安装华为的驱动之后才能识别设备，不然 fastboot 是无法查找到设备的。</p>
-<p><a href="http://consumer.huawei.com/cn/support/search/index.htm?keywords=%E9%BA%A6%E8%8A%92A199" target="_blank" rel="external">关键词搜索：麦芒 A199</a></p>
-<p>华为官方的搜索界面都找不到这机子了…滑到列表最下面，看到 <code>HUAWEI Stick UTPS-V200R003B015D11SP01C983(for win10)</code> 这个选项：</p>
-<p><img src="https://img.rosuh.me/wiki/58ca9d2bd48d2.png" alt="HUAWEI Stick UTPS-V200R003B015D11SP01C983( for win10)"></p>
-<p>然后下载下来。如果官方撤了这个文件，可以到我分享的度盘下载：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1dFadWkT 密码: bdyd</span></span><br></pre></td></tr></table></figure>
-<p>下载之后解压再解压，里面是一个 <code>iso</code> 镜像文件，可以选择装载到你的虚拟驱动器，或直接解压出来都没问题。</p>
-<p>打开 <code>AutoRun.exe</code> 安装，就行了。</p>
-<p>照道理现在应该已经装好了。我就是这么装的，并且之前我的系统也没有装过华为的其他驱动，所以我判断这样应该就可以。</p>
-<h3 id="2-2- 刷入 -REC"><a href="#2-2- 刷入 -REC" class="headerlink" title="2.2 刷入 REC"></a>2.2 刷入 REC</h3><ol>
-<li>获取 ADB 套件</li>
-</ol>
-<p>这一步需要用到 <code>adb</code> 套件。</p>
-<p>点击下面的链接从 Google 官方下载：</p>
-<p><a href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip" target="_blank" rel="external">https://dl.google.com/android/repository/platform-tools-latest-windows.zip</a></p>
-<p>如果因为某些 <strong> 不可描述 </strong> 的原因导致你无法下载，可以通过我分享的度盘链接下载：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1miQCxnU 密码: kyum</span></span><br></pre></td></tr></table></figure>
-<p><em>建议从官方下载，保证取得最新版的套件</em>。</p>
-<p>下载之后解压出来，得到 <code>adb</code>套件。</p>
-<ol>
-<li>获取官方的 REC</li>
-</ol>
-<p>麦芒的官方 REC 我在论坛没找到。所以需要从官方的 ROM 中提取出来。</p>
-<p>下面是提取的步骤，如果你不想自己提取，可以直接用我提取出来：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1eRO689O 密码: q4f9</span></span><br></pre></td></tr></table></figure>
-<p><a href="http://www.emui.com/plugin.php?id=hwdownload&amp;mod=detail&amp;mid=1" target="_blank" rel="external">官方 ROM 下载</a></p>
-<p>如果官方撤掉了，从我的盘下载：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1c21kqDq 密码: pi7u</span></span><br></pre></td></tr></table></figure>
-<p>提取 REC 需要用到一个提取软件，直接点下面下载：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1boDhujH 密码: 5kun</span></span><br></pre></td></tr></table></figure>
-<p>下载完解压出来，双击运行<code>HuaweiUpdateExtractor.exe</code>。</p>
-<p>选择 <code>Update File</code> 右边的按钮选择官方 ROM</p>
-<p><img src="https://img.rosuh.me/wiki/58ca9fa275ed9.png" alt="HuaweiUpdateExtractor"></p>
-<p>选择 ROM 之后，右键单击 <code>RECOVERY</code> 解压出来：</p>
-<p><img src="https://img.rosuh.me/wiki/58caa084186d0.png" alt="解压 REC"></p>
-<p>然后把解压出来的 <code>RECOVERY</code> 放到第一步中 ADB 套件的文件夹中。</p>
-<ol>
-<li>刷入 REC</li>
-</ol>
-<p>进入 ADB 套件文件夹，可以看到诸如 <code>adb</code>, <code>fastboot</code> 等工具。</p>
-<p>按住键盘的 <code>Shift</code> 键，同时鼠标右键单击该文件夹的空白处，选择“在此处打开命令行窗口”：</p>
-<p><img src="https://img.rosuh.me/wiki/58caa1a512317.png" alt="open ps"></p>
-<p>我这里是 <code>Powershell</code> 窗口，大部分时候显示为 <code>cmd</code> 窗口。</p>
-<p>按住手机 <strong> 音量键减 + 开机键 </strong> 进入 <code>fastboot</code> 模式，显示为开机的那个麦芽 logo。</p>
-<p>进入命令行界面，输入以下命令检查设备是否链接：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe devices</span><br></pre></td></tr></table></figure>
-<p>如果有输入提示（一般是含有一串数字 + 英文字母），则意味着设备已经被识别了。如果没什么输出、提示，则意味着没有被识别。那么你要自行寻找其他驱动。</p>
-<p>接着输入以下命令，进行刷入 REC</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe flash recovery RECOVERY.img</span><br></pre></td></tr></table></figure>
-<p>输入回车之后应该就开始刷入了。命令行窗口会有提示：</p>
-<p><img src="https://img.rosuh.me/wiki/58caa385361f6.png" alt="Flash REC"></p>
-<p>由于我之前是升级过程卡住了，刷入 REC 之后自动开始了流程，这点还是很赞的：</p>
-<p><img src="https://img.rosuh.me/wiki/58caa3eaaed61.jpg" alt="show time"></p>
-<p>接着就可以进行愉快地玩耍啦~</p>
-<hr>
-<p><em>Best Wish.</em></p>
-<p><em>by rosu</em></p>
-<p><em>2017-3-16</em></p>
-]]></content>
-      
-        <categories>
-            
-            <category> 玩机技巧 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Android </tag>
-            
-            <tag> huawei </tag>
-            
-            <tag> A199 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[积极心理学资料索引与声明]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%A3%B0%E6%98%8E/</url>
-      <content type="html"><![CDATA[<p>《积极心理学》 系列 <strong> 笔记 </strong>，是笔者个人的学习记录摘抄。<br> 其中主要的参考资料是（文章中将不再列出，除非特殊来源）：<br><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank" rel="external">哈佛大学公开课：幸福课</a></p>
-<ul>
-<li>多数结论、文字皆为摘抄自视频中，少数为笔者自己的总结。</li>
-<li>本系列的文章内容架构为笔者自行梳理。</li>
-<li>多数图片为笔者自行制作，少数来自网上或公开的资料</li>
-</ul>
-<p>如果本系列文章有侵犯到您权利的地方，请立刻联系笔者！</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Ubuntu 安装软件合集]]></title>
-      <url>/Linux-VPS/softwares/</url>
-      <content type="html"><![CDATA[<h2 id="记录 -Ubuntu- 平台下安装的部分软件。"><a href="# 记录 -Ubuntu- 平台下安装的部分软件。" class="headerlink" title="记录 Ubuntu 平台下安装的部分软件。"></a> 记录 Ubuntu 平台下安装的部分软件。</h2><p><a href="https://alim0x.gitbooks.io/awesome-linux-software-zh_cn/content/#%E7%9B%AE%E5%BD%95" target="_blank" rel="external">awesome-linux-software</a></p>
-<h1 id="Node-js-amp- 版本管理"><a href="#Node-js-amp- 版本管理" class="headerlink" title="Node.js &amp; 版本管理"></a>Node.js &amp; 版本管理 </h1><ul>
-<li> 推荐的安装方式是通过 nvm</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> verify installtion</span><br><span class="line">command -v nvm</span><br><span class="line"><span class="meta">#</span> print</span><br><span class="line">nvm</span><br><span class="line"><span class="meta">#</span> install nodejs</span><br><span class="line">nvm install node</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> special in o-my-zsh</span><br><span class="line"><span class="meta">#</span> install as plugin</span><br><span class="line">git clone https://github.com/lukechilds/zsh-nvm~/.oh-my-zsh/custom/plugins/zsh-nvm</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> edit ~/.zshrc</span><br><span class="line">plugins+=(zsh-nvm)</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/creationix/nvm" target="_blank" rel="external">nvm</a></p>
-<h1 id="S-S-Libev"><a href="#S-S-Libev" class="headerlink" title="S-S-Libev"></a>S-S-Libev</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 提示 </span><br><span class="line">add-apt-repository: command not found</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装工具包 </span><br><span class="line">apt-get install software-properties-common</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 libev</span><br><span class="line">sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install shadowsocks-libev</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 启动时提示 </span><br><span class="line">This system doesn't provide enough entropy to quicklygenerate high-quality random numbers</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 rng-tools 工具 </span><br><span class="line"></span><br><span class="line">apt install rng-tools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 4 in 1</span><br><span class="line">wget --no-check-certificate -O shadowsocks-all.shhttps://raw.githubusercontentcom/teddysun/shadowsocks_install/master/shadowsocks-allsh</span><br><span class="line">chmod +x shadowsocks-all.sh</span><br><span class="line">./shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</span><br></pre></td></tr></table></figure>
-<h1 id="KeePass2"><a href="#KeePass2" class="headerlink" title="KeePass2"></a>KeePass2</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apt install keepass2</span><br></pre></td></tr></table></figure>
-<h1 id="Uget"><a href="#Uget" class="headerlink" title="Uget"></a>Uget</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo add-apt-repository ppa:plushuang-tw/uget-stable</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install uget</span><br></pre></td></tr></table></figure>
-<h1 id="Oracle-Java"><a href="#Oracle-Java" class="headerlink" title="Oracle Java"></a>Oracle Java</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 清除已经安装的 OpenJDK</span><br><span class="line">sudo apt-get purge openjdk-\*</span><br><span class="line"><span class="meta">#</span> 安装 Oracle JDK</span><br><span class="line">sudo add-apt-repository ppa:webupd8team/java</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install oracle-java8-installer</span><br></pre></td></tr></table></figure>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04" target="_blank" rel="external">how to install java with apt get on ubuntu 16.04</a></p>
-<h1 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">sudo dpkg -i google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure>
-<h1 id="Typora"><a href="#Typora" class="headerlink" title="Typora"></a>Typora</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> optional, but recommended</span><br><span class="line">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE</span><br><span class="line"><span class="meta">#</span> add Typora's repository</span><br><span class="line">sudo add-apt-repository'deb https://typora.io ./linux/'</span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="meta">#</span> install typora</span><br><span class="line">sudo apt-get install typora</span><br></pre></td></tr></table></figure>
-<h1 id="you-get"><a href="#you-get" class="headerlink" title="you-get"></a>you-get</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> install ffmpeg</span><br><span class="line">sudo add-apt-repository ppa:mc3man/trusty-media</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install ffmpeg</span><br><span class="line"><span class="meta">#</span> install you-get</span><br><span class="line">pip3 install you-get</span><br><span class="line"><span class="meta">#</span>usage</span><br><span class="line">you-get url</span><br></pre></td></tr></table></figure>
-<h1 id="Guake- 终端"><a href="#Guake- 终端" class="headerlink" title="Guake 终端"></a>Guake 终端 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/unstable</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
-<p> 到 Github 页面下载最新版本并解压，之后执行 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./dev.sh --install</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/Guake/guake" target="_blank" rel="external">Guake</a></p>
-<h1 id="BBR"><a href="#BBR" class="headerlink" title="BBR"></a>BBR</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh </span><br><span class="line">chmod +x bbr.sh </span><br><span class="line">./bbr.sh</span><br></pre></td></tr></table></figure>
-<h1 id="Coursera-dl"><a href="#Coursera-dl" class="headerlink" title="Coursera-dl"></a>Coursera-dl</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install coursera-dl</span><br><span class="line"><span class="meta">#</span> sometime you need to restart your shell</span><br><span class="line">exec $SHELL</span><br></pre></td></tr></table></figure>
-<h1 id="Firefox-beta"><a href="#Firefox-beta" class="headerlink" title="Firefox beta"></a>Firefox beta</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:mozillateam/firefox-next</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install firefox</span><br></pre></td></tr></table></figure>
-<h1 id="Telegram"><a href="#Telegram" class="headerlink" title="Telegram"></a>Telegram</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:atareao/telegram</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install telegram</span><br></pre></td></tr></table></figure>
-<h1 id="Wechat- 微信"><a href="#Wechat- 微信" class="headerlink" title="Wechat 微信"></a>Wechat 微信 </h1><p><a href="https://github.com/geeeeeeeeek/electronic-wechat" target="_blank" rel="external">electronic-wechat</a></p>
-<h1 id="网易云"><a href="# 网易云" class="headerlink" title="网易云"></a> 网易云 </h1><ul>
-<li><p> 魔改版 </p>
-<ul>
-<li><a href="https://github.com/trazyn/ieaseMusic" target="_blank" rel="external">ieaseMusic</a></li>
-</ul>
-</li>
-</ul>
-<h1 id="电源管理"><a href="# 电源管理" class="headerlink" title="电源管理"></a> 电源管理 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-fast install tlp tlp-rdw</span><br><span class="line">sudo tlp start</span><br></pre></td></tr></table></figure>
-<h1 id="系统监视器"><a href="# 系统监视器" class="headerlink" title="系统监视器"></a> 系统监视器 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-psutil curl git gir1.2-appindicator3-0.1</span><br><span class="line">git clone https://github.com/fossfreedom/indicator-sysmonitor.git</span><br><span class="line">cd indicator-sysmonitor</span><br><span class="line">sudo make install</span><br><span class="line">nohup indicator-sysmonitor &amp;</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="external">indicator-sysmonitor</a></p>
-]]></content>
-      
-        <categories>
-            
-            <category> Linux &amp; VPS </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Linux </tag>
-            
-            <tag> VPS </tag>
-            
-            <tag> Ubuntu </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[5 信念是自我实现的预言]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/5.0-Faith-is-the-realistic-predictions/</url>
-      <content type="html"><![CDATA[<h2 id="追求幸福"><a href="# 追求幸福" class="headerlink" title="追求幸福"></a>追求幸福 </h2><p><strong> 幸福之作用：</strong> </p>
-<ul>
-<li>幸福让人感觉很好<ul>
-<li>幸福就是幸福</li>
-</ul>
-</li>
-<li>幸福对我们的生活、我们的人际关系也产生了积极的影响<ul>
-<li>开拓思路，帮助我们和其他人建立联系，提示自身潜力</li>
-</ul>
-</li>
-<li>“积极情绪的扩展建设理论”<ul>
-<li>积极情绪似乎会扩展人们暂时的想法，充实行动的库存并建立持久的个人资源</li>
-<li>“通过体验积极情绪，人们变得更加富有创造力、更加博学多才、更有韧性、更具社交能力以及更加健康向上”</li>
-</ul>
-</li>
-<li>“积极情绪帮助我们客服消极情绪”<ul>
-<li>当我们被负面情绪所困时，我们的思考变得狭隘和压抑；我们的注意力仅停滞在事情本身</li>
-</ul>
-</li>
-</ul>
-<h4 id="情绪转换"><a href="# 情绪转换" class="headerlink" title="情绪转换"></a>情绪转换</h4><ul>
-<li>糟糕情绪的 “N &amp; C” 循环<ul>
-<li>Narrow and Constrict &lt;–&gt; 遭受痛苦</li>
-</ul>
-</li>
-<li>积极情绪的 “B &amp; B” 循环<ul>
-<li>Broaden and Build &lt;–&gt; 积极情绪 &lt;–&gt; 扩展思路和视野</li>
-<li>来源可能是一部喜剧电影、一次深呼吸、一次与朋友间的互动</li>
-</ul>
-</li>
-<li>挑战在于：如何将积极情绪和“允许自己成为普通人”的想法结合起来，去体会情绪，转移情绪；不再不如恶性循环之中</li>
-</ul>
-<h4 id="解决问题而非逃避问题"><a href="# 解决问题而非逃避问题" class="headerlink" title="解决问题而非逃避问题"></a>解决问题而非逃避问题</h4><ul>
-<li>接受自己的糟糕的情绪</li>
-<li>选择一种方式转换为积极情绪</li>
-</ul>
-<p>这样的过程会提高我们对情绪的调控能力，进而提高我们对糟糕情绪的免疫力；使我们的思路更加清晰和开阔。</p>
-<h4 id="追求自我的幸福是自私的行为吗？"><a href="# 追求自我的幸福是自私的行为吗？" class="headerlink" title="追求自我的幸福是自私的行为吗？"></a>追求自我的幸福是自私的行为吗？</h4><ul>
-<li>幸福是一个正和博弈<ul>
-<li>幸福会传染，助人亦助己</li>
-</ul>
-</li>
-<li>自私 ≠ 不道德</li>
-</ul>
-<h5 id="传播幸福最好的方式就是经营好自己的幸福"><a href="# 传播幸福最好的方式就是经营好自己的幸福" class="headerlink" title="传播幸福最好的方式就是经营好自己的幸福"></a>传播幸福最好的方式就是经营好自己的幸福 </h5><h2 id="信念是自我实现的预言"><a href="# 信念是自我实现的预言" class="headerlink" title="信念是自我实现的预言"></a> 信念是自我实现的预言</h2><ul>
-<li>信念常常决定我们的行为、决定我们表现的优劣<ul>
-<li>它是我们成功和幸福最精准的预测</li>
-</ul>
-</li>
-<li>“期待效应”<ul>
-<li>“皮格马利翁”实验</li>
-</ul>
-</li>
-<li>“积极情景创造积极效应”<ul>
-<li>“阿希从众实验”</li>
-<li>“菲利普津巴多监狱实验”</li>
-<li>“艾伦·蓝格实验”</li>
-<li>巴吉（Barge）研究</li>
+<li>冥想<ul>
+<li>静坐</li>
+<li>注意了转移到呼吸</li>
+<li>深呼吸</li>
+<li>思考世界和我们的联系、纽带</li>
+<li>深呼吸</li>
+<li>注意力转移到情绪上，接受你的情绪改变，让你的情绪随呼吸流出</li>
 </ul>
 </li>
 </ul>
@@ -1075,101 +926,152 @@
     </entry>
     
     <entry>
-      <title><![CDATA[4 积极的环境能改变人]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/4.0-positive-environment-can-change-person/</url>
-      <content type="html"><![CDATA[<h3 id="改变"><a href="# 改变" class="headerlink" title="改变"></a>改变</h3><ul>
-<li>传播真正有用的东西<ul>
-<li>传播真实的知识</li>
-<li>研究</li>
+      <title><![CDATA[5 信念是自我实现的预言]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/5.0-Faith-is-the-realistic-predictions/</url>
+      <content type="html"><![CDATA[<h2 id="追求幸福"><a href="# 追求幸福" class="headerlink" title="追求幸福"></a>追求幸福 </h2><p><strong> 幸福之作用：</strong> </p>
+<ul>
+<li>幸福让人感觉很好<ul>
+<li>幸福就是幸福</li>
 </ul>
 </li>
-<li>“精英民主化”<ul>
-<li>学习优秀的，让全体都变得优秀</li>
+<li>幸福对我们的生活、我们的人际关系也产生了积极的影响<ul>
+<li>开拓思路，帮助我们和其他人建立联系，提示自身潜力</li>
 </ul>
 </li>
-<li>“阻止改变的障碍”<ul>
-<li>低估了自己带来变化的能力</li>
+<li>“积极情绪的扩展建设理论”<ul>
+<li>积极情绪似乎会扩展人们暂时的想法，充实行动的库存并建立持久的个人资源</li>
+<li>“通过体验积极情绪，人们变得更加富有创造力、更加博学多才、更有韧性、更具社交能力以及更加健康向上”</li>
 </ul>
 </li>
-<li>“改变如何发生”？<ul>
-<li>改变可以呈几何级数扩散 &lt;–&gt; 理解人群中的指数效应 &lt;–&gt; 扩大影响力</li>
-<li>“蝴蝶效应”</li>
-<li>“六度分离现象”</li>
-<li>“微笑效应”</li>
-</ul>
-</li>
-<li>“凭外因无法令人幸福”<ul>
-<li>剧烈的外界环境变化对幸福感的影响只持续一段时间，之后将会回到原来的水平</li>
-<li>一旦满足基本需求之后，幸福感将不会再有很大提升</li>
-<li>并不是说毫无变化，只是外界某一因素 剧烈变化，易会导致其他因素协同变化，人生会出现新的体验，会让你开心亦会让你伤心，所以幸福值又回到了原来水平<ul>
-<li>社会制度影响除外，民主制度下的人们比独裁统治下的人们更幸福（可能是后者没有得到基本的满足</li>
-</ul>
-</li>
-<li>“降低期望不能根本性提高幸福值”<ul>
-<li>只能维持一段时间</li>
+<li>“积极情绪帮助我们客服消极情绪”<ul>
+<li>当我们被负面情绪所困时，我们的思考变得狭隘和压抑；我们的注意力仅停滞在事情本身</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>“正确的期望才能获得幸福”<ul>
-<li>感受幸福的意愿和可能性主要取决于 <strong> 我们的精神状态</strong><ul>
-<li>而不是银行存款或其他</li>
+<h4 id="情绪转换"><a href="# 情绪转换" class="headerlink" title="情绪转换"></a>情绪转换</h4><ul>
+<li>糟糕情绪的 “N &amp; C” 循环<ul>
+<li>Narrow and Constrict &lt;–&gt; 遭受痛苦</li>
 </ul>
 </li>
-<li>关键在于：<ul>
-<li>改变我们的观念和精神状态</li>
-<li>在于改变我们看待这个世界的方式、看待成败的方式</li>
-<li>在于我们选择去理解什么、去关注什么</li>
+<li>积极情绪的 “B &amp; B” 循环<ul>
+<li>Broaden and Build &lt;–&gt; 积极情绪 &lt;–&gt; 扩展思路和视野</li>
+<li>来源可能是一部喜剧电影、一次深呼吸、一次与朋友间的互动</li>
 </ul>
 </li>
+<li>挑战在于：如何将积极情绪和“允许自己成为普通人”的想法结合起来，去体会情绪，转移情绪；不再不如恶性循环之中</li>
+</ul>
+<h4 id="解决问题而非逃避问题"><a href="# 解决问题而非逃避问题" class="headerlink" title="解决问题而非逃避问题"></a>解决问题而非逃避问题</h4><ul>
+<li>接受自己的糟糕的情绪</li>
+<li>选择一种方式转换为积极情绪</li>
+</ul>
+<p>这样的过程会提高我们对情绪的调控能力，进而提高我们对糟糕情绪的免疫力；使我们的思路更加清晰和开阔。</p>
+<h4 id="追求自我的幸福是自私的行为吗？"><a href="# 追求自我的幸福是自私的行为吗？" class="headerlink" title="追求自我的幸福是自私的行为吗？"></a>追求自我的幸福是自私的行为吗？</h4><ul>
+<li>幸福是一个正和博弈<ul>
+<li>幸福会传染，助人亦助己</li>
 </ul>
 </li>
+<li>自私 ≠ 不道德</li>
 </ul>
-<h3 id="人性"><a href="# 人性" class="headerlink" title="人性"></a>人性</h3><ul>
-<li>人性是否应该受到限制？<ul>
-<li>人性约束观：认为人性无法改变，他是恒定的。我们有特定的本能、偏好，他们是固定不变的；作为一个物种，与生俱来的；我们身上的缺点无法被改变<ul>
-<li>除了放弃之外，可以选择对其进行引导；建立体制引导缺陷</li>
-</ul>
-</li>
-<li>非人性约束观：认为人性可以不断进步；人性可以得到完善<ul>
-<li>建立体制完善缺陷、改善缺陷</li>
+<h5 id="传播幸福最好的方式就是经营好自己的幸福"><a href="# 传播幸福最好的方式就是经营好自己的幸福" class="headerlink" title="传播幸福最好的方式就是经营好自己的幸福"></a>传播幸福最好的方式就是经营好自己的幸福 </h5><h2 id="信念是自我实现的预言"><a href="# 信念是自我实现的预言" class="headerlink" title="信念是自我实现的预言"></a> 信念是自我实现的预言</h2><ul>
+<li>信念常常决定我们的行为、决定我们表现的优劣<ul>
+<li>它是我们成功和幸福最精准的预测</li>
 </ul>
 </li>
+<li>“期待效应”<ul>
+<li>“皮格马利翁”实验</li>
 </ul>
 </li>
-<li>“成为平凡人”  – 人性约束观<ul>
-<li>生活具有多样性，不是一直都是积极的</li>
-<li>不要为了“积极”而积极，这样会付出极大的成本并且往往不遂人意</li>
-<li>留给自己一个私人的空间，在这个房间里做一个凡人</li>
-<li>“动机悖论”：善于接受自己的情绪，不要过度压抑</li>
-</ul>
-</li>
-<li>情感、行为和认知<ul>
-<li>情感 &lt;–&gt; 情绪：情绪没有正邪之分；糟糕的情绪亦是人的本性<ul>
-<li>问题在于：<strong>我用什么态度对待和表达情绪</strong>？ </li>
-</ul>
-</li>
-<li>行为：表达情绪的方式<ul>
-<li>这个问题就涉及到道德领域，即有好坏之分；我们可以选择道德或不道德的方式对待其他人</li>
-</ul>
-</li>
-<li>认知：改变自己对糟糕情绪的看法<ul>
-<li>真诚地面对好坏情绪</li>
+<li>“积极情景创造积极效应”<ul>
+<li>“阿希从众实验”</li>
+<li>“菲利普津巴多监狱实验”</li>
+<li>“艾伦·蓝格实验”</li>
+<li>巴吉（Barge）研究</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>“主动接受”<ul>
-<li>识别好坏的能力</li>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[3 如何避免惬意的麻木]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/</url>
+      <content type="html"><![CDATA[<ul>
+<li>惬意的麻木(Confortably numb)</li>
+<li>积极心理学主要关注的是健康模式（health model） <ul>
+<li>Saluto-genesis</li>
+<li>生理、身体和心理的健康之源在哪？</li>
 </ul>
 </li>
-<li>冥想<ul>
-<li>静坐</li>
-<li>注意了转移到呼吸</li>
-<li>深呼吸</li>
-<li>思考世界和我们的联系、纽带</li>
-<li>深呼吸</li>
-<li>注意力转移到情绪上，接受你的情绪改变，让你的情绪随呼吸流出</li>
+<li>健康模式下不同层面的解决方式<ul>
+<li>缺陷：我们只关注自身的不足</li>
+<li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li>
+<li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li>
+<li>行动：认清兴趣、培养优势以及追求激情<ul>
+<li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li>
+</ul>
+</li>
+<li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li>
+</ul>
+</li>
+</ul>
+<h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul>
+<li>搭建桥梁：不同学科、学术和社会等</li>
+<li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li>
+<li>承认人性的缺漏还是从心理层面完善他？</li>
+<li>幸福是并且应当是我们的最终追求和道德追求</li>
+</ul>
+<h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul>
+<li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul>
+<li>相信改变是会发生的</li>
+</ul>
+</li>
+<li>理论和实践之间有很多代沟<ul>
+<li>教师和学生：马福·科林斯计划，皮革马利温效应</li>
+<li>如何赞扬别人和提高自信？如何培训自我效能？</li>
+<li>瑜伽能减少入狱人员的重新犯罪几率</li>
+<li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li>
+<li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li>
+<li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li>
+</ul>
+</li>
+<li>考虑实际，消除象牙塔和社会之间的隔阂<ul>
+<li>作为学生要承担起上述责任</li>
+</ul>
+</li>
+<li>“生长锥统计学”<ul>
+<li>研究一般情况有助于观察当下，但无助于改善当下</li>
+<li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li>
+<li>心理学上的作为“普通”，实际上是“平均精神状态”<ul>
+<li>这一概念会导致全体精神状态下降</li>
+</ul>
+</li>
+<li>与“精英主义”的区别<ul>
+<li>研究最优秀的人同时也研究普通的人</li>
+<li>研究最优秀的人对所有人是有益的</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1467,149 +1369,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[3 如何避免惬意的麻木]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/</url>
-      <content type="html"><![CDATA[<ul>
-<li>惬意的麻木(Confortably numb)</li>
-<li>积极心理学主要关注的是健康模式（health model） <ul>
-<li>Saluto-genesis</li>
-<li>生理、身体和心理的健康之源在哪？</li>
-</ul>
-</li>
-<li>健康模式下不同层面的解决方式<ul>
-<li>缺陷：我们只关注自身的不足</li>
-<li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li>
-<li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li>
-<li>行动：认清兴趣、培养优势以及追求激情<ul>
-<li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li>
-</ul>
-</li>
-<li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li>
-</ul>
-</li>
-</ul>
-<h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul>
-<li>搭建桥梁：不同学科、学术和社会等</li>
-<li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li>
-<li>承认人性的缺漏还是从心理层面完善他？</li>
-<li>幸福是并且应当是我们的最终追求和道德追求</li>
-</ul>
-<h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul>
-<li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul>
-<li>相信改变是会发生的</li>
-</ul>
-</li>
-<li>理论和实践之间有很多代沟<ul>
-<li>教师和学生：马福·科林斯计划，皮革马利温效应</li>
-<li>如何赞扬别人和提高自信？如何培训自我效能？</li>
-<li>瑜伽能减少入狱人员的重新犯罪几率</li>
-<li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li>
-<li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li>
-<li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li>
-</ul>
-</li>
-<li>考虑实际，消除象牙塔和社会之间的隔阂<ul>
-<li>作为学生要承担起上述责任</li>
-</ul>
-</li>
-<li>“生长锥统计学”<ul>
-<li>研究一般情况有助于观察当下，但无助于改善当下</li>
-<li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li>
-<li>心理学上的作为“普通”，实际上是“平均精神状态”<ul>
-<li>这一概念会导致全体精神状态下降</li>
-</ul>
-</li>
-<li>与“精英主义”的区别<ul>
-<li>研究最优秀的人同时也研究普通的人</li>
-<li>研究最优秀的人对所有人是有益的</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[9 积极情绪]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/9.0-positive-emotions/</url>
-      <content type="html"><![CDATA[<h2 id="处理痛苦和积极情绪"><a href="# 处理痛苦和积极情绪" class="headerlink" title="处理痛苦和积极情绪"></a>处理痛苦和积极情绪 </h2><p><em> 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究</em></p>
-<ul>
-<li>痛苦情绪表达<ul>
-<li>写、说更能化解痛苦情绪</li>
-<li>在脑海中回忆会加剧痛苦情绪</li>
-</ul>
-</li>
-<li>积极情绪<ul>
-<li>说和写反而减弱积极情绪的持续化</li>
-<li>回忆能让积极情绪变得更多</li>
-</ul>
-</li>
-</ul>
-<h3 id="分析和重现情绪"><a href="# 分析和重现情绪" class="headerlink" title="分析和重现情绪"></a>分析和重现情绪</h3><ul>
-<li>分析经历有助于改善痛苦以及消极经历<ul>
-<li>而分析美好的经历并不能增加很多积极情绪</li>
-</ul>
-</li>
-<li>回忆积极情绪能让积极情绪持续更久<ul>
-<li>单纯在脑海里思考只会让该消极情绪更甚<ul>
-<li>PTSD 发生的区域调查</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><strong>感激练习就是重现经历的练习</strong></li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[8 感激]]></title>
       <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/8.0-appreciate/</url>
       <content type="html"><![CDATA[<h2 id="是什么阻止我们乐观？"><a href="# 是什么阻止我们乐观？" class="headerlink" title="是什么阻止我们乐观？"></a>是什么阻止我们乐观？</h2><h3 id="舆论是乐观的杀手"><a href="# 舆论是乐观的杀手" class="headerlink" title="舆论是乐观的杀手"></a>舆论是乐观的杀手</h3><blockquote>
@@ -1674,6 +1433,63 @@
 <p>善用你的眼睛吧，犹如明天你将遭到失明的灾难；聆听乐曲的妙音，似乎你明天就会失聪。<br>抚摸每一件你想要抚摸的物品吧，犹如你明天的触觉将会衰减。嗅闻每一件你想要抚摸的物件 <br> 吧，犹如你明天即将失去嗅觉和味觉一样。 – 海伦·凯勒</p>
 </blockquote>
 </li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[9 积极情绪]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/9.0-positive-emotions/</url>
+      <content type="html"><![CDATA[<h2 id="处理痛苦和积极情绪"><a href="# 处理痛苦和积极情绪" class="headerlink" title="处理痛苦和积极情绪"></a>处理痛苦和积极情绪 </h2><p><em> 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究</em></p>
+<ul>
+<li>痛苦情绪表达<ul>
+<li>写、说更能化解痛苦情绪</li>
+<li>在脑海中回忆会加剧痛苦情绪</li>
+</ul>
+</li>
+<li>积极情绪<ul>
+<li>说和写反而减弱积极情绪的持续化</li>
+<li>回忆能让积极情绪变得更多</li>
+</ul>
+</li>
+</ul>
+<h3 id="分析和重现情绪"><a href="# 分析和重现情绪" class="headerlink" title="分析和重现情绪"></a>分析和重现情绪</h3><ul>
+<li>分析经历有助于改善痛苦以及消极经历<ul>
+<li>而分析美好的经历并不能增加很多积极情绪</li>
+</ul>
+</li>
+<li>回忆积极情绪能让积极情绪持续更久<ul>
+<li>单纯在脑海里思考只会让该消极情绪更甚<ul>
+<li>PTSD 发生的区域调查</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>感激练习就是重现经历的练习</strong></li>
 </ul>
 ]]></content>
       
@@ -1837,6 +1653,190 @@
             <tag> 视频 </tag>
             
             <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[积极心理学资料索引与声明]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%A3%B0%E6%98%8E/</url>
+      <content type="html"><![CDATA[<p>《积极心理学》 系列 <strong> 笔记 </strong>，是笔者个人的学习记录摘抄。<br> 其中主要的参考资料是（文章中将不再列出，除非特殊来源）：<br><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank" rel="external">哈佛大学公开课：幸福课</a></p>
+<ul>
+<li>多数结论、文字皆为摘抄自视频中，少数为笔者自己的总结。</li>
+<li>本系列的文章内容架构为笔者自行梳理。</li>
+<li>多数图片为笔者自行制作，少数来自网上或公开的资料</li>
+</ul>
+<p>如果本系列文章有侵犯到您权利的地方，请立刻联系笔者！</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[华为 A199 救砖札记]]></title>
+      <url>/%E7%8E%A9%E6%9C%BA%E6%8A%80%E5%B7%A7/save-blocked-in-A199/</url>
+      <content type="html"><![CDATA[<h2 id="1- 前言"><a href="#1- 前言" class="headerlink" title="1. 前言"></a>1. 前言 </h2><p> 这货之前一直被我丢在柜子里。晚上想要注册多一个微信号，需要多一台设备来登陆。毕竟双开有被封号的风险。</p>
+<p>之前已经刷入了第三方的 REC，所以本以为挺简单。想着先刷回官方版本，然后自己精简的。</p>
+<p>于是安装官方的指引：</p>
+<ol>
+<li>官方的包解压出来，把 <code>dload</code> 放到了外置 SD 卡</li>
+<li>设置–&gt; 关闭快速启动</li>
+<li>设置–&gt; 关于手机–&gt; 系统更新–&gt; 本地升级</li>
+<li>重启</li>
+</ol>
+<p><strong>然后就崩了</strong>…</p>
+<p>第三方的 REC 无法识别，然后一直卡在 TWRP 的界面，重启或者试图进入 REC 都会一直卡在 TWEP 启动界面。</p>
+<p>然后在官方论坛找了一下，没什么有用的帖子…刷机氛围真是不行…</p>
+<p>直到看到某个官方教程帖子里说，华为的 fastboot 界面其实就是开机界面（麦芒 A199 的就是那个麦芽）。使用 <strong> 音量键减 + 开机键 </strong> 进入。</p>
+<p>能进入 fastboot 说明还是有救的。</p>
+<h2 id="2- 环境准备"><a href="#2- 环境准备" class="headerlink" title="2. 环境准备"></a>2. 环境准备 </h2><h3 id="2-1- 安装驱动"><a href="#2-1- 安装驱动" class="headerlink" title="2.1 安装驱动"></a>2.1 安装驱动</h3><p> 我使用的是 Win10，需要安装华为的驱动之后才能识别设备，不然 fastboot 是无法查找到设备的。</p>
+<p><a href="http://consumer.huawei.com/cn/support/search/index.htm?keywords=%E9%BA%A6%E8%8A%92A199" target="_blank" rel="external">关键词搜索：麦芒 A199</a></p>
+<p>华为官方的搜索界面都找不到这机子了…滑到列表最下面，看到 <code>HUAWEI Stick UTPS-V200R003B015D11SP01C983(for win10)</code> 这个选项：</p>
+<p><img src="https://img.rosuh.me/wiki/58ca9d2bd48d2.png" alt="HUAWEI Stick UTPS-V200R003B015D11SP01C983( for win10)"></p>
+<p>然后下载下来。如果官方撤了这个文件，可以到我分享的度盘下载：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1dFadWkT 密码: bdyd</span></span><br></pre></td></tr></table></figure>
+<p>下载之后解压再解压，里面是一个 <code>iso</code> 镜像文件，可以选择装载到你的虚拟驱动器，或直接解压出来都没问题。</p>
+<p>打开 <code>AutoRun.exe</code> 安装，就行了。</p>
+<p>照道理现在应该已经装好了。我就是这么装的，并且之前我的系统也没有装过华为的其他驱动，所以我判断这样应该就可以。</p>
+<h3 id="2-2- 刷入 -REC"><a href="#2-2- 刷入 -REC" class="headerlink" title="2.2 刷入 REC"></a>2.2 刷入 REC</h3><ol>
+<li>获取 ADB 套件</li>
+</ol>
+<p>这一步需要用到 <code>adb</code> 套件。</p>
+<p>点击下面的链接从 Google 官方下载：</p>
+<p><a href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip" target="_blank" rel="external">https://dl.google.com/android/repository/platform-tools-latest-windows.zip</a></p>
+<p>如果因为某些 <strong> 不可描述 </strong> 的原因导致你无法下载，可以通过我分享的度盘链接下载：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1miQCxnU 密码: kyum</span></span><br></pre></td></tr></table></figure>
+<p><em>建议从官方下载，保证取得最新版的套件</em>。</p>
+<p>下载之后解压出来，得到 <code>adb</code>套件。</p>
+<ol>
+<li>获取官方的 REC</li>
+</ol>
+<p>麦芒的官方 REC 我在论坛没找到。所以需要从官方的 ROM 中提取出来。</p>
+<p>下面是提取的步骤，如果你不想自己提取，可以直接用我提取出来：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1eRO689O 密码: q4f9</span></span><br></pre></td></tr></table></figure>
+<p><a href="http://www.emui.com/plugin.php?id=hwdownload&amp;mod=detail&amp;mid=1" target="_blank" rel="external">官方 ROM 下载</a></p>
+<p>如果官方撤掉了，从我的盘下载：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1c21kqDq 密码: pi7u</span></span><br></pre></td></tr></table></figure>
+<p>提取 REC 需要用到一个提取软件，直接点下面下载：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1boDhujH 密码: 5kun</span></span><br></pre></td></tr></table></figure>
+<p>下载完解压出来，双击运行<code>HuaweiUpdateExtractor.exe</code>。</p>
+<p>选择 <code>Update File</code> 右边的按钮选择官方 ROM</p>
+<p><img src="https://img.rosuh.me/wiki/58ca9fa275ed9.png" alt="HuaweiUpdateExtractor"></p>
+<p>选择 ROM 之后，右键单击 <code>RECOVERY</code> 解压出来：</p>
+<p><img src="https://img.rosuh.me/wiki/58caa084186d0.png" alt="解压 REC"></p>
+<p>然后把解压出来的 <code>RECOVERY</code> 放到第一步中 ADB 套件的文件夹中。</p>
+<ol>
+<li>刷入 REC</li>
+</ol>
+<p>进入 ADB 套件文件夹，可以看到诸如 <code>adb</code>, <code>fastboot</code> 等工具。</p>
+<p>按住键盘的 <code>Shift</code> 键，同时鼠标右键单击该文件夹的空白处，选择“在此处打开命令行窗口”：</p>
+<p><img src="https://img.rosuh.me/wiki/58caa1a512317.png" alt="open ps"></p>
+<p>我这里是 <code>Powershell</code> 窗口，大部分时候显示为 <code>cmd</code> 窗口。</p>
+<p>按住手机 <strong> 音量键减 + 开机键 </strong> 进入 <code>fastboot</code> 模式，显示为开机的那个麦芽 logo。</p>
+<p>进入命令行界面，输入以下命令检查设备是否链接：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe devices</span><br></pre></td></tr></table></figure>
+<p>如果有输入提示（一般是含有一串数字 + 英文字母），则意味着设备已经被识别了。如果没什么输出、提示，则意味着没有被识别。那么你要自行寻找其他驱动。</p>
+<p>接着输入以下命令，进行刷入 REC</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe flash recovery RECOVERY.img</span><br></pre></td></tr></table></figure>
+<p>输入回车之后应该就开始刷入了。命令行窗口会有提示：</p>
+<p><img src="https://img.rosuh.me/wiki/58caa385361f6.png" alt="Flash REC"></p>
+<p>由于我之前是升级过程卡住了，刷入 REC 之后自动开始了流程，这点还是很赞的：</p>
+<p><img src="https://img.rosuh.me/wiki/58caa3eaaed61.jpg" alt="show time"></p>
+<p>接着就可以进行愉快地玩耍啦~</p>
+<hr>
+<p><em>Best Wish.</em></p>
+<p><em>by rosu</em></p>
+<p><em>2017-3-16</em></p>
+]]></content>
+      
+        <categories>
+            
+            <category> 玩机技巧 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> huawei </tag>
+            
+            <tag> A199 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Ubuntu 安装软件合集]]></title>
+      <url>/Linux-VPS/softwares/</url>
+      <content type="html"><![CDATA[<h2 id="记录 -Ubuntu- 平台下安装的部分软件。"><a href="# 记录 -Ubuntu- 平台下安装的部分软件。" class="headerlink" title="记录 Ubuntu 平台下安装的部分软件。"></a> 记录 Ubuntu 平台下安装的部分软件。</h2><p><a href="https://alim0x.gitbooks.io/awesome-linux-software-zh_cn/content/#%E7%9B%AE%E5%BD%95" target="_blank" rel="external">awesome-linux-software</a></p>
+<h1 id="Node-js-amp- 版本管理"><a href="#Node-js-amp- 版本管理" class="headerlink" title="Node.js &amp; 版本管理"></a>Node.js &amp; 版本管理 </h1><ul>
+<li> 推荐的安装方式是通过 nvm</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> verify installtion</span><br><span class="line">command -v nvm</span><br><span class="line"><span class="meta">#</span> print</span><br><span class="line">nvm</span><br><span class="line"><span class="meta">#</span> install nodejs</span><br><span class="line">nvm install node</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> special in o-my-zsh</span><br><span class="line"><span class="meta">#</span> install as plugin</span><br><span class="line">git clone https://github.com/lukechilds/zsh-nvm~/.oh-my-zsh/custom/plugins/zsh-nvm</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> edit ~/.zshrc</span><br><span class="line">plugins+=(zsh-nvm)</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/creationix/nvm" target="_blank" rel="external">nvm</a></p>
+<h1 id="S-S-Libev"><a href="#S-S-Libev" class="headerlink" title="S-S-Libev"></a>S-S-Libev</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 提示 </span><br><span class="line">add-apt-repository: command not found</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装工具包 </span><br><span class="line">apt-get install software-properties-common</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 libev</span><br><span class="line">sudo add-apt-repository ppa:max-c-lv/shadowsocks-libev</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install shadowsocks-libev</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 启动时提示 </span><br><span class="line">This system doesn't provide enough entropy to quicklygenerate high-quality random numbers</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装 rng-tools 工具 </span><br><span class="line"></span><br><span class="line">apt install rng-tools</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 4 in 1</span><br><span class="line">wget --no-check-certificate -O shadowsocks-all.shhttps://raw.githubusercontentcom/teddysun/shadowsocks_install/master/shadowsocks-allsh</span><br><span class="line">chmod +x shadowsocks-all.sh</span><br><span class="line">./shadowsocks-all.sh 2&gt;&amp;1 | tee shadowsocks-all.log</span><br></pre></td></tr></table></figure>
+<h1 id="KeePass2"><a href="#KeePass2" class="headerlink" title="KeePass2"></a>KeePass2</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">apt install keepass2</span><br></pre></td></tr></table></figure>
+<h1 id="Uget"><a href="#Uget" class="headerlink" title="Uget"></a>Uget</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo add-apt-repository ppa:plushuang-tw/uget-stable</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install uget</span><br></pre></td></tr></table></figure>
+<h1 id="Oracle-Java"><a href="#Oracle-Java" class="headerlink" title="Oracle Java"></a>Oracle Java</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#</span> 清除已经安装的 OpenJDK</span><br><span class="line">sudo apt-get purge openjdk-\*</span><br><span class="line"><span class="meta">#</span> 安装 Oracle JDK</span><br><span class="line">sudo add-apt-repository ppa:webupd8team/java</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install oracle-java8-installer</span><br></pre></td></tr></table></figure>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-install-java-with-apt-get-on-ubuntu-16-04" target="_blank" rel="external">how to install java with apt get on ubuntu 16.04</a></p>
+<h1 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</span><br><span class="line">sudo dpkg -i google-chrome-stable_current_amd64.deb</span><br></pre></td></tr></table></figure>
+<h1 id="Typora"><a href="#Typora" class="headerlink" title="Typora"></a>Typora</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> optional, but recommended</span><br><span class="line">sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE</span><br><span class="line"><span class="meta">#</span> add Typora's repository</span><br><span class="line">sudo add-apt-repository'deb https://typora.io ./linux/'</span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="meta">#</span> install typora</span><br><span class="line">sudo apt-get install typora</span><br></pre></td></tr></table></figure>
+<h1 id="you-get"><a href="#you-get" class="headerlink" title="you-get"></a>you-get</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> install ffmpeg</span><br><span class="line">sudo add-apt-repository ppa:mc3man/trusty-media</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install ffmpeg</span><br><span class="line"><span class="meta">#</span> install you-get</span><br><span class="line">pip3 install you-get</span><br><span class="line"><span class="meta">#</span>usage</span><br><span class="line">you-get url</span><br></pre></td></tr></table></figure>
+<h1 id="Guake- 终端"><a href="#Guake- 终端" class="headerlink" title="Guake 终端"></a>Guake 终端 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:webupd8team/unstable</span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+<p> 到 Github 页面下载最新版本并解压，之后执行 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./dev.sh --install</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/Guake/guake" target="_blank" rel="external">Guake</a></p>
+<h1 id="BBR"><a href="#BBR" class="headerlink" title="BBR"></a>BBR</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh </span><br><span class="line">chmod +x bbr.sh </span><br><span class="line">./bbr.sh</span><br></pre></td></tr></table></figure>
+<h1 id="Coursera-dl"><a href="#Coursera-dl" class="headerlink" title="Coursera-dl"></a>Coursera-dl</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install coursera-dl</span><br><span class="line"><span class="meta">#</span> sometime you need to restart your shell</span><br><span class="line">exec $SHELL</span><br></pre></td></tr></table></figure>
+<h1 id="Firefox-beta"><a href="#Firefox-beta" class="headerlink" title="Firefox beta"></a>Firefox beta</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:mozillateam/firefox-next</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install firefox</span><br></pre></td></tr></table></figure>
+<h1 id="Telegram"><a href="#Telegram" class="headerlink" title="Telegram"></a>Telegram</h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:atareao/telegram</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-fast install telegram</span><br></pre></td></tr></table></figure>
+<h1 id="Wechat- 微信"><a href="#Wechat- 微信" class="headerlink" title="Wechat 微信"></a>Wechat 微信 </h1><p><a href="https://github.com/geeeeeeeeek/electronic-wechat" target="_blank" rel="external">electronic-wechat</a></p>
+<h1 id="网易云"><a href="# 网易云" class="headerlink" title="网易云"></a> 网易云 </h1><ul>
+<li><p> 魔改版 </p>
+<ul>
+<li><a href="https://github.com/trazyn/ieaseMusic" target="_blank" rel="external">ieaseMusic</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="电源管理"><a href="# 电源管理" class="headerlink" title="电源管理"></a> 电源管理 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-fast install tlp tlp-rdw</span><br><span class="line">sudo tlp start</span><br></pre></td></tr></table></figure>
+<h1 id="系统监视器"><a href="# 系统监视器" class="headerlink" title="系统监视器"></a> 系统监视器 </h1><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install python3-psutil curl git gir1.2-appindicator3-0.1</span><br><span class="line">git clone https://github.com/fossfreedom/indicator-sysmonitor.git</span><br><span class="line">cd indicator-sysmonitor</span><br><span class="line">sudo make install</span><br><span class="line">nohup indicator-sysmonitor &amp;</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/fossfreedom/indicator-sysmonitor" target="_blank" rel="external">indicator-sysmonitor</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux &amp; VPS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> VPS </tag>
+            
+            <tag> Ubuntu </tag>
             
         </tags>
         

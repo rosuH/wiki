@@ -76,7 +76,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Rechercher" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -95,10 +95,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Articles',
+            POSTS: 'Entradas',
             PAGES: 'Pages',
-            CATEGORIES: 'Catégories',
-            TAGS: 'Tags',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -131,7 +131,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Rechercher" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
                 </td>
@@ -148,7 +148,7 @@
         
     <div class="widget-wrap" id='categories'>
         <h3 class="widget-title">
-            <span>Catégories</span>
+            <span>Categorias</span>
             &nbsp;
             <a id='allExpand' href="#">
                 <i class="fa fa-angle-double-down fa-2x"></i>
@@ -198,7 +198,7 @@
                             &nbsp;
                             汇编基础
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -315,7 +315,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/">
-            <time datetime="2017-11-11T03:02:25.663Z" itemprop="datePublished">2017-11-11</time>
+            <time datetime="2017-11-23T14:15:32.663Z" itemprop="datePublished">2017-11-23</time>
         </a>
     </div>
 
@@ -378,107 +378,7 @@
         
             </div>   
             <div class="article-more-link">
-                <a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/#more">Read More</a>
-            </div>
-        
-        <footer class="article-footer">
-        </footer>
-    </div>
-</article>
-
-
-
-
-
-
-    
-        <article id="post-5-BX-and-loop-instruction" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-                    <div class="article-meta">
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/assembly/">assembly</a>
-    </div>
-
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">
-            <time datetime="2017-12-07T05:02:55.535Z" itemprop="datePublished">2017-12-07</time>
-        </a>
-    </div>
-
-
-                        
-                            <div class="article-meta-button">
-                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/5-BX-and-loop-instruction.md'> Source </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/5-BX-and-loop-instruction.md'> Edit </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/5-BX-and-loop-instruction.md'> History </a>
-                            </div>
-                        
-                    </div>
-                
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a>
-        </h1>
-    
-
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-        
-            
-                
-                
-                    
-                    
-                
-                    
-                    
-                
-                    
-                    
-                
-                    
-                    
-                
-                    
-                    
-                
-                
-                    
-                    <p><h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><h2 id="1-bx- 和内存单元的描述"><a href="#1-bx- 和内存单元的描述" class="headerlink" title="1. [bx] 和内存单元的描述"></a>1. <code>[bx]</code>和内存单元的描述</h2><ul>
-<li>描述一个内存单元所需的两种信息<ul>
-<li>内存单元的地址</li>
-<li>内存单元的长度（类型）</li>
-</ul>
-<p>
-                
-            
-        
-        
-            </div>   
-            <div class="article-more-link">
-                <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/#more">Read More</a>
+                <a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/#more">자세히 보기</a>
             </div>
         
         <footer class="article-footer">
@@ -578,7 +478,107 @@
         
             </div>   
             <div class="article-more-link">
-                <a href="/计算机技能/汇编基础/4-the-first-program/#more">Read More</a>
+                <a href="/计算机技能/汇编基础/4-the-first-program/#more">자세히 보기</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-5-BX-and-loop-instruction" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/assembly/">assembly</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">
+            <time datetime="2017-12-07T05:02:55.535Z" itemprop="datePublished">2017-12-07</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/5-BX-and-loop-instruction.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/5-BX-and-loop-instruction.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/5-BX-and-loop-instruction.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><h2 id="1-bx- 和内存单元的描述"><a href="#1-bx- 和内存单元的描述" class="headerlink" title="1. [bx] 和内存单元的描述"></a>1. <code>[bx]</code>和内存单元的描述</h2><ul>
+<li>描述一个内存单元所需的两种信息<ul>
+<li>内存单元的地址</li>
+<li>内存单元的长度（类型）</li>
+</ul>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/#more">자세히 보기</a>
             </div>
         
         <footer class="article-footer">
@@ -615,7 +615,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/">
-            <time datetime="2017-11-11T03:02:25.663Z" itemprop="datePublished">2017-11-11</time>
+            <time datetime="2017-11-23T14:15:32.663Z" itemprop="datePublished">2017-11-23</time>
         </a>
     </div>
 
@@ -678,7 +678,107 @@
         
             </div>   
             <div class="article-more-link">
-                <a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/#more">Read More</a>
+                <a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/#more">자세히 보기</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-积极心理学资料索引与声明" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/软技能/">软技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/软技能/积极心理学/">积极心理学</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/哈佛幸福课/">哈佛幸福课</a>, <a class="tag-link" href="/tags/笔记/">笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/软技能/积极心理学/积极心理学资料索引与声明/">
+            <time datetime="2017-11-23T14:15:30.956Z" itemprop="datePublished">2017-11-23</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/积极心理学资料索引与声明.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/积极心理学资料索引与声明.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/积极心理学资料索引与声明.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/软技能/积极心理学/积极心理学资料索引与声明/">积极心理学资料索引与声明</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>《积极心理学》 系列 <strong> 笔记 </strong>，是笔者个人的学习记录摘抄。<br> 其中主要的参考资料是（文章中将不再列出，除非特殊来源）：<br><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank" rel="external">哈佛大学公开课：幸福课</a></p>
+<ul>
+<li>多数结论、文字皆为摘抄自视频中，少数为笔者自己的总结。</li>
+<li>本系列的文章内容架构为笔者自行梳理。</li>
+<li>多数图片为笔者自行制作，少数来自网上或公开的资料</li>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/软技能/积极心理学/积极心理学资料索引与声明/#more">자세히 보기</a>
             </div>
         
         <footer class="article-footer">
@@ -778,107 +878,7 @@
         
             </div>   
             <div class="article-more-link">
-                <a href="/玩机技巧/save-blocked-in-A199/#more">Read More</a>
-            </div>
-        
-        <footer class="article-footer">
-        </footer>
-    </div>
-</article>
-
-
-
-
-
-
-    
-        <article id="post-积极心理学资料索引与声明" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-                    <div class="article-meta">
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/软技能/">软技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/软技能/积极心理学/">积极心理学</a>
-    </div>
-
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/哈佛幸福课/">哈佛幸福课</a>, <a class="tag-link" href="/tags/笔记/">笔记</a>
-    </div>
-
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/软技能/积极心理学/积极心理学资料索引与声明/">
-            <time datetime="2017-11-11T11:22:56.956Z" itemprop="datePublished">2017-11-11</time>
-        </a>
-    </div>
-
-
-                        
-                            <div class="article-meta-button">
-                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/积极心理学资料索引与声明.md'> Source </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/积极心理学资料索引与声明.md'> Edit </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/积极心理学资料索引与声明.md'> History </a>
-                            </div>
-                        
-                    </div>
-                
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/软技能/积极心理学/积极心理学资料索引与声明/">积极心理学资料索引与声明</a>
-        </h1>
-    
-
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-        
-            
-                
-                
-                    
-                    
-                
-                    
-                    
-                
-                    
-                    
-                
-                    
-                    
-                
-                    
-                    
-                
-                
-                    
-                    <p><p>《积极心理学》 系列 <strong> 笔记 </strong>，是笔者个人的学习记录摘抄。<br> 其中主要的参考资料是（文章中将不再列出，除非特殊来源）：<br><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank" rel="external">哈佛大学公开课：幸福课</a></p>
-<ul>
-<li>多数结论、文字皆为摘抄自视频中，少数为笔者自己的总结。</li>
-<li>本系列的文章内容架构为笔者自行梳理。</li>
-<li>多数图片为笔者自行制作，少数来自网上或公开的资料</li>
-<p>
-                
-            
-        
-        
-            </div>   
-            <div class="article-more-link">
-                <a href="/软技能/积极心理学/积极心理学资料索引与声明/#more">Read More</a>
+                <a href="/玩机技巧/save-blocked-in-A199/#more">자세히 보기</a>
             </div>
         
         <footer class="article-footer">
@@ -978,7 +978,7 @@
         
             </div>   
             <div class="article-more-link">
-                <a href="/Linux-VPS/softwares/#more">Read More</a>
+                <a href="/Linux-VPS/softwares/#more">자세히 보기</a>
             </div>
         
         <footer class="article-footer">
@@ -993,7 +993,7 @@
 
     
         <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/">&laquo; Préc</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+        <a class="extend prev" rel="prev" href="/">&laquo; Anterior</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
         </nav>
     
 </section>
