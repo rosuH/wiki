@@ -233,6 +233,8 @@ balabala...
 
 我们上一个例子中，`activity`通过其生命周期方法完成了大部分逻辑控制工作。在本个例子中，这些工作`fragment`的生命周期方法完成的。
 
+*`CrimeFragment.java`*
+
 ```java
 import android.support.v4.app.Fragment;
 public class CrimeFragment extends Fragment {
@@ -251,7 +253,188 @@ public class CrimeFragment extends Fragment {
 
 - `Fragment.onCreate(Bundle)`是公共方法，而`Activity.onCreate(Bundle)`是受保护方法
   - `Fragment.onCreate(Bundle)`方法及其他`Fragment`生命周期方法必须是公共方法，因为托管`fragment`的`activity`要调用它们
-- ​
+- `Fragment`同样具有保存及获取状态的`bundle`
+  - 类似于使用`Activity.onSaveInstanceState(Bundle)`，我们需要覆盖`Fragment.onSaveInstanceState(Bundle)`来使用
+- `fragment`的视图不是在`Fragment.onCreate(Bundle)`中生成的，虽然我们在该方法中配置了`fragment`实例，但是创建和配置`fragment`视图是在另一个`fragment`生命周期方法完成的
+
+
+```java
+public View onCrateView(LayoutInflater inflater, ViewGroup container, 
+                       Bundle savedInstanceState) {}
+```
+
+
+
+- 该方法实例化`fragment`视图的布局，然后将实例化的`View`返回给托管的`activity`
+  - `LayoutInflater, ViewGroup`是必要参数，`Bundle`用来存储恢复数据，可供该方法从保存状态下重建视图
+
+下面我们在`CrimeFragment.java`中，添加`onCreateView`方法的实现代码，从`fragment_crime.xml`布局中实例化返回布局。
+
+```java
+@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                         Bundle saveInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+        return v;
+    }
+```
+
+*解析*：
+
+- 在`onCreateView(...)`方法中，`fragment`的视图是直接通过调用`LayoutInflater.inflate(...)`方法并传入布局的资源 ID 生成的
+  - 第二个参数是视图的父视图，我们通常需要父视图来正确配置组件
+  - 第三个参数告诉布局生成器是否将生成的视图添加个给父视图
+    - 传入`flase`表示我们将以代码的方式添加视图
+
+
+
+2. 在`fragment`中实例化组件
+
+`fragment`中的`EditText, CheckBox, Button`组件，也都是在`onCreateView(...)`方法里实例化的。
+
+```java
+@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                         Bundle saveInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+
+        mTitleFiled = (EditText)v.findViewById(R.id.crime_title);
+        mTitleFiled.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // This space intentionally left blank
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mCrime.setTitle(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // This on too
+            }
+        });
+
+        return v;
+    }
+```
+
+
+
+- 对比`Activity`中实例化组件，`Fragment`中需要手动调用`View.findViewById()`方法
+- `onTextChanged(..)`方法中，调用`CharSequence`(表示用户输入)的`toString()`方法
+  - 该方法最后返回用来设置的`Crime`标题字符串
+
+接下来设置`Button`组件，让他显示`crime`的发生日期。
+
+```java
+...
+  mDateButton = (Button)v.findViewById(R.id.crime_date);
+        mDateButton.setText(mCrime.getDate().toString());
+        mDateButton.setEnabled(false);
+...
+```
+
+此处只是显示日期，而点击功能没有启用。
+
+接着设置`ChcekBox`组件。引用它并设置监听器，根据用户操作，更新`mSolved`状态。
+
+```java
+...
+  mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
+        mSolvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mCrime.setSolved(isChecked);
+            }
+        });
+...
+```
+
+
+
+
+
+# 7.6 向`FragmentManager`添加`UI fragment`
+
+`fragment`自己无法在屏幕上显示视图，我们需要把`CrimeFragment`添加给`CrimeActivity`。
+
+- `FragmentManager`类负责管理`fragment`并将它们的视图添加到`activity`的视图层级结构中
+  - `Activity`类中添加了`FragmentManager`
+
+![FragmentManager 图解](http://img.rosuh.me/wiki/wiki_201712_720ea7.png)
+
+- `FragmentManager`具体管理
+  - `fragment`队列
+  - `fragment`事务回退栈
+
+
+
+
+在本例中，我们只需关心`FragmentManager`管理的`fragment`队列。
+
+- 以代码的方式将`fragment`添加给`activity`，需要直接调用`activity`的`fragmentManager`
+  - 先获取`fragmentManager`本身
+  - 在`CrimeActivity.java`中，在`onCreate(Bundle)`方法中添加代码取得`fragmentManager`
+
+*获取`fragmentManager`（`CrimeActivity.java`）*
+
+```java
+public class CrimeActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_crime);
+
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+    }
+}
+
+```
+
+
+
+####  `fragment`事务
+
+获取`fragmentManager`后，再获取一个`fragment`交给它管理。
+
+*添加一个`CrimeFragment`（`CrimeActivity.java`）*
+
+```java
+Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+if (fragment == null) {
+            fragment = new CrimeFragment();
+            fm.beginTransaction()
+                    .add(R.id.fragment_container, fragment)
+                    .commit();
+}
+```
+
+- `new` --> `add` --> `commit`
+  - 事务的创建到提交的过程
+- `fragment`事务用来被添加、移除、附加、分离或替换`fragment`队列中的`fragment`
+  - 这是`fragment`动态组装和重新组装用户界面的关键
+- `Fragment.beginTransaction()`
+  - 创建并返回`fragmentTransaction`实例
+    - 该实例类支持流接口（fluent interface）的链式方法调用，以此配置`FragmentTransaction`再返回它
+- `add`是整个事务的核心
+  - 参数
+    - 容器视图资源 ID
+      - 告诉`FragmentManager`，`fragment`视图应该出现在`activity`视图的什么位置
+      - 作为`FragmentManager`队列中`fragment`的唯一标志
+    - 新创建的`CrimeFragment`
+- 从`FragmentManager`中获取`CrimeFragment`，使用容器视图资源 ID 就行了
+  - 如果要向`activity`添加多个`fragment`，通常就需要分别为每个`fragment`创建具有不同 ID 的不同容器
+
+
+
+总结起来，其是就是：
+
+![总结](http://img.rosuh.me/wiki/wiki_201712_04aff3.png)
+
+
 
 
 
