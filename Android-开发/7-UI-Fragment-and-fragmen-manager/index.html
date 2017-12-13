@@ -22,12 +22,12 @@
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_2017_4.png">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_2017_724ee3.png">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_d7c848.png">
-<meta property="og:image" content="http://img.rosuh.me/wiki/wiki_201712_720ea7.png">
-<meta property="og:image" content="http://img.rosuh.me/wiki/wiki_201712_04aff3.png">
-<meta property="og:image" content="http://img.rosuh.me/wiki/wiki_201712_5265c7.png">
-<meta property="og:image" content="http://img.rosuh.me/wiki/wiki_201712_e4ee9d.png">
-<meta property="og:image" content="http://img.rosuh.me/wiki/wiki_201712_b243e8.png">
-<meta property="og:updated_time" content="2017-12-11T09:30:45.367Z">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_720ea7.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_04aff3.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_5265c7.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_e4ee9d.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_b243e8.png">
+<meta property="og:updated_time" content="2017-12-13T07:57:27.606Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="7 UI Fragmnet 与 fragment 管理器">
 <meta name="twitter:description" content="7.1 UI 设计的灵活性需求 复杂的用户界面呈现需求 平板以及大尺寸手机显示问题 滑动屏幕等交互问题   acticity 视图局限性 我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性 activity 还得和特定的用户界面紧紧绑定    7.2 引入 fragment fragment 是一种控制器对象 activity 可以委托它执行任务 这些任">
@@ -92,7 +92,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -111,10 +111,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Entradas',
+            POSTS: 'Posts',
             PAGES: 'Pages',
-            CATEGORIES: 'Categorias',
-            TAGS: 'Etiquetas',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -147,7 +147,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
     </div>
 
                 </td>
@@ -164,7 +164,7 @@
         
     <div class="widget-wrap" id='categories'>
         <h3 class="widget-title">
-            <span>Categorias</span>
+            <span>categories</span>
             &nbsp;
             <a id='allExpand' href="#">
                 <i class="fa fa-angle-double-down fa-2x"></i>
@@ -214,7 +214,7 @@
                             &nbsp;
                             汇编基础
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -330,7 +330,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">
-            <time datetime="2017-12-11T09:30:45.367Z" itemprop="datePublished">2017-12-11</time>
+            <time datetime="2017-12-13T07:57:27.606Z" itemprop="datePublished">2017-12-13</time>
         </a>
     </div>
 
@@ -363,323 +363,323 @@
         
             
                 <div id="toc" class="toc-article">
-                <strong class="toc-title">Catálogo</strong>
+                <strong class="toc-title">Catalogue</strong>
                     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#7-1-UI- 设计的灵活性需求"><span class="toc-number">1.</span> <span class="toc-text">7.1 UI 设计的灵活性需求</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-2- 引入 -fragment"><span class="toc-number">2.</span> <span class="toc-text">7.2 引入 fragment</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-3- 着手开发示例应用"><span class="toc-number">3.</span> <span class="toc-text">7.3 着手开发示例应用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><span class="toc-number">3.0.0.0.1.</span> <span class="toc-text">我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CrimeFragment"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">CrimeFragment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#两类 -fragment"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">两类 fragment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在 -Android-Studio- 中增加依赖关系"><span class="toc-number">3.0.0.3.</span> <span class="toc-text">在 Android Studio 中增加依赖关系 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建 Crime 类"><span class="toc-number">3.0.0.4.</span> <span class="toc-text">创建 Crime 类</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-4- 托管 UI-fragment"><span class="toc-number">4.</span> <span class="toc-text">7.4 托管 UI fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fragment 的生命周期"><span class="toc-number">4.0.0.1.</span> <span class="toc-text">fragment的生命周期 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#托管的两种方式"><span class="toc-number">4.0.0.2.</span> <span class="toc-text">托管的两种方式 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#定义容器布局"><span class="toc-number">4.0.0.3.</span> <span class="toc-text">定义容器布局 </span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-5- 创建 UI-fragment"><span class="toc-number">5.</span> <span class="toc-text">7.5 创建 UI fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义 CrimeFragment 的布局"><span class="toc-number">5.0.0.1.</span> <span class="toc-text">定义 CrimeFragment 的布局</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建 CrimeFragment 类"><span class="toc-number">5.0.0.2.</span> <span class="toc-text">创建 CrimeFragment 类</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-6- 向 FragmentManager 添加 UI-fragment"><span class="toc-number">6.</span> <span class="toc-text">7.6 向 FragmentManager 添加 UI fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fragment 事务"><span class="toc-number">6.0.0.1.</span> <span class="toc-text">fragment事务 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FragmentManafer 和 fragment 生命周期"><span class="toc-number">6.0.0.2.</span> <span class="toc-text">FragmentManafer和 fragment 生命周期</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-7- 采用 fragment 应用架构"><span class="toc-number">7.</span> <span class="toc-text">7.7. 采用 fragment 应用架构 </span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用 fragment 的理由"><span class="toc-number">7.0.0.1.</span> <span class="toc-text">使用 fragment 的理由</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-8- 深入学习：fragment 与支持库"><span class="toc-number">8.</span> <span class="toc-text">7.8 深入学习：fragment与支持库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-9- 深入学习：为什么优先使用支持库版本的 fragment"><span class="toc-number">9.</span> <span class="toc-text">7.9 深入学习：为什么优先使用支持库版本的 fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#支持库版本的 fragment 使用起来最方便"><span class="toc-number">9.0.0.1.</span> <span class="toc-text"> 支持库版本的 fragment 使用起来最方便</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何使用内置版？"><span class="toc-number">9.0.0.2.</span> <span class="toc-text">如何使用内置版？</span></a></li></ol></li></ol></li></ol></li></ol>
                 </div>
             
         
         
-            <h1 id="7-1-UI- 设计的灵活性需求"><a href="#7-1-UI- 设计的灵活性需求" class="headerlink" title="7.1 UI 设计的灵活性需求"></a><u>7.1 UI 设计的灵活性需求</u></h1><ul>
-<li><u>复杂的用户界面呈现需求</u><ul>
-<li><u>平板以及大尺寸手机显示问题</u></li>
-<li><u>滑动屏幕等交互问题</u></li>
+            <h1 id="7-1-UI- 设计的灵活性需求"><a href="#7-1-UI- 设计的灵活性需求" class="headerlink" title="7.1 UI 设计的灵活性需求"></a>7.1 UI 设计的灵活性需求</h1><ul>
+<li>复杂的用户界面呈现需求<ul>
+<li>平板以及大尺寸手机显示问题</li>
+<li>滑动屏幕等交互问题</li>
 </ul>
 </li>
-<li><u>acticity 视图局限性</u><ul>
-<li><u>我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性</u></li>
-<li><u>activity 还得和特定的用户界面紧紧绑定</u></li>
+<li>acticity 视图局限性<ul>
+<li>我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性</li>
+<li>activity 还得和特定的用户界面紧紧绑定</li>
 </ul>
 </li>
 </ul>
-<h1 id="7-2- 引入 -fragment"><a href="#7-2- 引入 -fragment" class="headerlink" title="7.2 引入 fragment"></a><u>7.2 引入 fragment</u></h1><ul>
-<li><u>fragment 是一种控制器对象</u><ul>
-<li><u>activity 可以委托它执行任务</u><ul>
-<li><u>这些任务通常是管理用户界面</u></li>
-<li><u>受管的用户界面可以时一整屏或时整屏的一部分</u></li>
+<h1 id="7-2- 引入 -fragment"><a href="#7-2- 引入 -fragment" class="headerlink" title="7.2 引入 fragment"></a>7.2 引入 fragment</h1><ul>
+<li>fragment 是一种控制器对象<ul>
+<li>activity 可以委托它执行任务<ul>
+<li>这些任务通常是管理用户界面</li>
+<li>受管的用户界面可以时一整屏或时整屏的一部分</li>
 </ul>
 </li>
-<li><u>采用 fragmnet 来管理 UI，可以绕开 android 系统 activity 使用规划的限制</u></li>
+<li>采用 fragmnet 来管理 UI，可以绕开 android 系统 activity 使用规划的限制</li>
 </ul>
 </li>
-<li><u>管理用户界面的 fragment 又称为 UI fragment</u><ul>
-<li><u>它自己也有产生于布局文件的视图</u></li>
-<li><u>fragment 视图包含了用户可以交互的可视化 UI 元素</u></li>
+<li>管理用户界面的 fragment 又称为 UI fragment<ul>
+<li>它自己也有产生于布局文件的视图</li>
+<li>fragment 视图包含了用户可以交互的可视化 UI 元素</li>
 </ul>
 </li>
-<li><u>activity 视图能预留位置供 fragment 视图插入</u><ul>
-<li><u>多个 fragment 则需要预留多个位置以供插入</u></li>
+<li>activity 视图能预留位置供 fragment 视图插入<ul>
+<li>多个 fragment 则需要预留多个位置以供插入</li>
 </ul>
 </li>
-<li><u>activity 视图和 fragment 的关系和切换如下</u></li>
+<li>activity 视图和 fragment 的关系和切换如下</li>
 </ul>
-<p><u><img src="https://img.rosuh.me/wiki/wiki_2017_1.png" alt="明细 fragment 的切换"></u></p>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_1.png" alt="明细 fragment 的切换"></p>
 <ul>
-<li><u>fragment 可以带来灵活多变的布局，代价就是复杂的应用、更多的组件以及大量实现的代码</u></li>
+<li>fragment 可以带来灵活多变的布局，代价就是复杂的应用、更多的组件以及大量实现的代码</li>
 </ul>
-<h1 id="7-3- 着手开发示例应用"><a href="#7-3- 着手开发示例应用" class="headerlink" title="7.3 着手开发示例应用"></a><u>7.3 着手开发示例应用</u></h1><p><u><em>CriminalIntent 就是本示例应用的名称咯。</em></u></p>
-<p><u>我们先来梳理一下开发流程。</u></p>
-<h5 id="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><a href="# 我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程" class="headerlink" title="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"></a><u>我们先来看一下整个 <code>CriminalIntent</code> 项目的对象图解，以便我们更好地理解开发流程</u></h5><p><u><img src="https://img.rosuh.me/wiki/wiki_2017_d.png" alt="项目对象图解"></u></p>
-<p><u><strong>解析</strong>：</u></p>
+<h1 id="7-3- 着手开发示例应用"><a href="#7-3- 着手开发示例应用" class="headerlink" title="7.3 着手开发示例应用"></a>7.3 着手开发示例应用</h1><p><em>CriminalIntent 就是本示例应用的名称咯。</em></p>
+<p>我们先来梳理一下开发流程。</p>
+<h5 id="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><a href="# 我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程" class="headerlink" title="我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"></a>我们先来看一下整个 <code>CriminalIntent</code> 项目的对象图解，以便我们更好地理解开发流程</h5><p><img src="https://img.rosuh.me/wiki/wiki_2017_d.png" alt="项目对象图解"></p>
+<p><strong>解析</strong>：</p>
 <ul>
-<li><u><code>CrimeFragment</code>的作用与 <code>activity</code> 在<code>GeoQuiz</code>应用中的作用差不多，都是负责创建并管理用户界面，以及与模型对象进行交互</u></li>
-<li><u><code>Crime</code>实例代表某种办公室陋习</u><ul>
-<li><u><code>crime</code>有一个标题、一个标志 ID，一个日期和一个布尔值</u></li>
-<li><u>布尔值用来表示陋习是否被解决</u></li>
-<li><u>简单起见，本章使用一个 <code>Crime</code> 实例，并将其存放在 <code>CrimeFragment</code> 类的成员变量 <code>mCrime</code> 中</u></li>
+<li><code>CrimeFragment</code>的作用与 <code>activity</code> 在<code>GeoQuiz</code>应用中的作用差不多，都是负责创建并管理用户界面，以及与模型对象进行交互</li>
+<li><code>Crime</code>实例代表某种办公室陋习<ul>
+<li><code>crime</code>有一个标题、一个标志 ID，一个日期和一个布尔值</li>
+<li>布尔值用来表示陋习是否被解决</li>
+<li>简单起见，本章使用一个 <code>Crime</code> 实例，并将其存放在 <code>CrimeFragment</code> 类的成员变量 <code>mCrime</code> 中</li>
 </ul>
 </li>
-<li><u><code>CrimeActivity</code>视图（其对应的 <code>.xml</code> 文件）由 <code>FragmentLayout</code> 组件组成，<code>FragmentLayout</code>组件为 <code>CrimeFragment</code> 视图安排了显示位置</u></li>
-<li><u><code>CrimeFragment</code>视图由一个 <code>LineaLayout</code> 组件及其三个子视图组成；<code>CrimeFragment</code>类中由存储它们的成员变量，并设有监听器，会响应用户操作，更新模型数据</u><ul>
-<li><u><code>EditText</code></u></li>
-<li><u><code>Button</code></u></li>
-<li><u><code>CheckBox</code></u></li>
-</ul>
-</li>
-</ul>
-<h4 id="CrimeFragment"><a href="#CrimeFragment" class="headerlink" title="CrimeFragment"></a><u>CrimeFragment</u></h4><ul>
-<li><u>首先设计一个名为 <code>CrimeFragment</code> 的 UI  fragment 来管理用户界面</u></li>
-<li><u>再设计一个名为 <code>CrimeActivity</code> 的 activity 来托管 <code>CrimeFragment</code> 实例</u><ul>
-<li><u>activity 在其视图层内提供一处位置，用来放置 <code>fragment</code> 视图</u></li>
-<li><u><code>fragment</code>视图本身没有在屏幕上显示视图的能力；只有将它放置在 activiti 视图层级结构中，<code>fragment</code>视图才能显示在屏幕上</u></li>
+<li><code>CrimeActivity</code>视图（其对应的 <code>.xml</code> 文件）由 <code>FragmentLayout</code> 组件组成，<code>FragmentLayout</code>组件为 <code>CrimeFragment</code> 视图安排了显示位置</li>
+<li><code>CrimeFragment</code>视图由一个 <code>LineaLayout</code> 组件及其三个子视图组成；<code>CrimeFragment</code>类中由存储它们的成员变量，并设有监听器，会响应用户操作，更新模型数据<ul>
+<li><code>EditText</code></li>
+<li><code>Button</code></li>
+<li><code>CheckBox</code></li>
 </ul>
 </li>
 </ul>
-<p><u><img src="https://img.rosuh.me/wiki/wiki_2017_4.png" alt="CrimeActivity 托管 CrimeFragment"></u></p>
-<h4 id="两类 -fragment"><a href="# 两类 -fragment" class="headerlink" title="两类 fragment"></a><u>两类 fragment</u></h4><ul>
-<li><u>原生版本的<code>fragment</code></u><ul>
-<li><u>内置于设备系统中，如果应用要支持各个系统版本，在不同设备上运行的 <code>fragment</code> 可能会有不同的表现（因为各个版本的维护有差异）</u></li>
-</ul>
-</li>
-<li><u>支持库里的<code>fragment</code></u><ul>
-<li><u>发布时，内置于应用中；使用支持库的 <code>fragment</code> 在不同设备上都会由相同的表现</u></li>
-<li><u>我们使用的支持库版本来自 <code>AppCompat</code> 库</u></li>
+<h4 id="CrimeFragment"><a href="#CrimeFragment" class="headerlink" title="CrimeFragment"></a>CrimeFragment</h4><ul>
+<li>首先设计一个名为 <code>CrimeFragment</code> 的 UI  fragment 来管理用户界面</li>
+<li>再设计一个名为 <code>CrimeActivity</code> 的 activity 来托管 <code>CrimeFragment</code> 实例<ul>
+<li>activity 在其视图层内提供一处位置，用来放置 <code>fragment</code> 视图</li>
+<li><code>fragment</code>视图本身没有在屏幕上显示视图的能力；只有将它放置在 activiti 视图层级结构中，<code>fragment</code>视图才能显示在屏幕上</li>
 </ul>
 </li>
 </ul>
-<p><u>一般选用支持库中的 <code>fragment</code> 实现，因为考虑到 <code>fragment API</code> 不断引入新特性以及支持库不断更新的现状。</u></p>
-<h4 id="在 -Android-Studio- 中增加依赖关系"><a href="# 在 -Android-Studio- 中增加依赖关系" class="headerlink" title="在 Android Studio 中增加依赖关系"></a><u>在 Android Studio 中增加依赖关系 </u></h4><p><u> 要使用 <code>AppCompat</code> 库，项目必须加入依赖关系：</u></p>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_4.png" alt="CrimeActivity 托管 CrimeFragment"></p>
+<h4 id="两类 -fragment"><a href="# 两类 -fragment" class="headerlink" title="两类 fragment"></a>两类 fragment</h4><ul>
+<li>原生版本的<code>fragment</code><ul>
+<li>内置于设备系统中，如果应用要支持各个系统版本，在不同设备上运行的 <code>fragment</code> 可能会有不同的表现（因为各个版本的维护有差异）</li>
+</ul>
+</li>
+<li>支持库里的<code>fragment</code><ul>
+<li>发布时，内置于应用中；使用支持库的 <code>fragment</code> 在不同设备上都会由相同的表现</li>
+<li>我们使用的支持库版本来自 <code>AppCompat</code> 库</li>
+</ul>
+</li>
+</ul>
+<p>一般选用支持库中的 <code>fragment</code> 实现，因为考虑到 <code>fragment API</code> 不断引入新特性以及支持库不断更新的现状。</p>
+<h4 id="在 -Android-Studio- 中增加依赖关系"><a href="# 在 -Android-Studio- 中增加依赖关系" class="headerlink" title="在 Android Studio 中增加依赖关系"></a>在 Android Studio 中增加依赖关系 </h4><p> 要使用 <code>AppCompat</code> 库，项目必须加入依赖关系：</p>
 <ul>
-<li><u>打开应用模块的 <code>build.gradle</code> 文件</u><ul>
-<li><u><code>app/build.gradle</code></u></li>
+<li>打开应用模块的 <code>build.gradle</code> 文件<ul>
+<li><code>app/build.gradle</code></li>
 </ul>
 </li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    <span class="function">implementation <span class="title">fileTree</span><span class="params">(dir: <span class="string">'libs'</span>, include: [<span class="string">'*.jar'</span>])</span></span></span><br><span class="line"><span class="function">    implementation 'com.android.support:appcompat-v7:26.1.0'</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
-<p><u><em>Android Studio 在 <code>build.gradle</code>中将原来的 <code>compile</code>改为了 <code>api</code>和<code>implementation</code>。</em></u></p>
-<p><u>参看：<a href="https://stackoverflow.com/questions/44402024/why-android-change-compile-task-to-implementation-task-in-gradle-build" target="_blank" rel="external">Why Android change ‘compile’ task to ‘implementation’ task in gradle build?</a></u></p>
-<p><u>接着我们先创建模型层的 <code>Crime</code> 类。</u></p>
-<h4 id="创建 Crime 类"><a href="# 创建 Crime 类" class="headerlink" title="创建 Crime 类"></a><u>创建 <code>Crime</code> 类</u></h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Crime</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> UUID mId;</span><br><span class="line">    <span class="keyword">private</span> String mTitle;</span><br><span class="line">    <span class="keyword">private</span> Date mDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mSolved;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Crime</span><span class="params">()</span></span>&#123;</span><br><span class="line">        mId = UUID.randomUUID();</span><br><span class="line">        mDate = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 略去 getter() 和 setter() 方法</span></span><br></pre></td></tr></table></figure>
-<p><u><em>解析</em>：</u></p>
+<p><em>Android Studio 在 <code>build.gradle</code>中将原来的 <code>compile</code>改为了 <code>api</code>和<code>implementation</code>。</em></p>
+<p>参看：<a href="https://stackoverflow.com/questions/44402024/why-android-change-compile-task-to-implementation-task-in-gradle-build" target="_blank" rel="external">Why Android change ‘compile’ task to ‘implementation’ task in gradle build?</a></p>
+<p>接着我们先创建模型层的 <code>Crime</code> 类。</p>
+<h4 id="创建 Crime 类"><a href="# 创建 Crime 类" class="headerlink" title="创建 Crime 类"></a>创建 <code>Crime</code> 类</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Crime</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> UUID mId;</span><br><span class="line">    <span class="keyword">private</span> String mTitle;</span><br><span class="line">    <span class="keyword">private</span> Date mDate;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mSolved;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Crime</span><span class="params">()</span></span>&#123;</span><br><span class="line">        mId = UUID.randomUUID();</span><br><span class="line">        mDate = <span class="keyword">new</span> Date();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 略去 getter() 和 setter() 方法</span></span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
 <ul>
-<li><u><code>UUID</code>类是 Android 框架里的 Java 工具类</u><ul>
-<li><u>在构造方法里，调用 <code>UUID.randomUUID()</code> 会产生一个随机唯一 ID 值</u></li>
+<li><code>UUID</code>类是 Android 框架里的 Java 工具类<ul>
+<li>在构造方法里，调用 <code>UUID.randomUUID()</code> 会产生一个随机唯一 ID 值</li>
 </ul>
 </li>
-<li><u>使用默认的 <code>Date</code> 构造方法初始化 <code>DAte</code> 变量</u><ul>
-<li><u>作为 <code>crime</code> 的默认发生时间，设置 <code>mDate</code> 变量值为当前日期</u></li>
+<li>使用默认的 <code>Date</code> 构造方法初始化 <code>DAte</code> 变量<ul>
+<li>作为 <code>crime</code> 的默认发生时间，设置 <code>mDate</code> 变量值为当前日期</li>
 </ul>
 </li>
 </ul>
-<h1 id="7-4- 托管 UI-fragment"><a href="#7-4- 托管 UI-fragment" class="headerlink" title="7.4 托管 UI fragment"></a><u>7.4 托管 <code>UI fragment</code></u></h1><p><u> 为了托管 <code>UI fragment</code>，<code>activity</code> 必须：</u></p>
+<h1 id="7-4- 托管 UI-fragment"><a href="#7-4- 托管 UI-fragment" class="headerlink" title="7.4 托管 UI fragment"></a>7.4 托管 <code>UI fragment</code></h1><p> 为了托管 <code>UI fragment</code>，<code>activity</code> 必须：</p>
 <ul>
-<li><u>在其布局中为 <code>fragment</code> 的视图安排位置</u></li>
-<li><u>管理 <code>fragment</code> 实例的生命周期</u></li>
+<li>在其布局中为 <code>fragment</code> 的视图安排位置</li>
+<li>管理 <code>fragment</code> 实例的生命周期</li>
 </ul>
-<h4 id="fragment 的生命周期"><a href="#fragment 的生命周期" class="headerlink" title="fragment 的生命周期"></a><u><code>fragment</code>的生命周期 </u></h4><p><u> 下图展示了 <code>fragment</code> 的生命周期：</u></p>
-<p><u><img src="https://img.rosuh.me/wiki/wiki_2017_724ee3.png" alt="fragment 的生命周期图解"></u></p>
+<h4 id="fragment 的生命周期"><a href="#fragment 的生命周期" class="headerlink" title="fragment 的生命周期"></a><code>fragment</code>的生命周期 </h4><p> 下图展示了 <code>fragment</code> 的生命周期：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_724ee3.png" alt="fragment 的生命周期图解"></p>
 <ul>
-<li><u><code>fragment</code>的生命周期类似于 <code>activity</code> 的生命周期，它具有停止、暂停以及运行状态，也拥有覆盖方法，用来在一些关键节点完成一些任务</u></li>
-<li><u><code>fragment</code>生命周期和 <code>activity</code> 的方法的对应关系</u><ul>
-<li><u>因为 <code>fragment</code> 代表 <code>activity</code> 工作，所以它的状态应该反映 <code>activity</code> 的状态</u></li>
+<li><code>fragment</code>的生命周期类似于 <code>activity</code> 的生命周期，它具有停止、暂停以及运行状态，也拥有覆盖方法，用来在一些关键节点完成一些任务</li>
+<li><code>fragment</code>生命周期和 <code>activity</code> 的方法的对应关系<ul>
+<li>因为 <code>fragment</code> 代表 <code>activity</code> 工作，所以它的状态应该反映 <code>activity</code> 的状态</li>
 </ul>
 </li>
-<li><u><code>fragment</code>生命周期与 <code>activity</code> 生命周期的一个关键不同在于：</u><ul>
-<li><u><code>fragment</code>的生命周期方法由托管 <code>activity</code> 而不是操作系统调用的</u></li>
-<li><u>操作系统不关心 <code>activity</code> 用来管理视图的 <code>fragment</code>；易言之，<code>fragment</code> 的使用是 <code>activity</code> 内部的事情</u></li>
+<li><code>fragment</code>生命周期与 <code>activity</code> 生命周期的一个关键不同在于：<ul>
+<li><code>fragment</code>的生命周期方法由托管 <code>activity</code> 而不是操作系统调用的</li>
+<li>操作系统不关心 <code>activity</code> 用来管理视图的 <code>fragment</code>；易言之，<code>fragment</code> 的使用是 <code>activity</code> 内部的事情</li>
 </ul>
 </li>
 </ul>
-<h4 id="托管的两种方式"><a href="# 托管的两种方式" class="headerlink" title="托管的两种方式"></a><u>托管的两种方式 </u></h4><p><u><code>activity</code> 托管 <code>UI fragment</code> 有如下两种方式：</u></p>
+<h4 id="托管的两种方式"><a href="# 托管的两种方式" class="headerlink" title="托管的两种方式"></a>托管的两种方式 </h4><p><code>activity</code> 托管 <code>UI fragment</code> 有如下两种方式：</p>
 <ul>
-<li><u>在 <code>activity</code> 布局中添加<code>fragment</code></u><ul>
-<li><u>使用布局<code>fragment</code></u></li>
-<li><u>简单但不灵活：在 <code>activity</code> 布局中添加 <code>fragment</code>，就等同于将<code>fragment</code> 及其视图与 <code>activity</code> 的视图绑定在一起，并且在 <code>activity</code> 的生命周期过程中，无法替换 <code>fragment</code> 视图</u></li>
+<li>在 <code>activity</code> 布局中添加<code>fragment</code><ul>
+<li>使用布局<code>fragment</code></li>
+<li>简单但不灵活：在 <code>activity</code> 布局中添加 <code>fragment</code>，就等同于将<code>fragment</code> 及其视图与 <code>activity</code> 的视图绑定在一起，并且在 <code>activity</code> 的生命周期过程中，无法替换 <code>fragment</code> 视图</li>
 </ul>
 </li>
-<li><u>在 <code>activity</code> 代码中添加<code>fragment</code></u><ul>
-<li><u>比较复杂，但是也是唯一可以动态控制 <code>fragment</code> 的方式</u></li>
-<li><u>何时添加 <code>fragment</code> 以及随后可以完成何种具体任务由你自己决定；也可以移除、替换和重新添加当前 <code>fragment</code> 等等</u></li>
+<li>在 <code>activity</code> 代码中添加<code>fragment</code><ul>
+<li>比较复杂，但是也是唯一可以动态控制 <code>fragment</code> 的方式</li>
+<li>何时添加 <code>fragment</code> 以及随后可以完成何种具体任务由你自己决定；也可以移除、替换和重新添加当前 <code>fragment</code> 等等</li>
 </ul>
 </li>
 </ul>
-<p><u>为了追求真正灵活的 UI 设计，就必须通过代码的方式添加<code>fragment</code>。</u></p>
-<p><u>接下来我们将定义 <code>CrimeActivity</code> 的布局。</u></p>
-<h4 id="定义容器布局"><a href="# 定义容器布局" class="headerlink" title="定义容器布局"></a><u>定义容器布局 </u></h4><p><u> 尽管我们选择的是在 <code>activity</code> 代码中添加 <code>UI fragment</code>，但是我们依旧<strong> 要在 <code>activity</code> 视图层级结构中为 <code>fragment</code> 视图安排位置</strong>。</u></p>
-<p><u>在 <code>CrimeActivity</code> 的布局中，该位置就是下图所示的<code>FrameLayout</code>：</u></p>
-<p><u><img src="https://img.rosuh.me/wiki/wiki_201712_d7c848.png" alt="CrimeActivity 类的 fragment 托管布局"></u></p>
+<p>为了追求真正灵活的 UI 设计，就必须通过代码的方式添加<code>fragment</code>。</p>
+<p>接下来我们将定义 <code>CrimeActivity</code> 的布局。</p>
+<h4 id="定义容器布局"><a href="# 定义容器布局" class="headerlink" title="定义容器布局"></a>定义容器布局 </h4><p> 尽管我们选择的是在 <code>activity</code> 代码中添加 <code>UI fragment</code>，但是我们依旧<strong> 要在 <code>activity</code> 视图层级结构中为 <code>fragment</code> 视图安排位置</strong>。</p>
+<p>在 <code>CrimeActivity</code> 的布局中，该位置就是下图所示的<code>FrameLayout</code>：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_d7c848.png" alt="CrimeActivity 类的 fragment 托管布局"></p>
 <ul>
-<li><u><code>FragmentLayout</code>是服务于 <code>CrimeFragment</code> 的容器视图</u><ul>
-<li><u>此容器视图是个通用性视图，不单用于 <code>CrimeFragment</code> 类，你还可以用它托管其他的<code>fragment</code></u></li>
+<li><code>FragmentLayout</code>是服务于 <code>CrimeFragment</code> 的容器视图<ul>
+<li>此容器视图是个通用性视图，不单用于 <code>CrimeFragment</code> 类，你还可以用它托管其他的<code>fragment</code></li>
 </ul>
 </li>
 </ul>
-<p><u>我们会在 <code>activity_crime.xml</code> 文件中使用 <code>FragmentLayout</code> 作为默认布局：</u></p>
+<p>我们会在 <code>activity_crime.xml</code> 文件中使用 <code>FragmentLayout</code> 作为默认布局：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">FrameLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"https://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:id</span>=<span class="string">"@+id/fragment_container"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">             <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
 <ul>
-<li><u>当前的 <code>activity_crime.xml</code> 布局文件仅由一个服务于单个 <code>fragment</code> 的容器视图组成</u><ul>
-<li><u>除了自身组件之外，托管 <code>activity</code> 布局还可定义多个容器视图</u></li>
+<li>当前的 <code>activity_crime.xml</code> 布局文件仅由一个服务于单个 <code>fragment</code> 的容器视图组成<ul>
+<li>除了自身组件之外，托管 <code>activity</code> 布局还可定义多个容器视图</li>
 </ul>
 </li>
 </ul>
-<h1 id="7-5- 创建 UI-fragment"><a href="#7-5- 创建 UI-fragment" class="headerlink" title="7.5 创建 UI fragment"></a><u>7.5 创建 <code>UI fragment</code></u></h1><p><u> 创建 <code>UI fragment</code> 的步骤与创建 <code>activity</code> 的步骤相同：</u></p>
+<h1 id="7-5- 创建 UI-fragment"><a href="#7-5- 创建 UI-fragment" class="headerlink" title="7.5 创建 UI fragment"></a>7.5 创建 <code>UI fragment</code></h1><p> 创建 <code>UI fragment</code> 的步骤与创建 <code>activity</code> 的步骤相同：</p>
 <ul>
-<li><u>定义用户界面布局文件</u></li>
-<li><u>创建 <code>fragment</code> 类并设置其视图为定义的布局</u></li>
-<li><u>编写代码以实例化组件</u></li>
+<li>定义用户界面布局文件</li>
+<li>创建 <code>fragment</code> 类并设置其视图为定义的布局</li>
+<li>编写代码以实例化组件</li>
 </ul>
-<h4 id="定义 CrimeFragment 的布局"><a href="# 定义 CrimeFragment 的布局" class="headerlink" title="定义 CrimeFragment 的布局"></a><u>定义 <code>CrimeFragment</code> 的布局</u></h4><ul>
-<li><u><code>CrimeFragment</code>视图用来显示包含在 <code>Crime</code> 类实例中的信息</u></li>
+<h4 id="定义 CrimeFragment 的布局"><a href="# 定义 CrimeFragment 的布局" class="headerlink" title="定义 CrimeFragment 的布局"></a>定义 <code>CrimeFragment</code> 的布局</h4><ul>
+<li><code>CrimeFragment</code>视图用来显示包含在 <code>Crime</code> 类实例中的信息</li>
 </ul>
-<p><u>balabala…</u></p>
-<h4 id="创建 CrimeFragment 类"><a href="# 创建 CrimeFragment 类" class="headerlink" title="创建 CrimeFragment 类"></a><u>创建 <code>CrimeFragment</code> 类</u></h4><ol>
-<li><u>实现 <code>fragment</code> 生命周期方法</u></li>
+<p>balabala…</p>
+<h4 id="创建 CrimeFragment 类"><a href="# 创建 CrimeFragment 类" class="headerlink" title="创建 CrimeFragment 类"></a>创建 <code>CrimeFragment</code> 类</h4><ol>
+<li>实现 <code>fragment</code> 生命周期方法</li>
 </ol>
-<p><u><code>CrimeFragment</code>类是与模型及视图对象交互的控制器，用于显示特定的 <code>cirme</code> 的明确信息。并在用户修改这些信息立即进行更新。</u></p>
-<p><u>我们上一个例子中，<code>activity</code>通过其生命周期方法完成了大部分逻辑控制工作。在本个例子中，这些工作 <code>fragment</code> 的生命周期方法完成的。</u></p>
-<p><u><em><code>CrimeFragment.java</code></em></u></p>
+<p><code>CrimeFragment</code>类是与模型及视图对象交互的控制器，用于显示特定的 <code>cirme</code> 的明确信息。并在用户修改这些信息立即进行更新。</p>
+<p>我们上一个例子中，<code>activity</code>通过其生命周期方法完成了大部分逻辑控制工作。在本个例子中，这些工作 <code>fragment</code> 的生命周期方法完成的。</p>
+<p><em><code>CrimeFragment.java</code></em></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> android.support.v4.app.Fragment;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Crime mCrime;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        mCrime = <span class="keyword">new</span> Crime();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><u><em>解析</em>：</u></p>
+<p><em>解析</em>：</p>
 <ul>
-<li><u><code>Fragment.onCreate(Bundle)</code>是公共方法，而 <code>Activity.onCreate(Bundle)</code> 是受保护方法</u><ul>
-<li><u><code>Fragment.onCreate(Bundle)</code>方法及其他 <code>Fragment</code> 生命周期方法必须是公共方法，因为托管 <code>fragment</code> 的<code>activity</code>要调用它们</u></li>
+<li><code>Fragment.onCreate(Bundle)</code>是公共方法，而 <code>Activity.onCreate(Bundle)</code> 是受保护方法<ul>
+<li><code>Fragment.onCreate(Bundle)</code>方法及其他 <code>Fragment</code> 生命周期方法必须是公共方法，因为托管 <code>fragment</code> 的<code>activity</code>要调用它们</li>
 </ul>
 </li>
-<li><u><code>Fragment</code>同样具有保存及获取状态的<code>bundle</code></u><ul>
-<li><u>类似于使用 <code>Activity.onSaveInstanceState(Bundle)</code>，我们需要覆盖<code>Fragment.onSaveInstanceState(Bundle)</code> 来使用</u></li>
+<li><code>Fragment</code>同样具有保存及获取状态的<code>bundle</code><ul>
+<li>类似于使用 <code>Activity.onSaveInstanceState(Bundle)</code>，我们需要覆盖<code>Fragment.onSaveInstanceState(Bundle)</code> 来使用</li>
 </ul>
 </li>
-<li><u><code>fragment</code>的视图不是在 <code>Fragment.onCreate(Bundle)</code> 中生成的，虽然我们在该方法中配置了 <code>fragment</code> 实例，但是创建和配置 <code>fragment</code> 视图是在另一个 <code>fragment</code> 生命周期方法完成的</u></li>
+<li><code>fragment</code>的视图不是在 <code>Fragment.onCreate(Bundle)</code> 中生成的，虽然我们在该方法中配置了 <code>fragment</code> 实例，但是创建和配置 <code>fragment</code> 视图是在另一个 <code>fragment</code> 生命周期方法完成的</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">onCrateView</span><span class="params">(LayoutInflater inflater, ViewGroup container, </span></span></span><br><span class="line"><span class="function"><span class="params">                       Bundle savedInstanceState)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><u>该方法实例化 <code>fragment</code> 视图的布局，然后将实例化的 <code>View</code> 返回给托管的<code>activity</code></u><ul>
-<li><u><code>LayoutInflater, ViewGroup</code>是必要参数，<code>Bundle</code>用来存储恢复数据，可供该方法从保存状态下重建视图</u></li>
+<li>该方法实例化 <code>fragment</code> 视图的布局，然后将实例化的 <code>View</code> 返回给托管的<code>activity</code><ul>
+<li><code>LayoutInflater, ViewGroup</code>是必要参数，<code>Bundle</code>用来存储恢复数据，可供该方法从保存状态下重建视图</li>
 </ul>
 </li>
 </ul>
-<p><u>下面我们在 <code>CrimeFragment.java</code> 中，添加 <code>onCreateView</code> 方法的实现代码，从 <code>fragment_crime.xml</code> 布局中实例化返回布局。</u></p>
+<p>下面我们在 <code>CrimeFragment.java</code> 中，添加 <code>onCreateView</code> 方法的实现代码，从 <code>fragment_crime.xml</code> 布局中实例化返回布局。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container,</span></span></span><br><span class="line"><span class="function"><span class="params">                         Bundle saveInstanceState)</span> </span>&#123;</span><br><span class="line">        View v = inflater.inflate(R.layout.fragment_crime, container, <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">return</span> v;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p><u><em>解析</em>：</u></p>
+<p><em>解析</em>：</p>
 <ul>
-<li><u>在 <code>onCreateView(...)</code> 方法中，<code>fragment</code>的视图是直接通过调用 <code>LayoutInflater.inflate(...)</code> 方法并传入布局的资源 ID 生成的</u><ul>
-<li><u>第二个参数是视图的父视图，我们通常需要父视图来正确配置组件</u></li>
-<li><u>第三个参数告诉布局生成器是否将生成的视图添加个给父视图</u><ul>
-<li><u>传入 <code>flase</code> 表示我们将以代码的方式添加视图</u></li>
+<li>在 <code>onCreateView(...)</code> 方法中，<code>fragment</code>的视图是直接通过调用 <code>LayoutInflater.inflate(...)</code> 方法并传入布局的资源 ID 生成的<ul>
+<li>第二个参数是视图的父视图，我们通常需要父视图来正确配置组件</li>
+<li>第三个参数告诉布局生成器是否将生成的视图添加个给父视图<ul>
+<li>传入 <code>flase</code> 表示我们将以代码的方式添加视图</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 <ol>
-<li><u>在 <code>fragment</code> 中实例化组件</u></li>
+<li>在 <code>fragment</code> 中实例化组件</li>
 </ol>
-<p><u><code>fragment</code>中的 <code>EditText, CheckBox, Button</code> 组件，也都是在 <code>onCreateView(...)</code> 方法里实例化的。</u></p>
+<p><code>fragment</code>中的 <code>EditText, CheckBox, Button</code> 组件，也都是在 <code>onCreateView(...)</code> 方法里实例化的。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container,</span></span></span><br><span class="line"><span class="function"><span class="params">                         Bundle saveInstanceState)</span> </span>&#123;</span><br><span class="line">        View v = inflater.inflate(R.layout.fragment_crime, container, <span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">        mTitleFiled = (EditText)v.findViewById(R.id.crime_title);</span><br><span class="line">        mTitleFiled.addTextChangedListener(<span class="keyword">new</span> TextWatcher() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">beforeTextChanged</span><span class="params">(CharSequence s, <span class="keyword">int</span> start, <span class="keyword">int</span> count, <span class="keyword">int</span> after)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// This space intentionally left blank</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTextChanged</span><span class="params">(CharSequence s, <span class="keyword">int</span> start, <span class="keyword">int</span> before, <span class="keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">                mCrime.setTitle(s.toString());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterTextChanged</span><span class="params">(Editable s)</span> </span>&#123;</span><br><span class="line">                <span class="comment">// This on too</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> v;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><u>对比 <code>Activity</code> 中实例化组件，<code>Fragment</code>中需要手动调用 <code>View.findViewById()</code> 方法</u></li>
-<li><u><code>onTextChanged(..)</code>方法中，调用 <code>CharSequence</code>(表示用户输入) 的<code>toString()</code>方法</u><ul>
-<li><u>该方法最后返回用来设置的 <code>Crime</code> 标题字符串</u></li>
+<li>对比 <code>Activity</code> 中实例化组件，<code>Fragment</code>中需要手动调用 <code>View.findViewById()</code> 方法</li>
+<li><code>onTextChanged(..)</code>方法中，调用 <code>CharSequence</code>(表示用户输入) 的<code>toString()</code>方法<ul>
+<li>该方法最后返回用来设置的 <code>Crime</code> 标题字符串</li>
 </ul>
 </li>
 </ul>
-<p><u>接下来设置 <code>Button</code> 组件，让他显示 <code>crime</code> 的发生日期。</u></p>
+<p>接下来设置 <code>Button</code> 组件，让他显示 <code>crime</code> 的发生日期。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  mDateButton = (Button)v.findViewById(R.id.crime_date);</span><br><span class="line">        mDateButton.setText(mCrime.getDate().toString());</span><br><span class="line">        mDateButton.setEnabled(<span class="keyword">false</span>);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p><u>此处只是显示日期，而点击功能没有启用。</u></p>
-<p><u>接着设置 <code>ChcekBox</code> 组件。引用它并设置监听器，根据用户操作，更新 <code>mSolved</code> 状态。</u></p>
+<p>此处只是显示日期，而点击功能没有启用。</p>
+<p>接着设置 <code>ChcekBox</code> 组件。引用它并设置监听器，根据用户操作，更新 <code>mSolved</code> 状态。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);</span><br><span class="line">        mSolvedCheckBox.setOnCheckedChangeListener(<span class="keyword">new</span> OnCheckedChangeListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCheckedChanged</span><span class="params">(CompoundButton buttonView, <span class="keyword">boolean</span> isChecked)</span> </span>&#123;</span><br><span class="line">                mCrime.setSolved(isChecked);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h1 id="7-6- 向 FragmentManager 添加 UI-fragment"><a href="#7-6- 向 FragmentManager 添加 UI-fragment" class="headerlink" title="7.6 向 FragmentManager 添加 UI fragment"></a><u>7.6 向 <code>FragmentManager</code> 添加 <code>UI fragment</code></u></h1><p><u><code>fragment</code> 自己无法在屏幕上显示视图，我们需要把 <code>CrimeFragment</code> 添加给<code>CrimeActivity</code>。</u></p>
+<h1 id="7-6- 向 FragmentManager 添加 UI-fragment"><a href="#7-6- 向 FragmentManager 添加 UI-fragment" class="headerlink" title="7.6 向 FragmentManager 添加 UI fragment"></a>7.6 向 <code>FragmentManager</code> 添加 <code>UI fragment</code></h1><p><code>fragment</code> 自己无法在屏幕上显示视图，我们需要把 <code>CrimeFragment</code> 添加给<code>CrimeActivity</code>。</p>
 <ul>
-<li><u><code>FragmentManager</code>类负责管理 <code>fragment</code> 并将它们的视图添加到 <code>activity</code> 的视图层级结构中</u><ul>
-<li><u><code>Activity</code>类中添加了<code>FragmentManager</code></u></li>
+<li><code>FragmentManager</code>类负责管理 <code>fragment</code> 并将它们的视图添加到 <code>activity</code> 的视图层级结构中<ul>
+<li><code>Activity</code>类中添加了<code>FragmentManager</code></li>
 </ul>
 </li>
 </ul>
-<p><u><img src="http://img.rosuh.me/wiki/wiki_201712_720ea7.png" alt="FragmentManager 图解"></u></p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_720ea7.png" alt="FragmentManager 图解"></p>
 <ul>
-<li><u><code>FragmentManager</code>具体管理</u><ul>
-<li><u><code>fragment</code>队列</u></li>
-<li><u><code>fragment</code>事务回退栈</u></li>
+<li><code>FragmentManager</code>具体管理<ul>
+<li><code>fragment</code>队列</li>
+<li><code>fragment</code>事务回退栈</li>
 </ul>
 </li>
 </ul>
-<p><u>在本例中，我们只需关心 <code>FragmentManager</code> 管理的 <code>fragment</code> 队列。</u></p>
+<p>在本例中，我们只需关心 <code>FragmentManager</code> 管理的 <code>fragment</code> 队列。</p>
 <ul>
-<li><u>以代码的方式将 <code>fragment</code> 添加给 <code>activity</code>，需要直接调用<code>activity</code> 的<code>fragmentManager</code></u><ul>
-<li><u>先获取 <code>fragmentManager</code> 本身</u></li>
-<li><u>在 <code>CrimeActivity.java</code> 中，在 <code>onCreate(Bundle)</code> 方法中添加代码取得<code>fragmentManager</code></u></li>
+<li>以代码的方式将 <code>fragment</code> 添加给 <code>activity</code>，需要直接调用<code>activity</code> 的<code>fragmentManager</code><ul>
+<li>先获取 <code>fragmentManager</code> 本身</li>
+<li>在 <code>CrimeActivity.java</code> 中，在 <code>onCreate(Bundle)</code> 方法中添加代码取得<code>fragmentManager</code></li>
 </ul>
 </li>
 </ul>
-<p><u><em>获取<code>fragmentManager</code>（<code>CrimeActivity.java</code>）</em></u></p>
+<p><em>获取<code>fragmentManager</code>（<code>CrimeActivity.java</code>）</em></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_crime);</span><br><span class="line"></span><br><span class="line">        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="fragment 事务"><a href="#fragment 事务" class="headerlink" title="fragment 事务"></a><u><code>fragment</code>事务 </u></h4><p><u> 获取 <code>fragmentManager</code> 后，再获取一个 <code>fragment</code> 交给它管理。</u></p>
-<p><u><em>添加一个<code>CrimeFragment</code>（<code>CrimeActivity.java</code>）</em></u></p>
+<h4 id="fragment 事务"><a href="#fragment 事务" class="headerlink" title="fragment 事务"></a><code>fragment</code>事务 </h4><p> 获取 <code>fragmentManager</code> 后，再获取一个 <code>fragment</code> 交给它管理。</p>
+<p><em>添加一个<code>CrimeFragment</code>（<code>CrimeActivity.java</code>）</em></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Fragment fragment = fm.findFragmentById(R.id.fragment_container);</span><br><span class="line"><span class="keyword">if</span> (fragment == <span class="keyword">null</span>) &#123;</span><br><span class="line">            fragment = <span class="keyword">new</span> CrimeFragment();</span><br><span class="line">            fm.beginTransaction()</span><br><span class="line">                    .add(R.id.fragment_container, fragment)</span><br><span class="line">                    .commit();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ul>
-<li><u><code>new</code> –&gt; <code>add</code> –&gt; <code>commit</code></u><ul>
-<li><u>事务的创建到提交的过程</u></li>
+<li><code>new</code> –&gt; <code>add</code> –&gt; <code>commit</code><ul>
+<li>事务的创建到提交的过程</li>
 </ul>
 </li>
-<li><u><code>fragment</code>事务用来被添加、移除、附加、分离或替换 <code>fragment</code> 队列中的<code>fragment</code></u><ul>
-<li><u>这是 <code>fragment</code> 动态组装和重新组装用户界面的关键</u></li>
+<li><code>fragment</code>事务用来被添加、移除、附加、分离或替换 <code>fragment</code> 队列中的<code>fragment</code><ul>
+<li>这是 <code>fragment</code> 动态组装和重新组装用户界面的关键</li>
 </ul>
 </li>
-<li><u><code>Fragment.beginTransaction()</code></u><ul>
-<li><u>创建并返回 <code>fragmentTransaction</code> 实例</u><ul>
-<li><u>该实例类支持流接口（fluent interface）的链式方法调用，以此配置 <code>FragmentTransaction</code> 再返回它</u></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><u><code>add</code>是整个事务的核心</u><ul>
-<li><u>参数</u><ul>
-<li><u>容器视图资源 ID</u><ul>
-<li><u>告诉 <code>FragmentManager</code>，<code>fragment</code> 视图应该出现在 <code>activity</code> 视图的什么位置</u></li>
-<li><u>作为 <code>FragmentManager</code> 队列中 <code>fragment</code> 的唯一标志</u></li>
-</ul>
-</li>
-<li><u>新创建的<code>CrimeFragment</code></u></li>
+<li><code>Fragment.beginTransaction()</code><ul>
+<li>创建并返回 <code>fragmentTransaction</code> 实例<ul>
+<li>该实例类支持流接口（fluent interface）的链式方法调用，以此配置 <code>FragmentTransaction</code> 再返回它</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><u>从 <code>FragmentManager</code> 中获取<code>CrimeFragment</code>，使用容器视图资源 ID 就行了</u><ul>
-<li><u>如果要向 <code>activity</code> 添加多个 <code>fragment</code>，通常就需要分别为每个<code>fragment</code> 创建具有不同 ID 的不同容器</u></li>
+<li><code>add</code>是整个事务的核心<ul>
+<li>参数<ul>
+<li>容器视图资源 ID<ul>
+<li>告诉 <code>FragmentManager</code>，<code>fragment</code> 视图应该出现在 <code>activity</code> 视图的什么位置</li>
+<li>作为 <code>FragmentManager</code> 队列中 <code>fragment</code> 的唯一标志</li>
+</ul>
+</li>
+<li>新创建的<code>CrimeFragment</code></li>
 </ul>
 </li>
 </ul>
-<p><u>总结起来，其是就是：</u></p>
-<p><u><img src="http://img.rosuh.me/wiki/wiki_201712_04aff3.png" alt="总结"></u></p>
-<h4 id="FragmentManafer 和 fragment 生命周期"><a href="#FragmentManafer 和 fragment 生命周期" class="headerlink" title="FragmentManafer 和 fragment 生命周期"></a><u><code>FragmentManafer</code>和 <code>fragment</code> 生命周期</u></h4><p><u><img src="http://img.rosuh.me/wiki/wiki_201712_5265c7.png" alt="再探 fragment 生命周期"></u></p>
+</li>
+<li>从 <code>FragmentManager</code> 中获取<code>CrimeFragment</code>，使用容器视图资源 ID 就行了<ul>
+<li>如果要向 <code>activity</code> 添加多个 <code>fragment</code>，通常就需要分别为每个<code>fragment</code> 创建具有不同 ID 的不同容器</li>
+</ul>
+</li>
+</ul>
+<p>总结起来，其是就是：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_04aff3.png" alt="总结"></p>
+<h4 id="FragmentManafer 和 fragment 生命周期"><a href="#FragmentManafer 和 fragment 生命周期" class="headerlink" title="FragmentManafer 和 fragment 生命周期"></a><code>FragmentManafer</code>和 <code>fragment</code> 生命周期</h4><p><img src="https://img.rosuh.me/wiki/wiki_201712_5265c7.png" alt="再探 fragment 生命周期"></p>
 <ul>
-<li><u><code>activity</code>的 <code>FragmentManager</code> 负责调用队列中的 <code>fragment</code> 的生命周期方法</u><ul>
-<li><u>添加 <code>fragment</code> 供<code>FragmentManager</code>管理时，<code>onAttach(Context), onCreate(Bundle)</code>和 <code>onCreateView(...)</code> 方法会被调用</u></li>
-<li><u>托管 <code>activity</code> 的<code>onCreate(Bundle)</code>方法执行后，<code>onActivityCreated(Bundle)</code>方法也不会被调用</u><ul>
-<li><u>因为 <code>CrimeActivity.onCreate(Bundle)</code> 方法中添加 <code>CrimeFragment</code>，所以<code>fragment</code> 被添加后，该方法会被调用</u></li>
+<li><code>activity</code>的 <code>FragmentManager</code> 负责调用队列中的 <code>fragment</code> 的生命周期方法<ul>
+<li>添加 <code>fragment</code> 供<code>FragmentManager</code>管理时，<code>onAttach(Context), onCreate(Bundle)</code>和 <code>onCreateView(...)</code> 方法会被调用</li>
+<li>托管 <code>activity</code> 的<code>onCreate(Bundle)</code>方法执行后，<code>onActivityCreated(Bundle)</code>方法也不会被调用<ul>
+<li>因为 <code>CrimeActivity.onCreate(Bundle)</code> 方法中添加 <code>CrimeFragment</code>，所以<code>fragment</code> 被添加后，该方法会被调用</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><u>当 <code>activity</code> 处于运行状态时，添加 <code>fragment</code> 后</u><ul>
-<li><u><code>FragmentManager</code>会立即驱赶（指让 <code>fragment</code> 走得快一点…）<code>fragment</code>，调用一系列必要的生命周期方法，快速赶上 <code>activity</code> 的步伐</u></li>
-<li><u>一旦赶上，托管的 <code>activity</code> 的<code>FragmentManager</code>就会边接收操作系统的指令，边调用其他生命周期方法，让 <code>fragment</code> 与<code>activity</code>的状态保持一致</u></li>
+<li>当 <code>activity</code> 处于运行状态时，添加 <code>fragment</code> 后<ul>
+<li><code>FragmentManager</code>会立即驱赶（指让 <code>fragment</code> 走得快一点…）<code>fragment</code>，调用一系列必要的生命周期方法，快速赶上 <code>activity</code> 的步伐</li>
+<li>一旦赶上，托管的 <code>activity</code> 的<code>FragmentManager</code>就会边接收操作系统的指令，边调用其他生命周期方法，让 <code>fragment</code> 与<code>activity</code>的状态保持一致</li>
 </ul>
 </li>
 </ul>
-<h1 id="7-7- 采用 fragment 应用架构"><a href="#7-7- 采用 fragment 应用架构" class="headerlink" title="7.7. 采用 fragment 应用架构"></a><u>7.7. 采用 <code>fragment</code> 应用架构 </u></h1><p><u> 尽管 <code>fragment</code> 组件可以复用，但是正确使用 <code>fragment</code> 非常重要 ，否则就边成了滥用。</u></p>
+<h1 id="7-7- 采用 fragment 应用架构"><a href="#7-7- 采用 fragment 应用架构" class="headerlink" title="7.7. 采用 fragment 应用架构"></a>7.7. 采用 <code>fragment</code> 应用架构 </h1><p> 尽管 <code>fragment</code> 组件可以复用，但是正确使用 <code>fragment</code> 非常重要 ，否则就边成了滥用。</p>
 <ul>
-<li><u><code>fragment</code>时用来封装关键组件以便复用</u><ul>
-<li><u>关键组件：针对应用的整个屏幕来讲的</u></li>
-<li><u>单屏使用大量的 <code>fragment</code>，不仅使代码充斥<code>fragment</code> 事务处理，模块的职责分工也会不清晰</u></li>
-<li><u>如果由很多零碎的晓组件需要复用，比较好的架构设计时使用定制视图</u></li>
+<li><code>fragment</code>时用来封装关键组件以便复用<ul>
+<li>关键组件：针对应用的整个屏幕来讲的</li>
+<li>单屏使用大量的 <code>fragment</code>，不仅使代码充斥<code>fragment</code> 事务处理，模块的职责分工也会不清晰</li>
+<li>如果由很多零碎的晓组件需要复用，比较好的架构设计时使用定制视图</li>
 </ul>
 </li>
 <li>实践证明：<strong>应用单屏最多使用 2 ~ 3 个 <code>fragment</code></strong> </li>
 </ul>
-<p><u><img src="http://img.rosuh.me/wiki/wiki_201712_e4ee9d.png" alt="少就是多的哲学"></u></p>
-<h4 id="使用 fragment 的理由"><a href="# 使用 fragment 的理由" class="headerlink" title="使用 fragment 的理由"></a><u>使用 <code>fragment</code> 的理由</u></h4><ul>
-<li><u>实际开发中，尽管有时候可用可不用，但是我们还是会采用<code>fragment</code></u><ul>
-<li><u>因为后期添加 <code>fragment</code> 是一个大坑</u></li>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_e4ee9d.png" alt="少就是多的哲学"></p>
+<h4 id="使用 fragment 的理由"><a href="# 使用 fragment 的理由" class="headerlink" title="使用 fragment 的理由"></a>使用 <code>fragment</code> 的理由</h4><ul>
+<li>实际开发中，尽管有时候可用可不用，但是我们还是会采用<code>fragment</code><ul>
+<li>因为后期添加 <code>fragment</code> 是一个大坑</li>
 </ul>
 </li>
 </ul>
@@ -692,7 +692,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="http://img.rosuh.me/wiki/wiki_201712_b243e8.png" alt="AppCompatActivity 继承树"></p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_b243e8.png" alt="AppCompatActivity 继承树"></p>
 <h1 id="7-9- 深入学习：为什么优先使用支持库版本的 fragment"><a href="#7-9- 深入学习：为什么优先使用支持库版本的 fragment" class="headerlink" title="7.9 深入学习：为什么优先使用支持库版本的 fragment"></a>7.9 深入学习：为什么优先使用支持库版本的 <code>fragment</code></h1><h4 id="支持库版本的 fragment 使用起来最方便"><a href="# 支持库版本的 fragment 使用起来最方便" class="headerlink" title="支持库版本的 fragment 使用起来最方便"></a> 支持库版本的 <code>fragment</code> 使用起来最方便</h4><ul>
 <li>Google 每年会多次更新支持库，并借此引入新特性、修复 bug<ul>
 <li>支持库的本意是方便在不支持该 API 的旧版本上使用</li>
@@ -723,9 +723,9 @@
 <nav id="article-nav">
     
     
-        <a href="/计算机技能/汇编基础/4-the-first-program/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Más viejo</strong>
-            <div class="article-nav-title">4 第一个程序</div>
+        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">5 [BX] 和 loop 指令</div>
         </a>
     
 </nav>
