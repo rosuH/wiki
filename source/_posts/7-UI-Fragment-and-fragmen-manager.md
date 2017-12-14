@@ -1,10 +1,10 @@
 ---
 title: "7 UI Fragmnet 与 fragment 管理器"
 date: {{ date }}
-toc: true
 
 tags: 
-  - Android
+  - "Android"
+  - "frgament"
 
 top: 7
 
