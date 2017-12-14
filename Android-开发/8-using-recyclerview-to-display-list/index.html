@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>8 使用 RecyclerView 显示列表 | rosu&#39;s wiki</title>
+    
+    
+        <meta name="keywords" content="Android,RecyclerView" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言  为了实现我们的本次的项目，也就是 CriminalIntent 应用中显示 crime 列表的功能，我们需要用 RecyclerView 来实现列表显示。  应用模型层将新增一个 CrimeLab 对象，该对象是一个数据集中存储池，用来存储 Crime 对象 显示 crime 列表需要在应用控制器层新增一个 activity 和一个fragment CrimeListActivity和Cr">
+<meta name="keywords" content="Android,RecyclerView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="8 使用 RecyclerView 显示列表">
+<meta property="og:url" content="https://wiki.rosuh.me/Android-开发/8-using-recyclerview-to-display-list/index.html">
+<meta property="og:site_name" content="rosu&#39;s wiki">
+<meta property="og:description" content="前言  为了实现我们的本次的项目，也就是 CriminalIntent 应用中显示 crime 列表的功能，我们需要用 RecyclerView 来实现列表显示。  应用模型层将新增一个 CrimeLab 对象，该对象是一个数据集中存储池，用来存储 Crime 对象 显示 crime 列表需要在应用控制器层新增一个 activity 和一个fragment CrimeListActivity和Cr">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://img.rosuh.me/wiki/wiki_201712_a47d61.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_3ab907.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_ef918e.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_7eabb8.png">
+<meta property="og:updated_time" content="2017-12-14T07:45:33.817Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="8 使用 RecyclerView 显示列表">
+<meta name="twitter:description" content="前言  为了实现我们的本次的项目，也就是 CriminalIntent 应用中显示 crime 列表的功能，我们需要用 RecyclerView 来实现列表显示。  应用模型层将新增一个 CrimeLab 对象，该对象是一个数据集中存储池，用来存储 Crime 对象 显示 crime 列表需要在应用控制器层新增一个 activity 和一个fragment CrimeListActivity和Cr">
+<meta name="twitter:image" content="http://img.rosuh.me/wiki/wiki_201712_a47d61.png">
+<meta name="twitter:creator" content="@rosu_h">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="rosu&#39;s wiki" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">rosu&#39;s wiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">此站点</a>
+                
+                    <a class="main-nav-link" href="https://rosuh.me">找我</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Entradas',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">此站点</a></td>
+                
+                    <td><a class="main-nav-link" href="https://rosuh.me">找我</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>Categorias</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Android 开发
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/Android-开发/8-using-recyclerview-to-display-list/">8 使用 RecyclerView 显示列表</a></li>  <li class="file"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Linux & VPS
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            玩机技巧
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/玩机技巧/save-blocked-in-A199/">华为 A199 救砖札记</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            计算机技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            汇编基础
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            软技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            积极心理学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/软技能/积极心理学/11-habit/">11 习惯</a></li>  <li class="file"><a href="/软技能/积极心理学/10-change/">10 改变</a></li>  <li class="file"><a href="/软技能/积极心理学/9.0-positive-emotions/">9 积极情绪</a></li>  <li class="file"><a href="/软技能/积极心理学/8.0-appreciate/">8 感激</a></li>  <li class="file"><a href="/软技能/积极心理学/7.0-adversity-or-chance/">7 逆境和机遇</a></li>  <li class="file"><a href="/软技能/积极心理学/6.0-positive/">6 乐观</a></li>  <li class="file"><a href="/软技能/积极心理学/5.0-Faith-is-the-realistic-predictions/">5 信念是自我实现的预言</a></li>  <li class="file"><a href="/软技能/积极心理学/4.0-positive-environment-can-change-person/">4 积极的环境能改变人</a></li>  <li class="file"><a href="/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/">3 如何避免惬意的麻木</a></li>  <li class="file"><a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/">2 为什么要学习积极心理学</a></li>  <li class="file"><a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/">1 信息、变形和课程简介</a></li>  <li class="file"><a href="/软技能/积极心理学/积极心理学资料索引与声明/">积极心理学资料索引与声明</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-8-using-recyclerview-to-display-list" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Android-开发/">Android 开发</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/RecyclerView/">RecyclerView</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/Android-开发/8-using-recyclerview-to-display-list/">
+            <time datetime="2017-12-14T07:45:33.817Z" itemprop="datePublished">2017-12-14</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/8-using-recyclerview-to-display-list.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/8-using-recyclerview-to-display-list.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/8-using-recyclerview-to-display-list.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            8 使用 RecyclerView 显示列表
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><p> 为了实现我们的本次的项目，也就是 <code>CriminalIntent</code> 应用中显示 <code>crime</code> 列表的功能，我们需要用 <code>RecyclerView</code> 来实现列表显示。</p>
+<ul>
+<li>应用模型层将新增一个 <code>CrimeLab</code> 对象，该对象是一个数据集中存储池，用来存储 <code>Crime</code> 对象</li>
+<li>显示 <code>crime</code> 列表需要在应用控制器层新增一个 <code>activity</code> 和一个<code>fragment</code><ul>
+<li><code>CrimeListActivity</code>和<code>CrimeListFragment</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="http://img.rosuh.me/wiki/wiki_201712_a47d61.png" alt="CriminalIntent 应用对象"></p>
+<h1 id="8-1- 升级 CriminalIntent 应用的模型"><a href="#8-1- 升级 CriminalIntent 应用的模型" class="headerlink" title="8.1 升级 CriminalIntent 应用的模型"></a>8.1 升级 <code>CriminalIntent</code> 应用的模型 </h1><p> 我们需要将应用的模型层，从容纳单个 <code>Crime</code> 对象变为可容纳一组 <code>Crime</code> 对象。</p>
+<h4 id="单例与数据集中存储"><a href="# 单例与数据集中存储" class="headerlink" title="单例与数据集中存储"></a>单例与数据集中存储</h4><ul>
+<li><code>Crime</code>数组对象将存储在一个单例里<ul>
+<li>单例是特殊的 <code>Java</code> 类，在创建实例时，一个单例类仅允许创建一个实例</li>
+<li>应用能在内存中存活多久，单例就存活多久</li>
+</ul>
+</li>
+<li>单例<ul>
+<li>要创建单例，需要创建一个带有私有构造方法及 <code>get()</code> 方法的类<ul>
+<li>如果实例已经存在，<code>get()</code>方法就直接返回它</li>
+<li>如果实例不存在，<code>get()</code>方法就会调用构造方法创建它</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><em><code>CrimeLab.java</code></em> </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeLab</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> CrimeLab sCrimeLab;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> CrimeLab <span class="title">get</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (sCrimeLab == <span class="keyword">null</span>) &#123;</span><br><span class="line">            sCrimeLab = <span class="keyword">new</span> CrimeLab(context);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sCrimeLab;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">CrimeLab</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>sCrimeLab</code>变量带有 <code>s</code> 前缀，这是 Android 开发的命名约定，一看到此前缀，我们就直到 <code>sCrimeLab</code> 是一个静态变量</li>
+<li><code>CrimeLab</code>的构造方法是私有的，其他类无法创建 <code>CrimeLab</code> 对象，只能通过 <code>get()</code> 方法</li>
+<li><code>get()</code>方法中，我们传入 <code>Context</code> 对象</li>
+</ul>
+<p>接着，我们往 <code>CrimeLab</code> 中存储 <code>Crime</code> 对象：</p>
+<ul>
+<li>在 <code>CrimeLab</code> 的构造方法里，创建一个空 <code>List</code> 用来保存 <code>Crime</code> 对象</li>
+<li><code>getCrime()</code>用来返回数组列表</li>
+<li><code>getCrime(UUID)</code>返回带指定 <code>ID</code> 的<code>Crime</code>对象</li>
+</ul>
+<p><em>创建可容纳 <code>Crime</code> 对象的<code>List</code>（<code>CrimeLab.java</code>）</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeLab</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">private</span> List&lt;Crime&gt; mCrimes;</span><br><span class="line">  ...</span><br><span class="line">  <span class="function"><span class="keyword">private</span> <span class="title">CrimeLab</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">  	mCrimes = <span class="keyword">new</span> ArrayList&lt;&gt;();  </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> List&lt;Crime&gt; <span class="title">getCrimes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span>	mCrimes;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> Crime <span class="title">getCrime</span><span class="params">(UUID id)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (Crime crime: mCrimes)   &#123;</span><br><span class="line">      <span class="keyword">if</span> (crime.getID().equals(id)) &#123;</span><br><span class="line">        <span class="keyword">return</span> crime;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><code>List&lt;E&gt;</code>是一个泛型类，支持存放特定数据类型的有序列对象，拥有获取、新增和删除列表元素的方法<ul>
+<li><code>mCrimes</code>含有 <code>ArrayList</code>：鉴于此，推荐在声明变量的时候使用<code>List</code> 接口类型；这样在有需要的时候还可以使用其他<code>List</code></li>
+</ul>
+</li>
+<li><code>mCrimes</code>实例化语句使用的 <code>&lt;&gt;</code> 是在 Java 7 中引入的<ul>
+<li>该符号告诉编译器，<code>List</code>中的元素类型可以基于变量声明传入的抽象参数来确定</li>
+<li>变量声明语句 <code>private List&lt;Crime&gt; mCrimes</code> 中指定了 <code>Crime</code> 参数，所以编译器可据此推测出 <code>ArrayList</code> 里可放入 <code>Crime</code> 对象</li>
+</ul>
+</li>
+</ul>
+<p>下面先批量存入 100 个 <code>Crime</code> 对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">CrimeLab</span><span class="params">(Context context)</span></span>&#123;</span><br><span class="line">        mCrimes = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)&#123;</span><br><span class="line">            Crime crime = <span class="keyword">new</span> Crime();</span><br><span class="line">            crime.setTitle(<span class="string">"Crime #"</span> + i);</span><br><span class="line">            crime.setSolved(i % <span class="number">2</span> == <span class="number">0</span>);    <span class="comment">//Every other one</span></span><br><span class="line">            mCrimes.add(crime);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="8-2- 使用抽象 activity 托管 fragment"><a href="#8-2- 使用抽象 activity 托管 fragment" class="headerlink" title="8.2 使用抽象 activity 托管 fragment"></a>8.2 使用抽象 <code>activity</code> 托管 <code>fragment</code></h1><p> 创建托管 <code>CrimeListFragment</code> 的<code>CrimeListActivity</code>类之前，首先为 <code>CrimeListActivity</code> 创建视图。</p>
+<h4 id="通用型 fragment 托管布局"><a href="# 通用型 fragment 托管布局" class="headerlink" title="通用型 fragment 托管布局"></a>通用型 <code>fragment</code> 托管布局 </h4><p> 记得我们需要为 <code>fragment</code> 创建一个 <code>activity</code> 视图来容纳它吗？</p>
+<p><em>通用的布局定义文件 <code>activity_fragment.xml</code> 容器视图</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;FrameLayout xmlns:android=<span class="string">"http://schemas.android.com/apk/res/android"</span></span><br><span class="line">             android:id=<span class="string">"@+id/fragment_container"</span></span><br><span class="line">             android:layout_width=<span class="string">"match_parent"</span></span><br><span class="line">             android:layout_height=<span class="string">"match_parent"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>此处没有特别指定 <code>fragment</code>，任何托管<code>activity</code> 托管 <code>fragment</code> 的场景，都可以使用它</li>
+</ul>
+<h4 id="抽象 activity 类"><a href="# 抽象 activity 类" class="headerlink" title="抽象 activity 类"></a>抽象 <code>activity</code> 类</h4><p>可以复用 <code>CrimeActivity</code> 的代码来创建 <code>CrimeListActivity</code> 类。</p>
+<p><em>近乎通用的 <code>CrimeActivity</code> 类(<code>CrimeActivity.java</code>)</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_fragment);</span><br><span class="line"></span><br><span class="line">        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();</span><br><span class="line">        Fragment fragment = fm.findFragmentById(R.id.fragment_container);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (fragment == <span class="keyword">null</span>) &#123;</span><br><span class="line">            fragment = <span class="keyword">new</span> CrimeFragment();</span><br><span class="line">            fm.beginTransaction()</span><br><span class="line">                    .add(R.id.fragment_container, fragment)</span><br><span class="line">                    .commit();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到这样的代码结构比较简单，而每一次新建一个 <code>activity</code> 都需要创建这样一段代码。所以我们可以将重复的代码封装为抽象类。</p>
+<p>创建一个 <code>SingleFragmentActivity</code> 的抽象类。设置超类为 <code>AppCompatActivity</code> 类。</p>
+<p><em>创建一个 <code>Activity</code>抽象类（<code>SingleFragmentActivity.java</code>）</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">SingleFragmentActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> Fragment <span class="title">createFragment</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle saveInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(saveInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_fragment);</span><br><span class="line"></span><br><span class="line">        FragmentManager fm = getSupportFragmentManager();</span><br><span class="line">        Fragment fragment = fm.findFragmentById(R.id.fragment_container);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (fragment == <span class="keyword">null</span>) &#123;	<span class="comment">//*</span></span><br><span class="line">            fragment = createFragment();</span><br><span class="line">            fm.beginTransaction()</span><br><span class="line">                    .add(R.id.fragment_container, fragment)</span><br><span class="line">                    .commit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到上述方法除了在 <code>*</code> 号处将 <code>new Fragment()</code> 改为 <code>createFragment()</code> 抽象类方法外，其余和 <code>CrimeActivity.java</code> 中没什么区别。</p>
+<p>我们要做的工作就是让 <code>SingleFragmentActivity</code> 的子类会实现该方法，来返回 <code>activity</code> 托管的 <code>fragment</code> 实例。</p>
+<ol>
+<li>使用抽象类</li>
+</ol>
+<p>改动一下 <code>CrimeActivity</code> 类，将它的超类改为 <code>SingleFragmentActivity</code>。然后删除<code>onCreate(Bundle)</code> 方法，再添加<code>createFragment</code>。</p>
+<p><em>清理 <code>CrimeActivity 类(CrimeActivity.java)</code></em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeActivity</span> <span class="keyword">extends</span> <span class="title">SingleFragmentActivity</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> Fragment <span class="title">createFragment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CrimeFragment();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>新建控制类</li>
+</ol>
+<p>类似的，使用 <code>SingleFragmentActivity</code> 类来创建控制类。</p>
+<p><em>实现<code>CrimeListActivity</code>(<code>CrimeListActivity.java</code>)</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> class CrimeListActivity extends <span class="title">SingleFragmentActivity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> Fragment <span class="title">createFragment</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CrimeListFragment();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然我们还要实现<code>CrimeListActivity.java</code>，这样才能使用构造器创建。不过现在我们对这个控制类先留空：</p>
+<p><em>CrimeListFragment.java</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeListFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span></span>&#123;</span><br><span class="line">  <span class="comment">// Nothing yet</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在配置文件中声明<code>CrimeListActivity</code></li>
+</ol>
+<ul>
+<li>创建完<code>CrimeListActivity</code>，记得要在配置文件中声明它</li>
+<li>因为本程式启动时的主界面应该是 <code>crime</code> 列表，因此还要在 <code>AndroidManifest.xml</code> 中声明为<code>launch activity</code></li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".CrimeListActivity"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="8-3-RecyclerView-ViewHolder 和 Adapter"><a href="#8-3-RecyclerView-ViewHolder 和 Adapter" class="headerlink" title="8.3 RecyclerView, ViewHolder 和 Adapter"></a>8.3 <code>RecyclerView</code>, <code>ViewHolder</code>和<code>Adapter</code></h1><ul>
+<li><code>RecyclerView</code>是 <code>ViewGroup</code> 的子类<ul>
+<li>每一个列表只显示 <code>Crime</code> 的标题和日期</li>
+<li><code>View</code>是一个包含两个 <code>TextView</code> 的<code>LinearLayout</code></li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_3ab907.png" alt="带有子 View 的 RecyclerView"></p>
+<p>仔细看看图片里的 <code>RecyclerView</code> 和<code>View</code>的关系。</p>
+<p>当前屏幕只显示了 12 个子<code>View</code>。不在视线中的子<code>View</code>，就不会被创建出来。</p>
+<p>你滑动屏幕就会显示更多子项目，然后之前出现过的，而不在视线中的子 <code>View</code> 就会被回收。</p>
+<p><code>RecyclerView</code>所做的事情，就是创建视线中的子项以及回收再利用，循环往复。</p>
+<h4 id="ViewHolder 和 Adapter"><a href="#ViewHolder 和 Adapter" class="headerlink" title="ViewHolder 和 Adapter"></a><code>ViewHolder</code>和<code>Adapter</code></h4><ul>
+<li><code>RecyclerView</code>的任务仅限于回收和定位屏幕上的<code>View</code></li>
+<li><code>ViewHolder</code>只做一件事：容纳 <code>View</code> 视图</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_ef918e.png" alt="被吐嘈的 ViewHolder"></p>
+<p>下面是 <em> 典型的 <code>ViewHolder</code> 子类</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListRow</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> ImageView mThumbnail;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">ListRow</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(view);</span><br><span class="line">    </span><br><span class="line">    mThumbnail = (ImageView) view.findViewById(R.id.thumbnail);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以创建 <code>ListRow</code> 来获取自定义的 <code>mThumbnail</code> 和<code>RecyclerView.ViewHolder</code>超类传入的<code>itemView</code>。</p>
+<ul>
+<li><code>ViewHolder</code>为 <code>itemView</code> 而生：它引用着传给 <code>super(view)</code> 的整个视图</li>
+</ul>
+<p><em><code>ViewHolder</code>的使用示例</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ListRow row = <span class="keyword">new</span> ListRow(inflater.inflate(R.layout.list_row, parent, <span class="keyword">false</span>));</span><br><span class="line">View view = row.itemView;</span><br><span class="line">ImageView thumbnailView = row.mThumbnail;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>RecyclerView</code>本身不会创建视图，它创建的是 <code>ViewHolder</code>，而<code>ViewHolder</code> 引用着<code>itemView</code></li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_7eabb8.png" alt="ViewHolder 配合 RecyclerView 使用"></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Más viejo</strong>
+            <div class="article-nav-title">7 UI Fragmnet 与 fragment 管理器</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            rosuh &copy; 2017 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+        </div>
+    </div>
+</footer>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>

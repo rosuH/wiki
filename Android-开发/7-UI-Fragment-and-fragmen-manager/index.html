@@ -6,11 +6,11 @@
     <title>7 UI Fragmnet 与 fragment 管理器 | rosu&#39;s wiki</title>
     
     
-        <meta name="keywords" content="Android" />
+        <meta name="keywords" content="Android,frgament" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="description" content="7.1 UI 设计的灵活性需求 复杂的用户界面呈现需求 平板以及大尺寸手机显示问题 滑动屏幕等交互问题   acticity 视图局限性 我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性 activity 还得和特定的用户界面紧紧绑定    7.2 引入 fragment fragment 是一种控制器对象 activity 可以委托它执行任务 这些任">
-<meta name="keywords" content="Android">
+<meta name="keywords" content="Android,frgament">
 <meta property="og:type" content="article">
 <meta property="og:title" content="7 UI Fragmnet 与 fragment 管理器">
 <meta property="og:url" content="https://wiki.rosuh.me/Android-开发/7-UI-Fragment-and-fragmen-manager/index.html">
@@ -27,7 +27,7 @@
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_5265c7.png">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_e4ee9d.png">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_b243e8.png">
-<meta property="og:updated_time" content="2017-12-13T07:57:27.606Z">
+<meta property="og:updated_time" content="2017-12-14T07:44:09.355Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="7 UI Fragmnet 与 fragment 管理器">
 <meta name="twitter:description" content="7.1 UI 设计的灵活性需求 复杂的用户界面呈现需求 平板以及大尺寸手机显示问题 滑动屏幕等交互问题   acticity 视图局限性 我们需要 activity 界面可以在运行时组装甚至时重新组装，但是其本身并不具备这样的灵活性 activity 还得和特定的用户界面紧紧绑定    7.2 引入 fragment fragment 是一种控制器对象 activity 可以委托它执行任务 这些任">
@@ -92,7 +92,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -111,10 +111,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
+            POSTS: 'Entradas',
             PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -147,7 +147,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
                 </td>
@@ -164,7 +164,7 @@
         
     <div class="widget-wrap" id='categories'>
         <h3 class="widget-title">
-            <span>categories</span>
+            <span>Categorias</span>
             &nbsp;
             <a id='allExpand' href="#">
                 <i class="fa fa-angle-double-down fa-2x"></i>
@@ -180,7 +180,7 @@
                             &nbsp;
                             Android 开发
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Android-开发/8-using-recyclerview-to-display-list/">8 使用 RecyclerView 显示列表</a></li>  <li class="file active"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -323,14 +323,14 @@
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Android/">Android</a>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/frgament/">frgament</a>
     </div>
 
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">
-            <time datetime="2017-12-13T07:57:27.606Z" itemprop="datePublished">2017-12-13</time>
+            <time datetime="2017-12-14T07:44:09.355Z" itemprop="datePublished">2017-12-14</time>
         </a>
     </div>
 
@@ -361,11 +361,6 @@
         <div class="article-entry" itemprop="articleBody">
         
         
-            
-                <div id="toc" class="toc-article">
-                <strong class="toc-title">Catalogue</strong>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#7-1-UI- 设计的灵活性需求"><span class="toc-number">1.</span> <span class="toc-text">7.1 UI 设计的灵活性需求</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-2- 引入 -fragment"><span class="toc-number">2.</span> <span class="toc-text">7.2 引入 fragment</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-3- 着手开发示例应用"><span class="toc-number">3.</span> <span class="toc-text">7.3 着手开发示例应用</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程"><span class="toc-number">3.0.0.0.1.</span> <span class="toc-text">我们先来看一下整个 CriminalIntent 项目的对象图解，以便我们更好地理解开发流程</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CrimeFragment"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">CrimeFragment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#两类 -fragment"><span class="toc-number">3.0.0.2.</span> <span class="toc-text">两类 fragment</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#在 -Android-Studio- 中增加依赖关系"><span class="toc-number">3.0.0.3.</span> <span class="toc-text">在 Android Studio 中增加依赖关系 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建 Crime 类"><span class="toc-number">3.0.0.4.</span> <span class="toc-text">创建 Crime 类</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-4- 托管 UI-fragment"><span class="toc-number">4.</span> <span class="toc-text">7.4 托管 UI fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fragment 的生命周期"><span class="toc-number">4.0.0.1.</span> <span class="toc-text">fragment的生命周期 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#托管的两种方式"><span class="toc-number">4.0.0.2.</span> <span class="toc-text">托管的两种方式 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#定义容器布局"><span class="toc-number">4.0.0.3.</span> <span class="toc-text">定义容器布局 </span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-5- 创建 UI-fragment"><span class="toc-number">5.</span> <span class="toc-text">7.5 创建 UI fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#定义 CrimeFragment 的布局"><span class="toc-number">5.0.0.1.</span> <span class="toc-text">定义 CrimeFragment 的布局</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#创建 CrimeFragment 类"><span class="toc-number">5.0.0.2.</span> <span class="toc-text">创建 CrimeFragment 类</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-6- 向 FragmentManager 添加 UI-fragment"><span class="toc-number">6.</span> <span class="toc-text">7.6 向 FragmentManager 添加 UI fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#fragment 事务"><span class="toc-number">6.0.0.1.</span> <span class="toc-text">fragment事务 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FragmentManafer 和 fragment 生命周期"><span class="toc-number">6.0.0.2.</span> <span class="toc-text">FragmentManafer和 fragment 生命周期</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-7- 采用 fragment 应用架构"><span class="toc-number">7.</span> <span class="toc-text">7.7. 采用 fragment 应用架构 </span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#使用 fragment 的理由"><span class="toc-number">7.0.0.1.</span> <span class="toc-text">使用 fragment 的理由</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-8- 深入学习：fragment 与支持库"><span class="toc-number">8.</span> <span class="toc-text">7.8 深入学习：fragment与支持库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-9- 深入学习：为什么优先使用支持库版本的 fragment"><span class="toc-number">9.</span> <span class="toc-text">7.9 深入学习：为什么优先使用支持库版本的 fragment</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#支持库版本的 fragment 使用起来最方便"><span class="toc-number">9.0.0.1.</span> <span class="toc-text"> 支持库版本的 fragment 使用起来最方便</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#如何使用内置版？"><span class="toc-number">9.0.0.2.</span> <span class="toc-text">如何使用内置版？</span></a></li></ol></li></ol></li></ol></li></ol>
-                </div>
             
         
         
@@ -722,10 +717,19 @@
     
 <nav id="article-nav">
     
+        <a href="/Android-开发/8-using-recyclerview-to-display-list/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Más nuevo</strong>
+            <div class="article-nav-title">
+                
+                    8 使用 RecyclerView 显示列表
+                
+            </div>
+        </a>
     
-        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">5 [BX] 和 loop 指令</div>
+    
+        <a href="/计算机技能/汇编基础/4-the-first-program/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Más viejo</strong>
+            <div class="article-nav-title">4 第一个程序</div>
         </a>
     
 </nav>
