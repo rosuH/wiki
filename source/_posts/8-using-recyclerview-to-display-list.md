@@ -292,7 +292,7 @@ public class CrimeListFragment extends Fragment{
 
 
 
-####  `ViewHolder`和`Adapter`
+####  `ViewHolder`
 
 - `RecyclerView`的任务仅限于回收和定位屏幕上的`View`
 - `ViewHolder`只做一件事：容纳`View`视图
@@ -331,20 +331,84 @@ ImageView thumbnailView = row.mThumbnail;
 
 ![ViewHolder 配合 RecyclerView 使用](https://img.rosuh.me/wiki/wiki_201712_7eabb8.png)
 
+可以看到，如果
+
+#### `Adapter`
+
+- `RecyclerView`自己不创建`ViewHolder`
+  - 这个任务交给了`Adapter`
+- `Adapter`是一个控制器对象，从模型层获取数据，然后提供给`RecyclerView`显示，是沟通的桥梁
+- `Adapter`负责
+  - 创建必要的`ViewHolder`
+  - 绑定`ViewHolder`至模型层数据
+- 要创建`Adapter`，首先要定义`RecyclerView.Adapter`子类
+  - 然后由它封装从`CrimeLab`获取的`crime`
+- `RecyclerView`需要显示视图对象时，就会找他的`Adapter`
+
+
+![生动有趣的 RecyclerView-Adapter 对话](https://img.rosuh.me/wiki/wiki_201712_fb0cd7.png)
 
 
 
+**`RecyclerView-Adapter `对话**
+
+- 首先，调用`Adapter`的`getItemCount()`方法，`RecyclerView`询问数组列表中包含多少个对象
+- 接着，`RecyclerView`调用`Adapter`的`onCreateViewHolder(ViewGroup, int)`方法创建`ViewHolder`及其要显示的视图
+- 最后，`RecyclerView`会传入`ViewHolder`及其位置，调用`onBindViewHolder(ViewHolder, int)`
+  - `Adapter`会找到目标位置的数据并将其绑定到`ViewHolder`视图上
+  - 绑定：使用模型数据填充视图
+- `onCreateViewHolder(ViewGroup, int)`方法调用并不频繁
+  - 一旦有了够用的`ViewHolder`，`RecyclerView`就会停止调用`ViewHolder(...)`方法
+  - 它会回收`ViewHolder`以节约时间和内存
 
 
 
+####  使用`RecyclerView`
+
+1. 添加依赖
+
+你可以在`build.gradle`文件中直接写入`RecyclerView`的依赖库。不过我觉得更好的方法是在`Project Structure`-->`app`-->`Dependencies`添加依赖。这样会直接搜索最新版的依赖项。
+
+2. 修改`.xml`文件，将根视图改为`RecyclerView`，并配置 ID 属性
+
+*在布局文件中添加`RecyclerView`视图（`fragment_crime_list.mxl`）*
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/crime_recycler_view"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent"/> 
+```
 
 
 
+3. 关联视图和`fragment`
 
+修改`CrimeListFragment`类文件，使用布局并找到布局中的`RecyclerView`视图。
 
+*为`CrimeListFRagment`配置视图（`CrimeListFragment.java`）*
 
+```java
+public class CrimeListFragment extends Fragment {
+    private RecyclerView mCrimeRecyclerView;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+        
+        mCrimeRecyclerView = (RecyclerView)view
+                .findViewById(R.id.crime_recycler_view);
+        mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        return view;
+    }
+}
+```
 
+- `RecyclerView`视图创建完成之后，立即转交给了`LayoutManager`对象
+  - `LayoutManager`对象负责在屏幕上摆放列表项还负责定义屏幕滚动行为，因此没有了它，`RecyclerView`没法正常工作，应用可能会崩溃
 
 
 
