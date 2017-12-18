@@ -110,7 +110,7 @@
 <p>当前屏幕只显示了 12 个子<code>View</code>。不在视线中的子<code>View</code>，就不会被创建出来。</p>
 <p>你滑动屏幕就会显示更多子项目，然后之前出现过的，而不在视线中的子 <code>View</code> 就会被回收。</p>
 <p><code>RecyclerView</code>所做的事情，就是创建视线中的子项以及回收再利用，循环往复。</p>
-<h4 id="ViewHolder 和 Adapter"><a href="#ViewHolder 和 Adapter" class="headerlink" title="ViewHolder 和 Adapter"></a><code>ViewHolder</code>和<code>Adapter</code></h4><ul>
+<h4 id="ViewHolder"><a href="#ViewHolder" class="headerlink" title="ViewHolder"></a><code>ViewHolder</code></h4><ul>
 <li><code>RecyclerView</code>的任务仅限于回收和定位屏幕上的<code>View</code></li>
 <li><code>ViewHolder</code>只做一件事：容纳 <code>View</code> 视图</li>
 </ul>
@@ -127,6 +127,61 @@
 <li><code>RecyclerView</code>本身不会创建视图，它创建的是 <code>ViewHolder</code>，而<code>ViewHolder</code> 引用着<code>itemView</code></li>
 </ul>
 <p><img src="https://img.rosuh.me/wiki/wiki_201712_7eabb8.png" alt="ViewHolder 配合 RecyclerView 使用"></p>
+<p>可以看到，如果</p>
+<h4 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a><code>Adapter</code></h4><ul>
+<li><code>RecyclerView</code>自己不创建<code>ViewHolder</code><ul>
+<li>这个任务交给了<code>Adapter</code></li>
+</ul>
+</li>
+<li><code>Adapter</code>是一个控制器对象，从模型层获取数据，然后提供给 <code>RecyclerView</code> 显示，是沟通的桥梁</li>
+<li><code>Adapter</code>负责<ul>
+<li>创建必要的<code>ViewHolder</code></li>
+<li>绑定 <code>ViewHolder</code> 至模型层数据</li>
+</ul>
+</li>
+<li>要创建 <code>Adapter</code>，首先要定义<code>RecyclerView.Adapter</code> 子类<ul>
+<li>然后由它封装从 <code>CrimeLab</code> 获取的<code>crime</code></li>
+</ul>
+</li>
+<li><code>RecyclerView</code>需要显示视图对象时，就会找他的<code>Adapter</code></li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_fb0cd7.png" alt="生动有趣的 RecyclerView-Adapter 对话"></p>
+<p><strong><code>RecyclerView-Adapter</code>对话</strong></p>
+<ul>
+<li>首先，调用 <code>Adapter</code> 的<code>getItemCount()</code>方法，<code>RecyclerView</code>询问数组列表中包含多少个对象</li>
+<li>接着，<code>RecyclerView</code>调用 <code>Adapter</code> 的<code>onCreateViewHolder(ViewGroup, int)</code>方法创建 <code>ViewHolder</code> 及其要显示的视图</li>
+<li>最后，<code>RecyclerView</code>会传入 <code>ViewHolder</code> 及其位置，调用<code>onBindViewHolder(ViewHolder, int)</code><ul>
+<li><code>Adapter</code>会找到目标位置的数据并将其绑定到 <code>ViewHolder</code> 视图上</li>
+<li>绑定：使用模型数据填充视图</li>
+</ul>
+</li>
+<li><code>onCreateViewHolder(ViewGroup, int)</code>方法调用并不频繁<ul>
+<li>一旦有了够用的 <code>ViewHolder</code>，<code>RecyclerView</code> 就会停止调用 <code>ViewHolder(...)</code> 方法</li>
+<li>它会回收 <code>ViewHolder</code> 以节约时间和内存</li>
+</ul>
+</li>
+</ul>
+<h4 id="使用 RecyclerView"><a href="# 使用 RecyclerView" class="headerlink" title="使用 RecyclerView"></a>使用<code>RecyclerView</code></h4><ol>
+<li>添加依赖</li>
+</ol>
+<p>你可以在 <code>build.gradle</code> 文件中直接写入 <code>RecyclerView</code> 的依赖库。不过我觉得更好的方法是在 <code>Project Structure</code>–&gt;<code>app</code>–&gt;<code>Dependencies</code> 添加依赖。这样会直接搜索最新版的依赖项。</p>
+<ol>
+<li>修改 <code>.xml</code> 文件，将根视图改为<code>RecyclerView</code>，并配置 ID 属性</li>
+</ol>
+<p><em>在布局文件中添加 <code>RecyclerView</code> 视图（<code>fragment_crime_list.mxl</code>）</em></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">android.support.v7.widget.RecyclerView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/crime_recycler_view"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span> </span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>关联视图和<code>fragment</code></li>
+</ol>
+<p>修改 <code>CrimeListFragment</code> 类文件，使用布局并找到布局中的 <code>RecyclerView</code> 视图。</p>
+<p><em>为 <code>CrimeListFRagment</code> 配置视图（<code>CrimeListFragment.java</code>）</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeListFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> RecyclerView mCrimeRecyclerView;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container,</span></span></span><br><span class="line"><span class="function"><span class="params">                             Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        View view = inflater.inflate(R.layout.fragment_crime_list, container, <span class="keyword">false</span>);</span><br><span class="line">        </span><br><span class="line">        mCrimeRecyclerView = (RecyclerView)view</span><br><span class="line">                .findViewById(R.id.crime_recycler_view);</span><br><span class="line">        mCrimeRecyclerView.setLayoutManager(<span class="keyword">new</span> LinearLayoutManager(getActivity()));</span><br><span class="line">        <span class="keyword">return</span> view;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>RecyclerView</code>视图创建完成之后，立即转交给了 <code>LayoutManager</code> 对象<ul>
+<li><code>LayoutManager</code>对象负责在屏幕上摆放列表项还负责定义屏幕滚动行为，因此没有了它，<code>RecyclerView</code>没法正常工作，应用可能会崩溃</li>
+</ul>
+</li>
+</ul>
 ]]></content>
       
         <categories>
@@ -510,169 +565,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[5 [BX] 和 loop 指令]]></title>
-      <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/5-BX-and-loop-instruction/</url>
-      <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><h2 id="1-bx- 和内存单元的描述"><a href="#1-bx- 和内存单元的描述" class="headerlink" title="1. [bx] 和内存单元的描述"></a>1. <code>[bx]</code>和内存单元的描述</h2><ul>
-<li>描述一个内存单元所需的两种信息<ul>
-<li>内存单元的地址</li>
-<li>内存单元的长度（类型）</li>
-</ul>
-</li>
-</ul>
-<p><code>[0]</code> 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 <code>ds</code>寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。</p>
-<ul>
-<li><code>[bx]</code> 是一个内存单元的地址<ul>
-<li>它的偏移地址存放在 <code>bx</code>中</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>表示将一个内存单元的内容送入 <code>ax</code>，这个内存单元的长度位 2 字节（字单元），存放一个字节，偏移地址在 <code>bx</code> 中 ，段地址在 <code>ds</code>中</li>
-</ul>
-<h2 id="2-loop"><a href="#2-loop" class="headerlink" title="2. loop"></a>2. <code>loop</code></h2><p>循环指令。</p>
-<h2 id="3- 我们定义的描述性符号："><a href="#3- 我们定义的描述性符号：" class="headerlink" title="3. 我们定义的描述性符号：()"></a>3. 我们定义的描述性符号：<code>()</code></h2><p>为了描述上的简洁，在后续的学习中，我们将使用 <code>()</code> 来表示一个寄存器或一个内存单元中的内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(ax) ; 表示 ax 中的内容</span><br><span class="line">(al) ; 表示 al 中的内容</span><br></pre></td></tr></table></figure>
-<h2 id="4- 约定符号 -idata 表示常量"><a href="#4- 约定符号 -idata 表示常量" class="headerlink" title="4. 约定符号 idata 表示常量"></a>4. 约定符号 <code>idata</code>表示常量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [idata] ; 代表 mov ax,[1]、mov ax,[2]、或 mov ax,[3] 等</span><br><span class="line">mov bx, idata	; 代表 mov bx 1、mov bx, 2 或 mov bx, 3 等</span><br></pre></td></tr></table></figure>
-<h1 id="5-1-BX"><a href="#5-1-BX" class="headerlink" title="5.1 [BX]"></a>5.1 <code>[BX]</code></h1><p>2 个示例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>bx</code>中存放的数据作为一个偏移地址 <code>EA</code>，段地址<code>SA</code> 默认在 <code>ds</code> 中，将 <code>SA:EA</code> 处的数据送入 <code>ax</code> 中。即：<code>(ax) = ((ds)* 16 + (bx))</code>。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov [bx], ax</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>bx</code>中存放的数据作为一个偏移地址 <code>EA</code>，段地址<code>SA</code> 默认在 <code>ds</code> 中，将 <code>ax</code> 中的数据送入内存 <code>SA:EA</code> 处。即：<code>((ds)*16 + (bx) = ax)</code></li>
-</ul>
-<h1 id="5-2-Loop 指令"><a href="#5-2-Loop 指令" class="headerlink" title="5.2 Loop 指令"></a>5.2 <code>Loop</code>指令</h1><ul>
-<li><code>loop</code>指令的格式</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop 标号</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><code>loop</code>被执行的过程</p>
-<ul>
-<li><code>(cx) = (cx) - 1</code></li>
-<li>判断 <code>cx</code> 中的值，如果不为零则转至标号处执行程序，如果为零则向下执行</li>
-<li><code>cx</code>中存放循环次数</li>
-</ul>
-</li>
-</ul>
-<h2 id="示例一"><a href="# 示例一" class="headerlink" title="示例一"></a>示例一</h2><ul>
-<li>任务：编程计算 <code>2^2</code>，结果存放在<code>ax</code> 中</li>
-<li>分析<ul>
-<li>设 <code>(ax) = 2</code>，可计算<code>(ax) = (ax) * 2</code>，最后<code>(ax)</code> 中为 <code>2^2</code> 的值</li>
-<li><code>N*2</code> 可用 <code>N+N</code> 实现</li>
-</ul>
-</li>
-</ul>
-<p>程序如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h2 id="示例二"><a href="# 示例二" class="headerlink" title="示例二"></a>示例二</h2><ul>
-<li>任务：计算 <code>2^3</code></li>
-<li>分析：<ul>
-<li><code>2^3 = 2*2*2</code>，若设 <code>(ax) = 2</code>，可计算<code>(ax) = (ax) * 2 * 2</code>，最后<code>(ax)</code> 中为 <code>2^3</code> 的值</li>
-<li><code>N*2</code>可用 <code>N+N</code> 实现</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">assume  cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<h2 id="示例三"><a href="# 示例三" class="headerlink" title="示例三"></a>示例三</h2><ul>
-<li>任务：编程计算<code>2^12</code></li>
-<li>分析<ul>
-<li>类似之前的例子</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	; 作 11 次 add ax, ax</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>我们可以使用 <code>loop</code> 来简化我们的程序。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	mov cx, 11</span><br><span class="line">s: 	add ax, ax</span><br><span class="line">	loop s</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p><em>分析</em>：</p>
-<ul>
-<li>标号<code>s</code><ul>
-<li>这个标号标识了一个地址，这个地址处有一条指令<code>add ax, ax</code></li>
-</ul>
-</li>
-<li><code>loop s</code><ul>
-<li>CPU <strong>执行 <code>loop s</code> 的时候</strong>，要进行两步操作<ul>
-<li><code>(cx) = (cx) - 1</code></li>
-<li>判断 <code>cx</code> 中的值，不为 <code>0</code> 则转至标号 <code>s</code> 所标识的地址；如果为零则执行下一条</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>以下 3 条指令</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	mov cx, 11</span><br><span class="line">s:  add ax, ax</span><br><span class="line">	loop s</span><br></pre></td></tr></table></figure>
-<ul>
-<li>执行 <code>loop s</code> 时，首先要将 <code>(cx)</code> 减 1，然后若 <code>(cx)</code> 不为 0，则向前转至 <code>s</code> 处执行<code>add ax, ax</code><ul>
-<li>利用 <code>cx</code> 可以用来控制 <code>add ax,ax</code> 的执行次数</li>
-</ul>
-</li>
-</ul>
-<h1 id="5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序"><a href="#5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序" class="headerlink" title="5.3 在 Debug 中跟踪用 loop 指令实现的循环程序"></a>5.3 在 Debug 中跟踪用 <code>loop</code> 指令实现的循环程序</h1><ul>
-<li>问题</li>
-</ul>
-<p>计算 <code>ffff:0006</code> 单元中的数乘以 3，结果存储在 <code>dx</code> 中。</p>
-<ul>
-<li>考虑三个事项<ul>
-<li>运算后结果会否超出 <code>dx</code> 所能存储的范围？<ul>
-<li><code>ffff:0006</code>单元中的数是一个字节型的数据，范围是 <code>0~255</code> 之间，则用它和 3 相乘结果不会大于 65535，可以在 <code>dx</code> 中存放下</li>
-</ul>
-</li>
-<li>用循环累加来实现乘法，用哪个寄存器进行累加<ul>
-<li>将 <code>ffff:0006</code> 单元中的赋值给 <code>ax</code>，用<code>dx</code> 进行累加。</li>
-<li>先设<code>(dx) = 0</code>，然后作 3 次<code>(dx) = (dx)+(ax)</code></li>
-</ul>
-</li>
-<li><code>ffff:0006</code>单元是一个字节单元，<code>ax</code>是一个 16 位寄存器，数据长度不一样，如何赋值？<ul>
-<li>要想实现 <code>ffff:0006</code> 单元向 <code>ax</code> 赋值，应该令<code>(ah) = 0, (al) = (ffff6h)</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>代码实现</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 0ffffh</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov bx, 6		; 以上，设置 ds:bx 指向 ffff:6</span><br><span class="line">	</span><br><span class="line">	mov al, [bx]</span><br><span class="line">	mov ah, 0		; 以上，设置(al)=((ds*16)+(bx)), (ah)=0</span><br><span class="line">	</span><br><span class="line">	mov dx, 0		; 累计寄存器清 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 3		; 循环 3 次 </span><br><span class="line">s:	add dx, ax</span><br><span class="line">	loop s			; 以上累加计算(ax)*3</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h			; 返回</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<ul>
-<li>在汇编源程序中，数据不能以字母开头，所以要在前面加  0</li>
-</ul>
-<p>对上面的程序编译、链接之后，使用 <code>debug.exe</code> 对程序执行过程进行观察。</p>
-<ul>
-<li><code>u</code>查看被 <code>Debug</code> 加载入内存的程序可以看到 <code>loop s</code> 语句</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 源代码语句</span><br><span class="line">s:	add  dx, ax</span><br><span class="line">	loop s</span><br><span class="line"># 载入内存的语句</span><br><span class="line">0B3D:0012 ADD DX,AX</span><br><span class="line">0B3D:0014 LOOP, 0012</span><br></pre></td></tr></table></figure>
-<p>可以看到 <code>s</code> 已经被具体的地址所替代。</p>
-<ul>
-<li>访问内存地址时，<code>Debug</code>的显示方式</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0B44:0008 8A07	MOV AL,[BX]			DS:0006=35</span><br></pre></td></tr></table></figure>
-<p>可以看到 <code>debug</code> 右边出现了内存地址 <code>[bx]</code> 中的内容。根据我们设置的，段地址 <code>ds = ffff, bx=6</code>，所以我们可知道<code>ffff:6</code> 内存单元中的值为<code>35h</code>。</p>
-<p>接着就是 <code>loop</code> 指令的执行，注意 <code>cx</code> 寄存器中的值，当该值等于 0 时，就跳出循环。</p>
-<p>现在我们知道，修改 <code>cx</code> 寄存器中的内容可以间接实现乘法算术，对于在 <code>debug</code> 中的跟踪技巧而言，我们可以使用 <code>g</code> 指令，来快速执行到某一指令。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g 0012</span><br></pre></td></tr></table></figure>
-<p>这样就可以略过 <code>ds:0012</code> 之前的代码了。对于循环语句，就可以直接将地址改为循环后一句地址即可：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g 0016	# 假设循环语句地址为 0014</span><br></pre></td></tr></table></figure>
-<p>此外，我们也可以使用 <code>p</code> 指令来自动执行循环。</p>
-<p><em>遇到 <code>int 21h</code> 语句时应该使用 <code>p</code> 指令来正常结束程序哦。</em></p>
-<h1 id="5-4-Debug 和汇编编译器 masm 对指令的不同处理"><a href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理" class="headerlink" title="5.4 Debug 和汇编编译器 masm 对指令的不同处理"></a>5.4 <code>Debug</code>和汇编编译器 <code>masm</code> 对指令的不同处理</h1>]]></content>
-      
-        <categories>
-            
-            <category> 计算机技能 </category>
-            
-            <category> 汇编基础 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> assembly </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[4 第一个程序]]></title>
       <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/4-the-first-program/</url>
       <content type="html"><![CDATA[<h1 id="4-1- 一个源程序从写出到执行的过程"><a href="#4-1- 一个源程序从写出到执行的过程" class="headerlink" title="4.1 一个源程序从写出到执行的过程"></a>4.1 一个源程序从写出到执行的过程</h1><ol>
@@ -854,6 +746,169 @@
 </li>
 </ul>
 ]]></content>
+      
+        <categories>
+            
+            <category> 计算机技能 </category>
+            
+            <category> 汇编基础 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> assembly </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[5 [BX] 和 loop 指令]]></title>
+      <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/5-BX-and-loop-instruction/</url>
+      <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><h2 id="1-bx- 和内存单元的描述"><a href="#1-bx- 和内存单元的描述" class="headerlink" title="1. [bx] 和内存单元的描述"></a>1. <code>[bx]</code>和内存单元的描述</h2><ul>
+<li>描述一个内存单元所需的两种信息<ul>
+<li>内存单元的地址</li>
+<li>内存单元的长度（类型）</li>
+</ul>
+</li>
+</ul>
+<p><code>[0]</code> 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 <code>ds</code>寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。</p>
+<ul>
+<li><code>[bx]</code> 是一个内存单元的地址<ul>
+<li>它的偏移地址存放在 <code>bx</code>中</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>表示将一个内存单元的内容送入 <code>ax</code>，这个内存单元的长度位 2 字节（字单元），存放一个字节，偏移地址在 <code>bx</code> 中 ，段地址在 <code>ds</code>中</li>
+</ul>
+<h2 id="2-loop"><a href="#2-loop" class="headerlink" title="2. loop"></a>2. <code>loop</code></h2><p>循环指令。</p>
+<h2 id="3- 我们定义的描述性符号："><a href="#3- 我们定义的描述性符号：" class="headerlink" title="3. 我们定义的描述性符号：()"></a>3. 我们定义的描述性符号：<code>()</code></h2><p>为了描述上的简洁，在后续的学习中，我们将使用 <code>()</code> 来表示一个寄存器或一个内存单元中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(ax) ; 表示 ax 中的内容</span><br><span class="line">(al) ; 表示 al 中的内容</span><br></pre></td></tr></table></figure>
+<h2 id="4- 约定符号 -idata 表示常量"><a href="#4- 约定符号 -idata 表示常量" class="headerlink" title="4. 约定符号 idata 表示常量"></a>4. 约定符号 <code>idata</code>表示常量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [idata] ; 代表 mov ax,[1]、mov ax,[2]、或 mov ax,[3] 等</span><br><span class="line">mov bx, idata	; 代表 mov bx 1、mov bx, 2 或 mov bx, 3 等</span><br></pre></td></tr></table></figure>
+<h1 id="5-1-BX"><a href="#5-1-BX" class="headerlink" title="5.1 [BX]"></a>5.1 <code>[BX]</code></h1><p>2 个示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>bx</code>中存放的数据作为一个偏移地址 <code>EA</code>，段地址<code>SA</code> 默认在 <code>ds</code> 中，将 <code>SA:EA</code> 处的数据送入 <code>ax</code> 中。即：<code>(ax) = ((ds)* 16 + (bx))</code>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov [bx], ax</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>bx</code>中存放的数据作为一个偏移地址 <code>EA</code>，段地址<code>SA</code> 默认在 <code>ds</code> 中，将 <code>ax</code> 中的数据送入内存 <code>SA:EA</code> 处。即：<code>((ds)*16 + (bx) = ax)</code></li>
+</ul>
+<h1 id="5-2-Loop 指令"><a href="#5-2-Loop 指令" class="headerlink" title="5.2 Loop 指令"></a>5.2 <code>Loop</code>指令</h1><ul>
+<li><code>loop</code>指令的格式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop 标号</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>loop</code>被执行的过程</p>
+<ul>
+<li><code>(cx) = (cx) - 1</code></li>
+<li>判断 <code>cx</code> 中的值，如果不为零则转至标号处执行程序，如果为零则向下执行</li>
+<li><code>cx</code>中存放循环次数</li>
+</ul>
+</li>
+</ul>
+<h2 id="示例一"><a href="# 示例一" class="headerlink" title="示例一"></a>示例一</h2><ul>
+<li>任务：编程计算 <code>2^2</code>，结果存放在<code>ax</code> 中</li>
+<li>分析<ul>
+<li>设 <code>(ax) = 2</code>，可计算<code>(ax) = (ax) * 2</code>，最后<code>(ax)</code> 中为 <code>2^2</code> 的值</li>
+<li><code>N*2</code> 可用 <code>N+N</code> 实现</li>
+</ul>
+</li>
+</ul>
+<p>程序如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="示例二"><a href="# 示例二" class="headerlink" title="示例二"></a>示例二</h2><ul>
+<li>任务：计算 <code>2^3</code></li>
+<li>分析：<ul>
+<li><code>2^3 = 2*2*2</code>，若设 <code>(ax) = 2</code>，可计算<code>(ax) = (ax) * 2 * 2</code>，最后<code>(ax)</code> 中为 <code>2^3</code> 的值</li>
+<li><code>N*2</code>可用 <code>N+N</code> 实现</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">assume  cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h2 id="示例三"><a href="# 示例三" class="headerlink" title="示例三"></a>示例三</h2><ul>
+<li>任务：编程计算<code>2^12</code></li>
+<li>分析<ul>
+<li>类似之前的例子</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	; 作 11 次 add ax, ax</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>我们可以使用 <code>loop</code> 来简化我们的程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	mov cx, 11</span><br><span class="line">s: 	add ax, ax</span><br><span class="line">	loop s</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><em>分析</em>：</p>
+<ul>
+<li>标号<code>s</code><ul>
+<li>这个标号标识了一个地址，这个地址处有一条指令<code>add ax, ax</code></li>
+</ul>
+</li>
+<li><code>loop s</code><ul>
+<li>CPU <strong>执行 <code>loop s</code> 的时候</strong>，要进行两步操作<ul>
+<li><code>(cx) = (cx) - 1</code></li>
+<li>判断 <code>cx</code> 中的值，不为 <code>0</code> 则转至标号 <code>s</code> 所标识的地址；如果为零则执行下一条</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>以下 3 条指令</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	mov cx, 11</span><br><span class="line">s:  add ax, ax</span><br><span class="line">	loop s</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行 <code>loop s</code> 时，首先要将 <code>(cx)</code> 减 1，然后若 <code>(cx)</code> 不为 0，则向前转至 <code>s</code> 处执行<code>add ax, ax</code><ul>
+<li>利用 <code>cx</code> 可以用来控制 <code>add ax,ax</code> 的执行次数</li>
+</ul>
+</li>
+</ul>
+<h1 id="5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序"><a href="#5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序" class="headerlink" title="5.3 在 Debug 中跟踪用 loop 指令实现的循环程序"></a>5.3 在 Debug 中跟踪用 <code>loop</code> 指令实现的循环程序</h1><ul>
+<li>问题</li>
+</ul>
+<p>计算 <code>ffff:0006</code> 单元中的数乘以 3，结果存储在 <code>dx</code> 中。</p>
+<ul>
+<li>考虑三个事项<ul>
+<li>运算后结果会否超出 <code>dx</code> 所能存储的范围？<ul>
+<li><code>ffff:0006</code>单元中的数是一个字节型的数据，范围是 <code>0~255</code> 之间，则用它和 3 相乘结果不会大于 65535，可以在 <code>dx</code> 中存放下</li>
+</ul>
+</li>
+<li>用循环累加来实现乘法，用哪个寄存器进行累加<ul>
+<li>将 <code>ffff:0006</code> 单元中的赋值给 <code>ax</code>，用<code>dx</code> 进行累加。</li>
+<li>先设<code>(dx) = 0</code>，然后作 3 次<code>(dx) = (dx)+(ax)</code></li>
+</ul>
+</li>
+<li><code>ffff:0006</code>单元是一个字节单元，<code>ax</code>是一个 16 位寄存器，数据长度不一样，如何赋值？<ul>
+<li>要想实现 <code>ffff:0006</code> 单元向 <code>ax</code> 赋值，应该令<code>(ah) = 0, (al) = (ffff6h)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>代码实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 0ffffh</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov bx, 6		; 以上，设置 ds:bx 指向 ffff:6</span><br><span class="line">	</span><br><span class="line">	mov al, [bx]</span><br><span class="line">	mov ah, 0		; 以上，设置(al)=((ds*16)+(bx)), (ah)=0</span><br><span class="line">	</span><br><span class="line">	mov dx, 0		; 累计寄存器清 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 3		; 循环 3 次 </span><br><span class="line">s:	add dx, ax</span><br><span class="line">	loop s			; 以上累加计算(ax)*3</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h			; 返回</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在汇编源程序中，数据不能以字母开头，所以要在前面加  0</li>
+</ul>
+<p>对上面的程序编译、链接之后，使用 <code>debug.exe</code> 对程序执行过程进行观察。</p>
+<ul>
+<li><code>u</code>查看被 <code>Debug</code> 加载入内存的程序可以看到 <code>loop s</code> 语句</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 源代码语句</span><br><span class="line">s:	add  dx, ax</span><br><span class="line">	loop s</span><br><span class="line"># 载入内存的语句</span><br><span class="line">0B3D:0012 ADD DX,AX</span><br><span class="line">0B3D:0014 LOOP, 0012</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>s</code> 已经被具体的地址所替代。</p>
+<ul>
+<li>访问内存地址时，<code>Debug</code>的显示方式</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0B44:0008 8A07	MOV AL,[BX]			DS:0006=35</span><br></pre></td></tr></table></figure>
+<p>可以看到 <code>debug</code> 右边出现了内存地址 <code>[bx]</code> 中的内容。根据我们设置的，段地址 <code>ds = ffff, bx=6</code>，所以我们可知道<code>ffff:6</code> 内存单元中的值为<code>35h</code>。</p>
+<p>接着就是 <code>loop</code> 指令的执行，注意 <code>cx</code> 寄存器中的值，当该值等于 0 时，就跳出循环。</p>
+<p>现在我们知道，修改 <code>cx</code> 寄存器中的内容可以间接实现乘法算术，对于在 <code>debug</code> 中的跟踪技巧而言，我们可以使用 <code>g</code> 指令，来快速执行到某一指令。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g 0012</span><br></pre></td></tr></table></figure>
+<p>这样就可以略过 <code>ds:0012</code> 之前的代码了。对于循环语句，就可以直接将地址改为循环后一句地址即可：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g 0016	# 假设循环语句地址为 0014</span><br></pre></td></tr></table></figure>
+<p>此外，我们也可以使用 <code>p</code> 指令来自动执行循环。</p>
+<p><em>遇到 <code>int 21h</code> 语句时应该使用 <code>p</code> 指令来正常结束程序哦。</em></p>
+<h1 id="5-4-Debug 和汇编编译器 masm 对指令的不同处理"><a href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理" class="headerlink" title="5.4 Debug 和汇编编译器 masm 对指令的不同处理"></a>5.4 <code>Debug</code>和汇编编译器 <code>masm</code> 对指令的不同处理</h1>]]></content>
       
         <categories>
             
