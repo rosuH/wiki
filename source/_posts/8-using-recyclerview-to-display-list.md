@@ -19,7 +19,7 @@ categories:
 - 显示`crime`列表需要在应用控制器层新增一个`activity`和一个`fragment`
   - `CrimeListActivity`和`CrimeListFragment`
 
-![CriminalIntent 应用对象](http://img.rosuh.me/wiki/wiki_201712_a47d61.png)
+![CriminalIntent 应用对象](https://img.rosuh.me/wiki/wiki_201712_a47d61.png)
 
 
 
@@ -127,13 +127,13 @@ private CrimeLab(Context context){
 
 #  8.2 使用抽象`activity`托管`fragment`
 
+记得我们需要为`fragment`创建一个`activity`视图来容纳它吗？
+
 创建托管`CrimeListFragment`的`CrimeListActivity`类之前，首先为`CrimeListActivity`创建视图。
 
 
 
 ####  通用型`fragment`托管布局
-
-记得我们需要为`fragment`创建一个`activity`视图来容纳它吗？
 
 *通用的布局定义文件`activity_fragment.xml`容器视图*：
 
@@ -146,8 +146,7 @@ private CrimeLab(Context context){
 
 ```
 
-- 此处没有特别指定`fragment`，任何托管`activity`托管`fragment`的场景，都可以使用它
-
+- 此处没有特别指定`fragment`，任何使用`activity`托管`fragment`的场景，都可以使用它
 
 
 ####  抽象`activity`类
@@ -164,7 +163,7 @@ public class CrimeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
 
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
@@ -178,7 +177,7 @@ public class CrimeActivity extends AppCompatActivity {
 }
 ```
 
-可以看到这样的代码结构比较简单，而每一次新建一个`activity`都需要创建这样一段代码。所以我们可以将重复的代码封装为抽象类。
+可以看到这样的代码结构比较简单，而每一次新建一个`activity`都需要创建这样一段代码。所以我们可以将重复的代码封装为抽象类。（后文的`CrimeActivit`和`CrimeListActivity`都会用到此类代码，所以有复用价值）
 
 创建一个`SingleFragmentActivity`的抽象类。设置超类为`AppCompatActivity`类。
 
@@ -209,7 +208,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
 可以看到上述方法除了在`*`号处将`new Fragment()`改为`createFragment()`抽象类方法外，其余和`CrimeActivity.java`中没什么区别。
 
-我们要做的工作就是让`SingleFragmentActivity`的子类会实现该方法，来返回`activity`托管的`fragment`实例。
+我们要做的工作就是让`SingleFragmentActivity`的子类实现该方法，来返回`activity`托管的`fragment`实例。
 
 1. 使用抽象类
 
@@ -288,13 +287,13 @@ public class CrimeListFragment extends Fragment{
 
 你滑动屏幕就会显示更多子项目，然后之前出现过的，而不在视线中的子`View`就会被回收。
 
-`RecyclerView`所做的事情，就是创建视线中的子项以及回收再利用，循环往复。
+- `RecyclerView`所做的事情，就是创建视线中的子项以及回收再利用，循环往复
+- `RecyclerView`的任务仅限于回收和定位屏幕上的`View`
 
 
 
 ####  `ViewHolder`
 
-- `RecyclerView`的任务仅限于回收和定位屏幕上的`View`
 - `ViewHolder`只做一件事：容纳`View`视图
 
 ![被吐嘈的 ViewHolder](https://img.rosuh.me/wiki/wiki_201712_ef918e.png)
@@ -330,8 +329,6 @@ ImageView thumbnailView = row.mThumbnail;
 - `RecyclerView`本身不会创建视图，它创建的是`ViewHolder`，而`ViewHolder`引用着`itemView`
 
 ![ViewHolder 配合 RecyclerView 使用](https://img.rosuh.me/wiki/wiki_201712_7eabb8.png)
-
-可以看到，如果
 
 #### `Adapter`
 
@@ -386,7 +383,7 @@ ImageView thumbnailView = row.mThumbnail;
 
 3. 关联视图和`fragment`
 
-修改`CrimeListFragment`类文件，使用布局并找到布局中的`RecyclerView`视图。
+修改`CrimeListFragment.java`类文件，使用布局并找到布局中的`RecyclerView`视图。
 
 *为`CrimeListFRagment`配置视图（`CrimeListFragment.java`）*
 
@@ -411,21 +408,238 @@ public class CrimeListFragment extends Fragment {
   - `LayoutManager`对象负责在屏幕上摆放列表项还负责定义屏幕滚动行为，因此没有了它，`RecyclerView`没法正常工作，应用可能会崩溃
 
 
+目前实现了一个`RecyclerView`空视图。要显示出`crime`列表项，还需要完成`Adapter`和`ViewHolder`的实现。
+
+####  列表项视图
+
+我们要为`RecyclerView`上的列表项创建视图层级结构。
+
+*`list_item_crime.xml`*：
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="8dp">
+    
+    <TextView
+        android:id="@+id/crime_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crime Title"/>
+    
+    <TextView
+        android:id="@+id/crime_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crmie Date"/>
+</LinearLayout> 
+```
 
 
 
+####  实现`ViewHolder`和`Adapter`
+
+接着我们在`CrimeListFragment`类中定义`ViewHolder`内部类，它会实例化并使用`list_item_crime`布局。
+
+*定义`ViewHolder`内部类（`CrimeListFragment.java`）*：
+
+```java
+public class CrimeListFragment extends Fragment {
+    ...
+    
+    private class CrimeHolder extends RecyclerView.ViewHolder{
+        public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.list_item_crime, parent,false));
+        }
+    }
+}
+```
 
 
 
+- 在`CrimeHolder`的构造方法里，我们首先实例化`list_item_crime`布局，然后传给`super(...)`方法，也就是`ViewHolder`构造方法
+- 基类`ViewHolder`因而实际上引用这个视图
+  - 我们可以在`itemView`变量中找到它
 
 
 
+接下来实现`Adapter`。
+
+*创建`Adapter`内部类（`CrimeListFragment.java`）*
+
+```java
+public class CrimeListFragment extends Fragment {
+  ...
+    private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+      private List<Crime> mCrimes;
+      
+      public CrimeAdapter(List<Crime> crimes) {
+        mCrimes = crimes;
+      }
+    }
+}
+```
+
+- 需要显示新创建的`ViewHolder`或让`Crime`对象和已创建的`ViewHolder`关联时，`RecyclerView`会去找`Adapter`（调用它的方法）
+  - `RecyclerView`不关心也不了解具体的`Crime`对象，这是`Adapter`要做的事
 
 
 
+我们还需要在`Crimedapter`中实现三个方法：
+
+*武装`CrimeAdapter`（`CrimeListFragment.java`）*
+
+```java
+...
+private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
+        ...
+
+        @Override
+        public CrimeHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(CrimeHolder holder, int position) {
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return 0;
+        }
+    }
+```
 
 
 
+- `RecyclerView`需要新的`ViewHolder`来显示列表时，会调用`onCreateViewHolder`方法
+  - 这个方法内部，我们创建一个`LayoutInflater`，然后用它创建`CrimeHolder`
+- 关联`Adapter`和`RecyclerView`
+  - 实现一个设置`CrimeListFragment`用户界面的`updateUI`方法
+    - 该方法创建`CrimeAdapter`，然后设置给`RecyclerView`
+
+*设置`Adapter`（`CrimeListFragment.java`）*
+
+```java
+public class CrimeListAdapter extends Fragment {
+  ...
+  private CrimeAdapter mAdapter;
+  
+  @Override
+  public View onCreateView(LayourInflater inflater, ViewGroup container,
+                           Bundler savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_crime_list, container, false);
+    
+    mCrimeRecyclerView = (RecyclerView) view
+      					.findViewById(R.id.crime_recycler_view);
+    mCrimeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    
+    updateUI();		// **
+    
+    return view;
+  }
+  
+  public void updateUI() {
+    CrimeLab crimeLab = CrimeLab.get(getActivity());
+    List<Crime> Crimes = crimeLab.getCrimes();
+    
+    mAdaper = new CrimeAdapter(crimes);
+    mCrimeRecyclerView.setAdapter(mAdapter);
+  }
+}
+```
+
+
+
+现在已经实现了基本的列表内容了。可以编译运行看看啦。
+
+
+
+# 8.4 绑定列表项
+
+- 绑定：让 Java 代码（`Crime`里的模型数据，或点击监听器）和组件关联起来
+  - 因为`CrimeHolder`会循环使用，分开处理视图创建和绑定会有好处
+  - 我们把视图绑定工作放入`CrimeHolder`类里
+    - 绑定之前，首先实例化相关组件；此项工作是一次性任务，因此直接放在构造方法里处理
+
+*在构造方法中实例化视图组件（`CrimeListFragment.java`）*
+
+```java
+private class CrimeHolder extends RecyclerView.ViewHolder {
+  private TextView mTitleTextView;
+  private TextView mDateTextView;
+  
+  public CrimeHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.list_item_crime, parent,false));
+
+            mTitleTextView = (TextView)itemView.findViewById(R.id.crime_title);
+            mDateTextView = (TextView)itemView.findViewById(R.id.crime_date);
+        }
+}
+```
+
+
+
+- `CrimeHolder`还需要实现一个`bind(Crime)`方法
+  - 每次有新的`Crime` 要在 `CrimeHolder`中显示时，都要调用它一次
+
+*实现`bind(Crime)`方法（`CrimeListFragment.java`）*
+
+```java
+public void bind(Crime crime) {
+        mCrime = crime;
+        mTitleTextView.setText(mCrime.getTitle());
+        mDateTextView.setText(mCrime.getDate().toString());
+    }
+```
+
+- 现在只要取得一个`Crime`，`CrimeHolder`就会刷新显示`TextView`标题视图和`TextView`日期视图
+
+  最后修改`CrimeAdapter`类，使用`bind(Crime)`方法：每次`RecyclerView`要求`CrimeHolder`绑定对应的`Crime`时，都会调用`bind(Crime)`方法。
+
+*调用`bind(Crime)`（`CrimeListFragment.java`）*
+
+```java
+private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
+  ...
+  @Override
+        public void onBindViewHolder(CrimeHolder holder, int position) {
+            Crime crime = mCrimes.get(position);
+            holder.bind(crime);
+        }
+  ...
+}
+```
+
+
+
+#  8.5 响应点击
+
+一般来说，`RecyclerView`只处理列表项相关工作，而触摸事件是需要我们自己实现的。
+
+实现触摸事件常用方案就是设置`OnClickListener`监听器。既然列表项视图都关联着`ViewHolder`，就可以让`ViewHolder`为它监听用户触摸事件。
+
+*检测用户点击事件（`CrimeListFragment.java`）*
+
+```java
+private class CrimeHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener{
+...
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(getActivity(),
+                    mCrime.getTitle() + " clicked!", Toast.LENGTH_SHORT)
+                    .show();
+        }
+    }
+```
 
 
 
