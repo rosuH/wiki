@@ -17,7 +17,7 @@
 <meta property="og:site_name" content="rosu&#39;s wiki">
 <meta property="og:description" content="前言 1. [bx]和内存单元的描述 描述一个内存单元所需的两种信息 内存单元的地址 内存单元的长度（类型）    [0] 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 ds寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。  [bx] 是一个内存单元的地址 它的偏移地址存放在 bx中    1mov ax, [bx]  表示将一个内存单元的内容送入 ax">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2017-12-07T05:02:55.535Z">
+<meta property="og:updated_time" content="2017-12-21T10:09:22.113Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="5 [BX] 和 loop 指令">
 <meta name="twitter:description" content="前言 1. [bx]和内存单元的描述 描述一个内存单元所需的两种信息 内存单元的地址 内存单元的长度（类型）    [0] 表示一个内存单元时， 0 表示单元的偏移地址，段地址默认在 ds寄存器中，单元的长度（类型）可以由具体指令中的其他操作对象（比如寄存器）指出。  [bx] 是一个内存单元的地址 它的偏移地址存放在 bx中    1mov ax, [bx]  表示将一个内存单元的内容送入 ax">
@@ -81,7 +81,7 @@
             <div id="search-form-wrap">
 
     <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
         <button type="submit" class="search-form-submit"></button>
     </form>
     <div class="ins-search">
@@ -100,10 +100,10 @@
 (function (window) {
     var INSIGHT_CONFIG = {
         TRANSLATION: {
-            POSTS: 'Posts',
+            POSTS: 'Entradas',
             PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
             UNTITLED: '(Untitled)',
         },
         ROOT_URL: '/',
@@ -136,7 +136,7 @@
                 <td>
                     
     <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
     </div>
 
                 </td>
@@ -153,7 +153,7 @@
         
     <div class="widget-wrap" id='categories'>
         <h3 class="widget-title">
-            <span>categories</span>
+            <span>Categorias</span>
             &nbsp;
             <a id='allExpand' href="#">
                 <i class="fa fa-angle-double-down fa-2x"></i>
@@ -319,7 +319,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">
-            <time datetime="2017-12-07T05:02:55.535Z" itemprop="datePublished">2017-12-07</time>
+            <time datetime="2017-12-21T10:09:22.113Z" itemprop="datePublished">2017-12-21</time>
         </a>
     </div>
 
@@ -352,8 +352,8 @@
         
             
                 <div id="toc" class="toc-article">
-                <strong class="toc-title">Catalogue</strong>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言 </span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-bx- 和内存单元的描述"><span class="toc-number">1.1.</span> <span class="toc-text">1. [bx]和内存单元的描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-loop"><span class="toc-number">1.2.</span> <span class="toc-text">2. loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3- 我们定义的描述性符号："><span class="toc-number">1.3.</span> <span class="toc-text">3. 我们定义的描述性符号：()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4- 约定符号 -idata 表示常量"><span class="toc-number">1.4.</span> <span class="toc-text">4. 约定符号 idata表示常量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-1-BX"><span class="toc-number">2.</span> <span class="toc-text">5.1 [BX]</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2-Loop 指令"><span class="toc-number">3.</span> <span class="toc-text">5.2 Loop指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#示例一"><span class="toc-number">3.1.</span> <span class="toc-text">示例一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例二"><span class="toc-number">3.2.</span> <span class="toc-text">示例二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例三"><span class="toc-number">3.3.</span> <span class="toc-text">示例三</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序"><span class="toc-number">4.</span> <span class="toc-text">5.3 在 Debug 中跟踪用 loop 指令实现的循环程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理"><span class="toc-number">5.</span> <span class="toc-text">5.4 Debug和汇编编译器 masm 对指令的不同处理</span></a></li></ol>
+                <strong class="toc-title">Catálogo</strong>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言 </span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-bx- 和内存单元的描述"><span class="toc-number">1.1.</span> <span class="toc-text">1. [bx]和内存单元的描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-loop"><span class="toc-number">1.2.</span> <span class="toc-text">2. loop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3- 我们定义的描述性符号："><span class="toc-number">1.3.</span> <span class="toc-text">3. 我们定义的描述性符号：()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4- 约定符号 -idata 表示常量"><span class="toc-number">1.4.</span> <span class="toc-text">4. 约定符号 idata表示常量</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-1-BX"><span class="toc-number">2.</span> <span class="toc-text">5.1 [BX]</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-2-Loop 指令"><span class="toc-number">3.</span> <span class="toc-text">5.2 Loop指令</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#示例一"><span class="toc-number">3.1.</span> <span class="toc-text">示例一</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例二"><span class="toc-number">3.2.</span> <span class="toc-text">示例二</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例三"><span class="toc-number">3.3.</span> <span class="toc-text">示例三</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-3- 在 -Debug- 中跟踪用 loop 指令实现的循环程序"><span class="toc-number">4.</span> <span class="toc-text">5.3 在 Debug 中跟踪用 loop 指令实现的循环程序</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理"><span class="toc-number">5.</span> <span class="toc-text">5.4 Debug和汇编编译器 masm 对指令的不同处理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-5-loop 和 -bx- 的联合应用"><span class="toc-number">6.</span> <span class="toc-text">5.5 loop和 [bx] 的联合应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#解决方法"><span class="toc-number">6.0.0.1.</span> <span class="toc-text">解决方法 </span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码实现"><span class="toc-number">6.0.0.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-6- 段前缀"><span class="toc-number">7.</span> <span class="toc-text">5.6 段前缀</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-7- 一段安全的空间"><span class="toc-number">8.</span> <span class="toc-text">5.7 一段安全的空间 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-8- 段前缀的使用"><span class="toc-number">9.</span> <span class="toc-text">5.8 段前缀的使用 </span></a></li></ol>
                 </div>
             
         
@@ -499,7 +499,121 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g 0016	# 假设循环语句地址为 0014</span><br></pre></td></tr></table></figure>
 <p>此外，我们也可以使用 <code>p</code> 指令来自动执行循环。</p>
 <p><em>遇到 <code>int 21h</code> 语句时应该使用 <code>p</code> 指令来正常结束程序哦。</em></p>
-<h1 id="5-4-Debug 和汇编编译器 masm 对指令的不同处理"><a href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理" class="headerlink" title="5.4 Debug 和汇编编译器 masm 对指令的不同处理"></a>5.4 <code>Debug</code>和汇编编译器 <code>masm</code> 对指令的不同处理</h1>
+<h1 id="5-4-Debug 和汇编编译器 masm 对指令的不同处理"><a href="#5-4-Debug 和汇编编译器 masm 对指令的不同处理" class="headerlink" title="5.4 Debug 和汇编编译器 masm 对指令的不同处理"></a>5.4 <code>Debug</code>和汇编编译器 <code>masm</code> 对指令的不同处理</h1><ul>
+<li>在汇编源程序中，如果用指令访问一个内存单元，则在指令中必须用 <code>[...]</code> 来表示内存单元；如果在 <code>[]</code> 里用一个常量 <code>idata</code> 直接给出内存单元的偏移地址，就要在 <code>[]</code> 的前面显式地给出段地址所在的寄存器</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, ds:[0] 	</span><br><span class="line">; 如果没有给出 ds ，编译器 masm 就会把指令中的 [iadata] 解释为 idata</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果在 <code>[]</code> 里用寄存器，比如 <code>bx</code>，间接给出内存单元的偏移地址，则段地址默认在<code>ds</code> 中<ul>
+<li>也可以显式地给出段地址所在的段寄存器</li>
+</ul>
+</li>
+</ul>
+<h1 id="5-5-loop 和 -bx- 的联合应用"><a href="#5-5-loop 和 -bx- 的联合应用" class="headerlink" title="5.5 loop 和 [bx] 的联合应用"></a>5.5 <code>loop</code>和 <code>[bx]</code> 的联合应用</h1><blockquote>
+<p>考虑这样一个问题，计算 <code>ffff:0 ~ ffff:b</code> 单元中的数据的和，结果存储在 <code>dx</code> 中。</p>
+</blockquote>
+<p>一样的要考虑三个问题：</p>
+<ul>
+<li>运算后结果是否会超出 <code>dx</code> 所能存储的范围？</li>
+</ul>
+<p><code>ffff:0~ffff:b</code>内存单元中的数据是字节型数据，范围在 <code>0~255</code> 之间，12 个这样的数据相加，结果不会大于 <code>65535</code>，可以在<code>dx</code> 中存放下。</p>
+<ul>
+<li>我们能否将 <code>ffff:0~ffff:b</code> 中的数据直接累加到 <code>dx</code> 中？</li>
+</ul>
+<p>不行。<code>ffff:0~ffff:b</code>中的数据是 8 位的，不能直接加到 16 位寄存器 <code>dx</code> 中。</p>
+<ul>
+<li>我们能否将 <code>ffff:0~ffff:b</code> 中的数据累加到 <code>dl</code> 中，并设置 <code>(dh)=0</code>，从而实现累加到<code>dx</code> 中？</li>
+</ul>
+<p>不行。<code>dl</code>是 8 位寄存器，能容纳的数据范围在 <code>0~255</code>，<code>ffff:0~ffffLb</code> 中的数据也是 8 位，如果仅向 <code>dl</code> 中累加 12 个 8 位数据，很有可能造成进位丢失的后果。</p>
+<ul>
+<li>如何将 <code>ffff:0~ffff:b</code> 中的 8 位数据，累加到 16 位寄存器 <code>dx</code> 中呢？</li>
+</ul>
+<p>矛盾点在于：</p>
+<ul>
+<li>类型不匹配<ul>
+<li><code>(dx)=(dx) + 内存中的 8 位数据</code>：类型不匹配</li>
+</ul>
+</li>
+<li>结果的超界问题<ul>
+<li><code>(dl)=(dl) + 内存中的 8 位数据</code>：结果可能超界</li>
+</ul>
+</li>
+</ul>
+<h4 id="解决方法"><a href="# 解决方法" class="headerlink" title="解决方法"></a>解决方法 </h4><p> 用一个 16 位寄存器作为中介。将内存单元中的 8 位数据赋值到一个 16 位寄存器 <code>ax</code> 中，再将 <code>ax</code> 中的数据加到 <code>dx</code> 上，从而使得两个运算对象的类型匹配并且结果不会超界。</p>
+<h4 id="代码实现"><a href="# 代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 0ffffh</span><br><span class="line">	mov ds,ax</span><br><span class="line">	</span><br><span class="line">	mov dx, 0</span><br><span class="line">	</span><br><span class="line">	mov al,ds:[0]</span><br><span class="line">	mov ah,0</span><br><span class="line">	add dx,ax</span><br><span class="line">	</span><br><span class="line">	mov al,ds[1]</span><br><span class="line">	mov ah,0</span><br><span class="line">	...			; 直到 ds:[0bh]</span><br><span class="line">	</span><br><span class="line">	mov al, ds:[0bh]</span><br><span class="line">	mov ah, 0</span><br><span class="line">	add dx, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>我们可以使用 <code>loop</code> 指令来优化代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 0ffffh</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov bx, 0		; 初始化 ds:bx 指向 ffff:0</span><br><span class="line">			</span><br><span class="line">	mov dx, 0		; 初始化累加器 dx, (dx) = 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 12		; 初始化循环技术寄存器 cx, (cx) = 12</span><br><span class="line">	</span><br><span class="line">s:	mov al, [bx]</span><br><span class="line">	mov ah, 0</span><br><span class="line">	add dx, ax		; 间接向 dx 中加上 ((ds) * 16 + (bx)) 单元中的值</span><br><span class="line">	inc bx			; ds:bx 指向下一个单元</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h1 id="5-6- 段前缀"><a href="#5-6- 段前缀" class="headerlink" title="5.6 段前缀"></a>5.6 段前缀</h1><ul>
+<li><code>mov ax, [bx]</code>中，内存单元的偏移地址由 <code>bx</code>给出，而段地址默认在 <code>ds</code> 中<ul>
+<li>我们可以在访问内存单元的指令中显式地给出内存单元的段地址所在的寄存器</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>​</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, ds:[bx]</span><br></pre></td></tr></table></figure>
+<p>将一个内存单元的内容送入 <code>ax</code>，这个内存单元的长度为 2 字节（字单元），存放在一个字，偏移地址在<code>bx</code> 中，段地址在 <code>ds</code> 中。</p>
+<ol>
+<li>​</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, cs:[bx]</span><br></pre></td></tr></table></figure>
+<p>将一个内存单元的内容送入 <code>ax</code>，这个内存单元的长度为 2 字节（字单元），存放一个字，偏移地址在<code>bx</code> 中，段地址在 <code>cs</code> 中。</p>
+<ol>
+<li>​</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, ss:[bx]</span><br></pre></td></tr></table></figure>
+<p>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 字节（字单元），存放一个字，便宜地址在<code>bx</code> 中，段地址 <code>ss</code> 中。</p>
+<ol>
+<li>​</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, es:[bx]</span><br></pre></td></tr></table></figure>
+<p>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 字节（字单元），存放一个字，便宜地址在<code>bx</code> 中，段地址 <code>es</code> 中。</p>
+<ol>
+<li>​</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax,ss:[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 字节（字单元），存放一个字，便宜地址为 0 ，段地址<code>ss</code> 中。</p>
+<ol>
+<li>​</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax,cs:[0]</span><br></pre></td></tr></table></figure>
+<p>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 字节（字单元），存放一个字，便宜地址为 0 ，段地址<code>cs</code> 中。</p>
+<p>上述文字中出现的<code>ds:</code>，<code>cs:</code>， <code>ss:</code>，<code>es:</code>，在汇编语言中称为段前缀。</p>
+<h1 id="5-7- 一段安全的空间"><a href="#5-7- 一段安全的空间" class="headerlink" title="5.7 一段安全的空间"></a>5.7 一段安全的空间 </h1><p> 在 8086 模式中，随意向一段内存地址空间写入内容是危险的，因为这段空间中可能存放着重要的系统数据或代码。即便是许多高级语言，也需要提前申请内容才能使用。</p>
+<p>书中例子举出，在实模式（纯 DOS）模式下执行 <code>mov [0026],ax</code> 将会引起死机，因为地址 <code>0:0026</code> 存放着重要数据。</p>
+<p>实际上，更多的情况我们都会在 CPU 实模式下进行编程。这样的硬件已被操作系统利用 CPU 保护模式所提供的功能全面而严格地管理着。</p>
+<p>在后续的编程实践中，我们需要向内存直接写入内容，但是又不希望发生危险事故。所以我们需要找到一段安全的空间供我们使用。</p>
+<ul>
+<li>在一般的 PC 机中，DOS 方式下，DOS 和其他合法的程序一般不会使用 <code>0:200~0:2ff</code> 的 256 个字节的空间</li>
+</ul>
+<p>使用 <code>deubg</code> 查看 <code>0:200~0:2ff</code> 内存段如果都是 0 的话就表示没有人用过了。</p>
+<h1 id="5-8- 段前缀的使用"><a href="#5-8- 段前缀的使用" class="headerlink" title="5.8 段前缀的使用"></a>5.8 段前缀的使用 </h1><p> 考虑一个问题：将内存 <code>ffff:0~ffff:b</code> 单元中的数据复制到 <code>0:200~0:20b</code> 单元中。</p>
+<p><em>分析</em>：</p>
+<ul>
+<li><code>0:200~0:20b</code>单元等同于 <code>0020:0~0020:b</code> 单元，他们描述的是同一段内存空间</li>
+</ul>
+<ul>
+<li>复制的过程应用循环实现</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">; 初始化</span><br><span class="line">x = 0</span><br><span class="line">; 循环 12 次</span><br><span class="line">; 将 ffff:x 单元中的数据送入 0020:x </span><br><span class="line">X = X + 1</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在循环中，原始单元 <code>ffff:x</code> 和目标单元 <code>0020:x</code> 的偏移地址 <code>X</code> 是变量<ul>
+<li>我们使用 <code>bx</code> 来存放</li>
+</ul>
+</li>
+<li>将 <code>0:200~0:20b</code> 用<code>0020:0~0020:b</code>来描述，就是为了使目标单元的偏移地址和源始单元的偏移地址从同一数值 0 开始</li>
+</ul>
+<p>程序如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov bx, 0		;(bx) = 0, 偏移地址从 0 开始</span><br><span class="line">	mov cx, 12		;(cx) = 12, 循环 12 次</span><br><span class="line"></span><br><span class="line">s:	mov ax, 0ffffh	</span><br><span class="line">	mov ds, ax		;(ds) = 0fffh</span><br><span class="line">	mov dl, [bx]	;(dl) = ((ds) * 16 + (bx)), 将 ffff:bx 中的数据送入 dl</span><br><span class="line">	</span><br><span class="line">	mov ax,0020h</span><br><span class="line">	mov ds,ax		;(ds) = 0020h</span><br><span class="line">	mov	[bx],dl		;((ds) * 16 + (bx)) = (dl), 将 dl 中数据送入 0020:bx</span><br><span class="line">	</span><br><span class="line">	inc bx			; (bx) = (bx) + 1</span><br><span class="line">	loop s</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li>源始单元 <code>ffff:x</code> 和目标单元 <code>0020:x</code> 相距大于 64KB ，在不同的 <code>64KB</code> 段里，程序需要设置两次<code>ds</code></li>
+<li>我们可以使用两个段寄存器分别存放源始单元 <code>ffff:x</code> 和目标单元 <code>0020:x</code> 的段地址</li>
+</ul>
+<p>这样就可以省略需要重复 12 次的设置 <code>ds</code>程序段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	mov ax, 0ffffh</span><br><span class="line">	mov ds, ax</span><br><span class="line">	</span><br><span class="line">	mov ax, 0020h</span><br><span class="line">	mov es, ax</span><br><span class="line">	</span><br><span class="line">	mov bx, 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 12</span><br><span class="line">	</span><br><span class="line">s: 	mov dl,[bx]</span><br><span class="line">	mov es:[bx], dl</span><br><span class="line">	inc bx</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax,4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
             </div>
         
         <footer class="article-footer">
@@ -511,19 +625,10 @@
     
 <nav id="article-nav">
     
-        <a href="/计算机技能/汇编基础/4-the-first-program/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    4 第一个程序
-                
-            </div>
-        </a>
     
-    
-        <a href="/软技能/积极心理学/11-habit/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">11 习惯</div>
+        <a href="/Android-开发/8-using-recyclerview-to-display-list/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Más viejo</strong>
+            <div class="article-nav-title">8 使用 RecyclerView 显示列表</div>
         </a>
     
 </nav>
