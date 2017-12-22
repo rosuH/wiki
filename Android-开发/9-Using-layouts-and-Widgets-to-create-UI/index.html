@@ -3,19 +3,28 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Tag: assembly | rosu&#39;s wiki</title>
+    <title>9 使用布局和组件创建用户界面 | rosu&#39;s wiki</title>
     
     
-        <meta name="keywords" content="rosu&#39;s wiki" />
+        <meta name="keywords" content="Android,RecyclerView" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="rosu&#39;s wiki">
-<meta property="og:url" content="https://wiki.rosuh.me/tags/assembly/index.html">
+    <meta name="description" content="9.1 使用图形布局工具  除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。 图形布局工具界面：  中间区域是界面预览窗口 右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例 左边是组件面板 左下是组件树 右边是属性界面  9.2 引入ConstraintLayout ConstraintLayout工具可以为布局添加一系列约束 组件位置关系因为约束而发生变化   在 C">
+<meta name="keywords" content="Android,RecyclerView">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9 使用布局和组件创建用户界面">
+<meta property="og:url" content="https://wiki.rosuh.me/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/index.html">
 <meta property="og:site_name" content="rosu&#39;s wiki">
+<meta property="og:description" content="9.1 使用图形布局工具  除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。 图形布局工具界面：  中间区域是界面预览窗口 右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例 左边是组件面板 左下是组件树 右边是属性界面  9.2 引入ConstraintLayout ConstraintLayout工具可以为布局添加一系列约束 组件位置关系因为约束而发生变化   在 C">
 <meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_b86613.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_d75c2a.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_bcea44.png">
+<meta property="og:updated_time" content="2017-12-22T08:40:05.242Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="rosu&#39;s wiki">
+<meta name="twitter:title" content="9 使用布局和组件创建用户界面">
+<meta name="twitter:description" content="9.1 使用图形布局工具  除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。 图形布局工具界面：  中间区域是界面预览窗口 右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例 左边是组件面板 左下是组件树 右边是属性界面  9.2 引入ConstraintLayout ConstraintLayout工具可以为布局添加一系列约束 组件位置关系因为约束而发生变化   在 C">
+<meta name="twitter:image" content="https://img.rosuh.me/wiki/wiki_201712_b86613.png">
 <meta name="twitter:creator" content="@rosu_h">
     
 
@@ -158,13 +167,13 @@
         
         
          <ul class="unstyled" id="tree" > 
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             Android 开发
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/">9 使用布局和组件创建用户界面</a></li>  <li class="file"><a href="/Android-开发/8-using-recyclerview-to-display-list/">8 使用 RecyclerView 显示列表</a></li>  <li class="file"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/">9 使用布局和组件创建用户界面</a></li>  <li class="file"><a href="/Android-开发/8-using-recyclerview-to-display-list/">8 使用 RecyclerView 显示列表</a></li>  <li class="file"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -291,86 +300,194 @@
     <div id="toTop" class="fa fa-angle-up"></div>
 </aside>
             
-            <section id="main">
-<div class="timeline timeline-wrap">
-    <div class="timeline-row timeline-row-major">
-        <span class="node"><i class="fa fa-tag"></i></span>
-        <h1 class="title">#assembly</h1>
-    </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+            <section id="main"><article id="post-9-Using-layouts-and-Widgets-to-create-UI" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
                 
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a>
-        </h1>
-    
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Android-开发/">Android 开发</a>
+    </div>
 
-                <div class="article-meta">
-                    
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>, <a class="tag-link" href="/tags/RecyclerView/">RecyclerView</a>
+    </div>
+
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">
-            <time datetime="2017-12-21T10:09:22.113Z" itemprop="datePublished">2017-12-21</time>
+        <a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/">
+            <time datetime="2017-12-22T08:40:05.242Z" itemprop="datePublished">2017-12-22</time>
         </a>
     </div>
 
 
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/assembly/">assembly</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/9-Using-layouts-and-Widgets-to-create-UI.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/9-Using-layouts-and-Widgets-to-create-UI.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/9-Using-layouts-and-Widgets-to-create-UI.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a>
+        <h1 class="article-title" itemprop="name">
+            9 使用布局和组件创建用户界面
         </h1>
     
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/计算机技能/汇编基础/4-the-first-program/">
-            <time datetime="2017-12-07T05:02:55.535Z" itemprop="datePublished">2017-12-07</time>
-        </a>
-    </div>
-
-
-                    
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
-    </div>
-
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/assembly/">assembly</a>
-    </div>
-
-                </div>
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h1 id="9-1- 使用图形布局工具"><a href="#9-1- 使用图形布局工具" class="headerlink" title="9.1 使用图形布局工具"></a>9.1 使用图形布局工具 </h1><p> 除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。</p>
+<p>图形布局工具界面：</p>
+<ul>
+<li>中间区域是界面预览窗口</li>
+<li>右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例</li>
+<li>左边是组件面板</li>
+<li>左下是组件树</li>
+<li>右边是属性界面</li>
+</ul>
+<h1 id="9-2- 引入 ConstraintLayout"><a href="#9-2- 引入 ConstraintLayout" class="headerlink" title="9.2 引入 ConstraintLayout"></a>9.2 引入<code>ConstraintLayout</code></h1><ul>
+<li><code>ConstraintLayout</code>工具可以为布局添加一系列约束<ul>
+<li>组件位置关系因为约束而发生变化</li>
+</ul>
+</li>
+<li>在 <code>ConstraintLayout</code> 里布置视图，只需要添加约束就可以<ul>
+<li>组件的大小调整方式有三<ul>
+<li>组件自己决定（<code>wrap_content</code></li>
+<li>手动调整</li>
+<li>让组件充满约束布局</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="引入步骤"><a href="# 引入步骤" class="headerlink" title="引入步骤"></a>引入步骤</h4><ol>
+<li>切换到 <code>design</code> 布局</li>
+<li>右击要转换的布局</li>
+<li>选中 <code>convert ... to ConstraintLayout</code> 即可</li>
+</ol>
+<p>现在 Android Studio 会自动添加依赖，所以不需要手动家加入。</p>
+<h4 id="约束编辑器"><a href="# 约束编辑器" class="headerlink" title="约束编辑器"></a>约束编辑器 </h4><p> 在布局预览窗口顶部的工具栏上，有一些约束选项：</p>
+<ul>
+<li>显示所有约束</li>
+<li>自动连接切换开关<ul>
+<li>启动后，在预览界面拖移视图时，约束会自动配置</li>
+<li>Android Studio 会猜测你的布局配置意图，然后自动连接</li>
+</ul>
+</li>
+<li>清除全部约束</li>
+<li>猜测约束<ul>
+<li>类似自动连接</li>
+<li>Android Studio 会自动帮你创建约束</li>
+</ul>
+</li>
+</ul>
+<p>我们先手动清除根视图的所有约束，然后一步一步添加回来。</p>
+<h4 id="腾出空间"><a href="# 腾出空间" class="headerlink" title="腾出空间"></a>腾出空间 </h4><p> 选中某个组件，右边就可以编辑该组件的属性了。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_b86613.png" alt="TextView 的属性"></p>
+<ul>
+<li>组件的水平和竖直方向的尺寸是分别由宽度设置和高度设置决定的</li>
+</ul>
+<p>能设置的值有以下三种：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_d75c2a.png" alt="三种视图尺寸设置"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">设置类型</th>
+<th style="text-align:center">设置值</th>
+<th style="text-align:center">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">固定大小</td>
+<td style="text-align:center">Xdp</td>
+<td style="text-align:center">以 dp 为单元，为视图指定固定值</td>
+</tr>
+<tr>
+<td style="text-align:center">包裹内容</td>
+<td style="text-align:center">wrap_content</td>
+<td style="text-align:center">设置视图想要的尺寸（随内容走），大到足够容纳内容</td>
+</tr>
+<tr>
+<td style="text-align:center">动态适应</td>
+<td style="text-align:center">0dp</td>
+<td style="text-align:center">允许视图缩放以满足指定约束</td>
+</tr>
+</tbody>
+</table>
+<p>至于添加约束的方式，其实就是拉动组件轮廓四周的四个圆圈，然后吸附到另一个组件轮廓上。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_bcea44.png" alt="设置约束"></p>
+<h4 id="约束的 -XML- 格式"><a href="# 约束的 -XML- 格式" class="headerlink" title="约束的 XML 格式"></a>约束的 XML 格式 </h4><p> 刚刚添加了一个 <code>ImgaeVIew</code> 组件，并为之三个边添加了约束，使之呆在布局的右边。</p>
+<p>我们来看看刚刚添加的组件的约束 XML 代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/imageView"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginEnd</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:srcCompat</span>=<span class="string">"@drawable/ic_solved"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到约束相关的属性皆是 <code>app:layout_constraint</code> 开头的：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintBottom_toBottomOf="parent"</span><br><span class="line">app:layout_constraintEnd_toEndOf="parent"</span><br><span class="line">app:layout_constraintTop_toTopOf="parent"</span><br></pre></td></tr></table></figure>
+<ul>
+<li>属性以 <code>layout_</code> 开头皆属于布局参数（<code>layout parameter</code>）<ul>
+<li>组件的布局参数是用来向其父组件做指示用的：用来告诉父布局如何安排自己</li>
+</ul>
+</li>
+</ul>
+<p>想想之前那个<code>layout_margin</code>，还有<code>layout_height</code>，都是布局参数。</p>
+<ul>
+<li>约束的名字是 <code>constraintTop</code>，这表示它是<code>ImageView</code> 的顶部约束</li>
+<li>属性以 <code>toTopof=&quot;parent&quot;</code> 结束，表示约束是连接到父组件的</li>
+</ul>
+<h4 id="编辑属性"><a href="# 编辑属性" class="headerlink" title="编辑属性"></a>编辑属性</h4>
             </div>
-        </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
     
-</div>
+<nav id="article-nav">
+    
+    
+        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">5 [BX] 和 loop 指令</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
 </section>
         </div>
         <footer id="footer">

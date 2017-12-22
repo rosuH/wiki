@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://wiki.rosuh.me/"/>
-  <updated>2017-12-21T10:09:22.113Z</updated>
+  <updated>2017-12-22T08:40:05.242Z</updated>
   <id>https://wiki.rosuh.me/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>9 使用布局和组件创建用户界面</title>
+    <link href="https://wiki.rosuh.me/Android-%E5%BC%80%E5%8F%91/9-Using-layouts-and-Widgets-to-create-UI/"/>
+    <id>https://wiki.rosuh.me/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/</id>
+    <published>2017-12-22T08:40:05.242Z</published>
+    <updated>2017-12-22T08:40:05.242Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="9-1- 使用图形布局工具"><a href="#9-1- 使用图形布局工具" class="headerlink" title="9.1 使用图形布局工具"></a>9.1 使用图形布局工具 </h1><p> 除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。</p><p>图形布局工具界面：</p><ul><li>中间区域是界面预览窗口</li><li>右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例</li><li>左边是组件面板</li><li>左下是组件树</li><li>右边是属性界面</li></ul><h1 id="9-2- 引入 ConstraintLayout"><a href="#9-2- 引入 ConstraintLayout" class="headerlink" title="9.2 引入 ConstraintLayout"></a>9.2 引入<code>ConstraintLayout</code></h1><ul><li><code>ConstraintLayout</code>工具可以为布局添加一系列约束<ul><li>组件位置关系因为约束而发生变化</li></ul></li><li>在 <code>ConstraintLayout</code> 里布置视图，只需要添加约束就可以<ul><li>组件的大小调整方式有三<ul><li>组件自己决定（<code>wrap_content</code></li><li>手动调整</li><li>让组件充满约束布局</li></ul></li></ul></li></ul><h4 id="引入步骤"><a href="# 引入步骤" class="headerlink" title="引入步骤"></a>引入步骤</h4><ol><li>切换到 <code>design</code> 布局</li><li>右击要转换的布局</li><li>选中 <code>convert ... to ConstraintLayout</code> 即可</li></ol><p>现在 Android Studio 会自动添加依赖，所以不需要手动家加入。</p><h4 id="约束编辑器"><a href="# 约束编辑器" class="headerlink" title="约束编辑器"></a>约束编辑器 </h4><p> 在布局预览窗口顶部的工具栏上，有一些约束选项：</p><ul><li>显示所有约束</li><li>自动连接切换开关<ul><li>启动后，在预览界面拖移视图时，约束会自动配置</li><li>Android Studio 会猜测你的布局配置意图，然后自动连接</li></ul></li><li>清除全部约束</li><li>猜测约束<ul><li>类似自动连接</li><li>Android Studio 会自动帮你创建约束</li></ul></li></ul><p>我们先手动清除根视图的所有约束，然后一步一步添加回来。</p><h4 id="腾出空间"><a href="# 腾出空间" class="headerlink" title="腾出空间"></a>腾出空间 </h4><p> 选中某个组件，右边就可以编辑该组件的属性了。</p><p><img src="https://img.rosuh.me/wiki/wiki_201712_b86613.png" alt="TextView 的属性"></p><ul><li>组件的水平和竖直方向的尺寸是分别由宽度设置和高度设置决定的</li></ul><p>能设置的值有以下三种：</p><p><img src="https://img.rosuh.me/wiki/wiki_201712_d75c2a.png" alt="三种视图尺寸设置"></p><table><thead><tr><th style="text-align:center">设置类型</th><th style="text-align:center">设置值</th><th style="text-align:center">用法</th></tr></thead><tbody><tr><td style="text-align:center">固定大小</td><td style="text-align:center">Xdp</td><td style="text-align:center">以 dp 为单元，为视图指定固定值</td></tr><tr><td style="text-align:center">包裹内容</td><td style="text-align:center">wrap_content</td><td style="text-align:center">设置视图想要的尺寸（随内容走），大到足够容纳内容</td></tr><tr><td style="text-align:center">动态适应</td><td style="text-align:center">0dp</td><td style="text-align:center">允许视图缩放以满足指定约束</td></tr></tbody></table><p>至于添加约束的方式，其实就是拉动组件轮廓四周的四个圆圈，然后吸附到另一个组件轮廓上。</p><p><img src="https://img.rosuh.me/wiki/wiki_201712_bcea44.png" alt="设置约束"></p><h4 id="约束的 -XML- 格式"><a href="# 约束的 -XML- 格式" class="headerlink" title="约束的 XML 格式"></a>约束的 XML 格式 </h4><p> 刚刚添加了一个 <code>ImgaeVIew</code> 组件，并为之三个边添加了约束，使之呆在布局的右边。</p><p>我们来看看刚刚添加的组件的约束 XML 代码：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/imageView"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginEnd</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:srcCompat</span>=<span class="string">"@drawable/ic_solved"</span>/&gt;</span></span><br></pre></td></tr></table></figure><p>可以看到约束相关的属性皆是 <code>app:layout_constraint</code> 开头的：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintBottom_toBottomOf="parent"</span><br><span class="line">app:layout_constraintEnd_toEndOf="parent"</span><br><span class="line">app:layout_constraintTop_toTopOf="parent"</span><br></pre></td></tr></table></figure><ul><li>属性以 <code>layout_</code> 开头皆属于布局参数（<code>layout parameter</code>）<ul><li>组件的布局参数是用来向其父组件做指示用的：用来告诉父布局如何安排自己</li></ul></li></ul><p>想想之前那个<code>layout_margin</code>，还有<code>layout_height</code>，都是布局参数。</p><ul><li>约束的名字是 <code>constraintTop</code>，这表示它是<code>ImageView</code> 的顶部约束</li><li>属性以 <code>toTopof=&quot;parent&quot;</code> 结束，表示约束是连接到父组件的</li></ul><h4 id="编辑属性"><a href="# 编辑属性" class="headerlink" title="编辑属性"></a>编辑属性</h4>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;9-1- 使用图形布局工具&quot;&gt;&lt;a href=&quot;#9-1- 使用图形布局工具&quot; class=&quot;headerlink&quot; title=&quot;9.1 使用图形布局工具&quot;&gt;&lt;/a&gt;9.1 使用图形布局工具 &lt;/h1&gt;&lt;p&gt; 除了手动输入 XML 的方式创建，我们还可以使用图形
+      
+    
+    </summary>
+    
+      <category term="Android 开发" scheme="https://wiki.rosuh.me/categories/Android-%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="Android" scheme="https://wiki.rosuh.me/tags/Android/"/>
+    
+      <category term="RecyclerView" scheme="https://wiki.rosuh.me/tags/RecyclerView/"/>
+    
+  </entry>
   
   <entry>
     <title>5 [BX] 和 loop 指令</title>
@@ -127,19 +154,21 @@
   </entry>
   
   <entry>
-    <title>1 信息、变形和课程简介</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/1.0-Information-transforation-and-introduction/</id>
+    <title>11 习惯</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/11-habit/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/11-habit/</id>
     <published>2017-11-23T14:15:32.663Z</published>
-    <updated>2017-11-11T02:40:18.200Z</updated>
+    <updated>2017-11-11T02:41:59.784Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p><ul><li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul><li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li></ul></li></ul><ul><li>关注点<ul><li>信息本身而不是信息的传递者</li></ul></li><li>以往“自助运动”的鄙陋<ul><li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li></ul></li><li>两个阶段<ul><li>学术阶段</li><li>应用阶段：我如何将这些东西应用到生活中</li></ul></li><li>积极心理学<ul><li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li></ul></li></ul><blockquote><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p></blockquote><ul><li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul><li><strong>什么是信息</strong><ul><li>人就像一个容器，接受外界的信息，直到填满整个容器</li><li>信息并不能提高人的生存、生活质量</li><li>信息是客观的，是多面的</li></ul></li><li><strong>什么是变形</strong><ul><li>改变容器的形状</li><li>让信息为我所用</li></ul></li><li><strong>利用信息</strong><ul><li>如何解读信息？如何理解以及关注点？</li><li>不止要获取信息，更要挖掘我们自己的潜能</li></ul></li><li><strong>挖掘潜能</strong><ul><li>“减法比加法更能让人的灵魂成长”</li><li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li></ul></li><li><strong>两面性</strong><ul><li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li></ul></li><li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li><li><strong>本课程的最终内容</strong>：让你成为最好的你</li></ul></li><li>保持向上的生活态度，自信并且保持提问</li></ul><hr><p><em>2017-8-1_第一节课</em></p><p>看了想睡觉…</p><p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p><p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p><p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>]]></content>
+    <content type="html"><![CDATA[<h2 id="自制力和成功"><a href="# 自制力和成功" class="headerlink" title="自制力和成功"></a>自制力和成功</h2><ul><li>自制力大小和成功没有必然联系<ul><li>大部分人的自制力都是固定的，不会发生改变的</li><li>仅有自制力比用不足以获得成功、获得改变或获得幸福</li><li>“自制力有限假说” &lt;–&gt; <em>罗伊·鲍迈斯特(Roy Baumeister) 研究</em> </li></ul></li></ul><h2 id="习惯成自然"><a href="# 习惯成自然" class="headerlink" title="习惯成自然"></a>习惯成自然</h2><blockquote><p>养成习惯需要定义严谨的行为模式，还要在特定的时间付诸行动、需要以深深扎根的价值观为驱动力 – 托尼·施瓦茨 (Tony Schwartz) 和吉姆·勒尔(Jim Loehr) </p></blockquote><ul><li>成功离不开孜孜不倦的训练和学习<ul><li>自制力有限所以并非全然依靠自制力去学习或行动</li><li>养成习惯之后更容易进行训练和学习 &lt;–&gt; 海明威和达芬奇</li></ul></li></ul><ul><li>将行为养成习惯之后，付出的自制力将大幅降低甚至为 0 <ul><li>早上起床刷牙</li><li>运动员长年累月的训练</li></ul></li><li>养成习惯需要足够的自制力<ul><li>不要尝试在一段时间内养成多个习惯，因为自制力是有限的，这样更容易导致全盘皆输</li><li>​</li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h1 id=&quot;01- 信息、变形与课程简介&quot;&gt;&lt;a href=&quot;#01- 信息、变形与课程简介&quot; class=&quot;headerlink&quot; title=&quot;01 信息、变形与课程简介&quot;&gt;&lt;/a&gt;01 信息、变形与课程简介&lt;/h1&gt;&lt;p&gt;&lt;em&gt;2017-8-1 11:36:36&lt;/e
+        &lt;h2 id=&quot;自制力和成功&quot;&gt;&lt;a href=&quot;# 自制力和成功&quot; class=&quot;headerlink&quot; title=&quot;自制力和成功&quot;&gt;&lt;/a&gt;自制力和成功&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;自制力大小和成功没有必然联系&lt;ul&gt;
+&lt;li&gt;大部分人的自制力都是固定的，不会发生改变的&lt;/l
       
     
     </summary>
@@ -160,21 +189,19 @@
   </entry>
   
   <entry>
-    <title>11 习惯</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/11-habit/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/11-habit/</id>
+    <title>1 信息、变形和课程简介</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/1.0-Information-transforation-and-introduction/</id>
     <published>2017-11-23T14:15:32.663Z</published>
-    <updated>2017-11-11T02:41:59.784Z</updated>
+    <updated>2017-11-11T02:40:18.200Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="自制力和成功"><a href="# 自制力和成功" class="headerlink" title="自制力和成功"></a>自制力和成功</h2><ul><li>自制力大小和成功没有必然联系<ul><li>大部分人的自制力都是固定的，不会发生改变的</li><li>仅有自制力比用不足以获得成功、获得改变或获得幸福</li><li>“自制力有限假说” &lt;–&gt; <em>罗伊·鲍迈斯特(Roy Baumeister) 研究</em> </li></ul></li></ul><h2 id="习惯成自然"><a href="# 习惯成自然" class="headerlink" title="习惯成自然"></a>习惯成自然</h2><blockquote><p>养成习惯需要定义严谨的行为模式，还要在特定的时间付诸行动、需要以深深扎根的价值观为驱动力 – 托尼·施瓦茨 (Tony Schwartz) 和吉姆·勒尔(Jim Loehr) </p></blockquote><ul><li>成功离不开孜孜不倦的训练和学习<ul><li>自制力有限所以并非全然依靠自制力去学习或行动</li><li>养成习惯之后更容易进行训练和学习 &lt;–&gt; 海明威和达芬奇</li></ul></li></ul><ul><li>将行为养成习惯之后，付出的自制力将大幅降低甚至为 0 <ul><li>早上起床刷牙</li><li>运动员长年累月的训练</li></ul></li><li>养成习惯需要足够的自制力<ul><li>不要尝试在一段时间内养成多个习惯，因为自制力是有限的，这样更容易导致全盘皆输</li><li>​</li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p><ul><li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul><li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li></ul></li></ul><ul><li>关注点<ul><li>信息本身而不是信息的传递者</li></ul></li><li>以往“自助运动”的鄙陋<ul><li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li></ul></li><li>两个阶段<ul><li>学术阶段</li><li>应用阶段：我如何将这些东西应用到生活中</li></ul></li><li>积极心理学<ul><li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li></ul></li></ul><blockquote><p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p></blockquote><ul><li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul><li><strong>什么是信息</strong><ul><li>人就像一个容器，接受外界的信息，直到填满整个容器</li><li>信息并不能提高人的生存、生活质量</li><li>信息是客观的，是多面的</li></ul></li><li><strong>什么是变形</strong><ul><li>改变容器的形状</li><li>让信息为我所用</li></ul></li><li><strong>利用信息</strong><ul><li>如何解读信息？如何理解以及关注点？</li><li>不止要获取信息，更要挖掘我们自己的潜能</li></ul></li><li><strong>挖掘潜能</strong><ul><li>“减法比加法更能让人的灵魂成长”</li><li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li></ul></li><li><strong>两面性</strong><ul><li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li></ul></li><li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li><li><strong>本课程的最终内容</strong>：让你成为最好的你</li></ul></li><li>保持向上的生活态度，自信并且保持提问</li></ul><hr><p><em>2017-8-1_第一节课</em></p><p>看了想睡觉…</p><p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p><p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p><p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;自制力和成功&quot;&gt;&lt;a href=&quot;# 自制力和成功&quot; class=&quot;headerlink&quot; title=&quot;自制力和成功&quot;&gt;&lt;/a&gt;自制力和成功&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;自制力大小和成功没有必然联系&lt;ul&gt;
-&lt;li&gt;大部分人的自制力都是固定的，不会发生改变的&lt;/l
+        &lt;h1 id=&quot;01- 信息、变形与课程简介&quot;&gt;&lt;a href=&quot;#01- 信息、变形与课程简介&quot; class=&quot;headerlink&quot; title=&quot;01 信息、变形与课程简介&quot;&gt;&lt;/a&gt;01 信息、变形与课程简介&lt;/h1&gt;&lt;p&gt;&lt;em&gt;2017-8-1 11:36:36&lt;/e
       
     
     </summary>
@@ -309,26 +336,19 @@
   </entry>
   
   <entry>
-    <title>3 如何避免惬意的麻木</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
+    <title>7 逆境和机遇</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/7.0-adversity-or-chance/</id>
     <published>2017-11-23T14:15:32.659Z</published>
-    <updated>2017-11-11T02:42:09.332Z</updated>
+    <updated>2017-11-11T02:42:09.340Z</updated>
     
-    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="如何变得更加乐观"><a href="# 如何变得更加乐观" class="headerlink" title="如何变得更加乐观"></a>如何变得更加乐观 </h2><h3 id="1- 付诸行动"><a href="#1- 付诸行动" class="headerlink" title="1. 付诸行动"></a>1. 付诸行动</h3><p><em> 基于 艾伯特·班杜拉(Albert Bandura) 的研究</em></p><ul><li>不顾事实的夸奖会对目标产生伤害<ul><li>诸如早上起床对镜子里的自己说十句赞美自己的话之类的</li></ul></li><li>一味夸奖不如 <strong> 付诸行动</strong><ul><li><strong>努力和解决问题是通向成功的唯一途径</strong>：通过努力和实践会取得更大的成功</li><li>“让人看到自己的努力，看到自己步入正轨”</li><li>苏林·祁克果(Soren Kierkegarrd) –&gt; “敢于尝试只会暂时失去立足处，不敢尝试将失去自我”</li></ul></li></ul><h3 id="2- 想象：把目标呈现在心中"><a href="#2- 想象：把目标呈现在心中" class="headerlink" title="2. 想象：把目标呈现在心中"></a>2. 想象：把目标呈现在心中 </h3><p><em> 基于 斯蒂芬·科斯林(Stephen Kosslyn) 的研究</em></p><ul><li>“大脑可能分不清楚真实事物和想象事物的区别”</li><li>“模拟练习”<ul><li>引入各种器官，以便使想象更加地真实</li></ul></li></ul><h3 id="3- 认知疗法"><a href="#3- 认知疗法" class="headerlink" title="3. 认知疗法"></a>3. 认知疗法 </h3><p><em> 马丁·塞利格曼(Martin Seligman), 阿伦·贝克(Aaron Temkin Beck)</em></p><ul><li>“感情受思想的驱动”</li></ul><ul><li>Event –&gt; <strong>Evaluation(thought)</strong> –&gt; Emotion<ul><li>如果要想改变情绪，要从想法开始改变</li><li><strong>“重建理性和真实”</strong></li></ul></li></ul><h3 id="3Ms- 学说"><a href="#3Ms- 学说" class="headerlink" title="3Ms 学说"></a>3Ms 学说</h3><ul><li>3Ms：三个导致非理性思想的陷阱<ol><li>夸大理论：夸张了已发生的事实 &lt;–&gt; 归纳法与过度归纳<ul><li>归纳法：从已知的事情，来判断未知的类似的事情 –&gt; “这次干得不好” &lt;–&gt; “可能哪里出了问题”</li><li>过度归纳：“这次干得不好” &lt;–&gt; “我很蠢，这类事做不好” &lt;–&gt; “不成功便成仁”</li></ul></li><li>缩小理论：狭隘视野<ul><li>将注意力集中在某一个个体、个例上面</li></ul></li><li>伪造、捏造和情绪化推断<ul><li>推卸责任</li><li>“没人回来帮你把生活过得更美好，你必须承担起生活的责任”</li><li>“情绪不是现实，情绪只是对现实的推断”<ul><li>看清以及理性分析现实</li><li>作出正确的评估</li></ul></li></ul></li></ol></li><li>实践<ul><li>我的结论是否贴合现实？</li><li>它是否理性？</li><li>我是否忽略了重要的（现实）因素？</li><li>我仍需要考虑什么重要因素？</li><li>“我在哪里扭曲了事实？”</li><li>“我在哪里扭曲了自己的评价？扭曲了自己的思想？从而导致了不必要的负面情绪”</li></ul></li></ul><h3 id="危机和机遇"><a href="# 危机和机遇" class="headerlink" title="危机和机遇"></a>危机和机遇</h3><ul><li>几乎所有杰出的人，都是经历过巨大的考验才成就辉煌</li><li><strong>挖掘苦难中的价值</strong></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;ul&gt;
-&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
-&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
-&lt;li&gt;Saluto-genesis&lt;/li&gt;
-&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;
+        &lt;h2 id=&quot;如何变得更加乐观&quot;&gt;&lt;a href=&quot;# 如何变得更加乐观&quot; class=&quot;headerlink&quot; title=&quot;如何变得更加乐观&quot;&gt;&lt;/a&gt;如何变得更加乐观 &lt;/h2&gt;&lt;h3 id=&quot;1- 付诸行动&quot;&gt;&lt;a href=&quot;#1- 付诸行动&quot; class=&quot;head
       
     
     </summary>
@@ -349,19 +369,26 @@
   </entry>
   
   <entry>
-    <title>7 逆境和机遇</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/7.0-adversity-or-chance/</id>
+    <title>3 如何避免惬意的麻木</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
     <published>2017-11-23T14:15:32.659Z</published>
-    <updated>2017-11-11T02:42:09.340Z</updated>
+    <updated>2017-11-11T02:42:09.332Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="如何变得更加乐观"><a href="# 如何变得更加乐观" class="headerlink" title="如何变得更加乐观"></a>如何变得更加乐观 </h2><h3 id="1- 付诸行动"><a href="#1- 付诸行动" class="headerlink" title="1. 付诸行动"></a>1. 付诸行动</h3><p><em> 基于 艾伯特·班杜拉(Albert Bandura) 的研究</em></p><ul><li>不顾事实的夸奖会对目标产生伤害<ul><li>诸如早上起床对镜子里的自己说十句赞美自己的话之类的</li></ul></li><li>一味夸奖不如 <strong> 付诸行动</strong><ul><li><strong>努力和解决问题是通向成功的唯一途径</strong>：通过努力和实践会取得更大的成功</li><li>“让人看到自己的努力，看到自己步入正轨”</li><li>苏林·祁克果(Soren Kierkegarrd) –&gt; “敢于尝试只会暂时失去立足处，不敢尝试将失去自我”</li></ul></li></ul><h3 id="2- 想象：把目标呈现在心中"><a href="#2- 想象：把目标呈现在心中" class="headerlink" title="2. 想象：把目标呈现在心中"></a>2. 想象：把目标呈现在心中 </h3><p><em> 基于 斯蒂芬·科斯林(Stephen Kosslyn) 的研究</em></p><ul><li>“大脑可能分不清楚真实事物和想象事物的区别”</li><li>“模拟练习”<ul><li>引入各种器官，以便使想象更加地真实</li></ul></li></ul><h3 id="3- 认知疗法"><a href="#3- 认知疗法" class="headerlink" title="3. 认知疗法"></a>3. 认知疗法 </h3><p><em> 马丁·塞利格曼(Martin Seligman), 阿伦·贝克(Aaron Temkin Beck)</em></p><ul><li>“感情受思想的驱动”</li></ul><ul><li>Event –&gt; <strong>Evaluation(thought)</strong> –&gt; Emotion<ul><li>如果要想改变情绪，要从想法开始改变</li><li><strong>“重建理性和真实”</strong></li></ul></li></ul><h3 id="3Ms- 学说"><a href="#3Ms- 学说" class="headerlink" title="3Ms 学说"></a>3Ms 学说</h3><ul><li>3Ms：三个导致非理性思想的陷阱<ol><li>夸大理论：夸张了已发生的事实 &lt;–&gt; 归纳法与过度归纳<ul><li>归纳法：从已知的事情，来判断未知的类似的事情 –&gt; “这次干得不好” &lt;–&gt; “可能哪里出了问题”</li><li>过度归纳：“这次干得不好” &lt;–&gt; “我很蠢，这类事做不好” &lt;–&gt; “不成功便成仁”</li></ul></li><li>缩小理论：狭隘视野<ul><li>将注意力集中在某一个个体、个例上面</li></ul></li><li>伪造、捏造和情绪化推断<ul><li>推卸责任</li><li>“没人回来帮你把生活过得更美好，你必须承担起生活的责任”</li><li>“情绪不是现实，情绪只是对现实的推断”<ul><li>看清以及理性分析现实</li><li>作出正确的评估</li></ul></li></ul></li></ol></li><li>实践<ul><li>我的结论是否贴合现实？</li><li>它是否理性？</li><li>我是否忽略了重要的（现实）因素？</li><li>我仍需要考虑什么重要因素？</li><li>“我在哪里扭曲了事实？”</li><li>“我在哪里扭曲了自己的评价？扭曲了自己的思想？从而导致了不必要的负面情绪”</li></ul></li></ul><h3 id="危机和机遇"><a href="# 危机和机遇" class="headerlink" title="危机和机遇"></a>危机和机遇</h3><ul><li>几乎所有杰出的人，都是经历过巨大的考验才成就辉煌</li><li><strong>挖掘苦难中的价值</strong></li></ul>]]></content>
+    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;如何变得更加乐观&quot;&gt;&lt;a href=&quot;# 如何变得更加乐观&quot; class=&quot;headerlink&quot; title=&quot;如何变得更加乐观&quot;&gt;&lt;/a&gt;如何变得更加乐观 &lt;/h2&gt;&lt;h3 id=&quot;1- 付诸行动&quot;&gt;&lt;a href=&quot;#1- 付诸行动&quot; class=&quot;head
+        &lt;ul&gt;
+&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
+&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
+&lt;li&gt;Saluto-genesis&lt;/li&gt;
+&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;
       
     
     </summary>
