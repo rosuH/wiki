@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>6 包含多个段的程序 | rosu&#39;s wiki</title>
+    
+    
+        <meta name="keywords" content="assembly" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言 在操作系统环境中，合法地通过操作系统取得的空间都是合法的 在操作系统允许的情况下，程序可以取得任意容量的空间   程序取得所需空间的方法 加载程序时候为程序分配 在源码这种做出说明 通过定义段来获取内存空间   程序执行过程中向系统申请    在本课程中，我们只讨论第一种。  在一个段中存放数据、代码和栈，我们先来体会一下不使用多个段的情况 将数据、代码和栈放入不同的段中  6.1 在代码段">
+<meta name="keywords" content="assembly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6 包含多个段的程序">
+<meta property="og:url" content="https://wiki.rosuh.me/计算机技能/汇编基础/6-including-several-segment-program/index.html">
+<meta property="og:site_name" content="rosu&#39;s wiki">
+<meta property="og:description" content="前言 在操作系统环境中，合法地通过操作系统取得的空间都是合法的 在操作系统允许的情况下，程序可以取得任意容量的空间   程序取得所需空间的方法 加载程序时候为程序分配 在源码这种做出说明 通过定义段来获取内存空间   程序执行过程中向系统申请    在本课程中，我们只讨论第一种。  在一个段中存放数据、代码和栈，我们先来体会一下不使用多个段的情况 将数据、代码和栈放入不同的段中  6.1 在代码段">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_42be46.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_035d52.png">
+<meta property="og:updated_time" content="2017-12-26T08:23:07.162Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="6 包含多个段的程序">
+<meta name="twitter:description" content="前言 在操作系统环境中，合法地通过操作系统取得的空间都是合法的 在操作系统允许的情况下，程序可以取得任意容量的空间   程序取得所需空间的方法 加载程序时候为程序分配 在源码这种做出说明 通过定义段来获取内存空间   程序执行过程中向系统申请    在本课程中，我们只讨论第一种。  在一个段中存放数据、代码和栈，我们先来体会一下不使用多个段的情况 将数据、代码和栈放入不同的段中  6.1 在代码段">
+<meta name="twitter:image" content="https://img.rosuh.me/wiki/wiki_201712_42be46.png">
+<meta name="twitter:creator" content="@rosu_h">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="rosu&#39;s wiki" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">rosu&#39;s wiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">此站点</a>
+                
+                    <a class="main-nav-link" href="https://rosuh.me">找我</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Entradas',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categorias',
+            TAGS: 'Etiquetas',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">此站点</a></td>
+                
+                    <td><a class="main-nav-link" href="https://rosuh.me">找我</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Buscar" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>Categorias</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Android 开发
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/">9 使用布局和组件创建用户界面</a></li>  <li class="file"><a href="/Android-开发/8-using-recyclerview-to-display-list/">8 使用 RecyclerView 显示列表</a></li>  <li class="file"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Linux & VPS
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            玩机技巧
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/玩机技巧/save-blocked-in-A199/">华为 A199 救砖札记</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            计算机技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            汇编基础
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/计算机技能/汇编基础/6-including-several-segment-program/">6 包含多个段的程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            软技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            积极心理学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/软技能/积极心理学/11-habit/">11 习惯</a></li>  <li class="file"><a href="/软技能/积极心理学/10-change/">10 改变</a></li>  <li class="file"><a href="/软技能/积极心理学/9.0-positive-emotions/">9 积极情绪</a></li>  <li class="file"><a href="/软技能/积极心理学/8.0-appreciate/">8 感激</a></li>  <li class="file"><a href="/软技能/积极心理学/7.0-adversity-or-chance/">7 逆境和机遇</a></li>  <li class="file"><a href="/软技能/积极心理学/6.0-positive/">6 乐观</a></li>  <li class="file"><a href="/软技能/积极心理学/5.0-Faith-is-the-realistic-predictions/">5 信念是自我实现的预言</a></li>  <li class="file"><a href="/软技能/积极心理学/4.0-positive-environment-can-change-person/">4 积极的环境能改变人</a></li>  <li class="file"><a href="/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/">3 如何避免惬意的麻木</a></li>  <li class="file"><a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/">2 为什么要学习积极心理学</a></li>  <li class="file"><a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/">1 信息、变形和课程简介</a></li>  <li class="file"><a href="/软技能/积极心理学/积极心理学资料索引与声明/">积极心理学资料索引与声明</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-6-including-several-segment-program" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/assembly/">assembly</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/计算机技能/汇编基础/6-including-several-segment-program/">
+            <time datetime="2017-12-26T08:23:07.162Z" itemprop="datePublished">2017-12-26</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/6-including-several-segment-program.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/6-including-several-segment-program.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/6-including-several-segment-program.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            6 包含多个段的程序
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">Catálogo</strong>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-1- 在代码段中使用数据"><span class="toc-number">2.</span> <span class="toc-text">6.1 在代码段中使用数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-2- 在代码段中使用栈"><span class="toc-number">3.</span> <span class="toc-text">6.2 在代码段中使用栈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检测点 -6-1"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">检测点 6.1</span></a></li></ol></li></ol></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言</h1><ul>
+<li>在操作系统环境中，合法地通过操作系统取得的空间都是合法的<ul>
+<li>在操作系统允许的情况下，程序可以取得任意容量的空间</li>
+</ul>
+</li>
+<li>程序取得所需空间的方法<ul>
+<li>加载程序时候为程序分配<ul>
+<li>在源码这种做出说明</li>
+<li>通过定义段来获取内存空间</li>
+</ul>
+</li>
+<li>程序执行过程中向系统申请</li>
+</ul>
+</li>
+</ul>
+<p>在本课程中，我们只讨论第一种。</p>
+<ul>
+<li>在一个段中存放数据、代码和栈，我们先来体会一下不使用多个段的情况</li>
+<li>将数据、代码和栈放入不同的段中</li>
+</ul>
+<h1 id="6-1- 在代码段中使用数据"><a href="#6-1- 在代码段中使用数据" class="headerlink" title="6.1 在代码段中使用数据"></a>6.1 在代码段中使用数据</h1><blockquote>
+<p>编程计算下面 8 个数据的和，结果存储在 <code>ax</code> 寄存器中</p>
+<p><code>0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</code></p>
+</blockquote>
+<p>思路是将上述 8 个数据存放在一段连续的内存空间中然后使用循环累加最后将结果存放到 <code>ax</code> 中。</p>
+<p>我们无法自己随意决定使用哪一段内存空间。所以我们需要在源码中向系统申请内存空间。</p>
+<ul>
+<li>定义我们希望处理的数据</li>
+<li>编译器编译这些数据、链接将之作为程序的一部分写入到可执行文件中</li>
+<li>可执行文件被载入内存，这些 <strong> 数据也同时被加载入内存中</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">	</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov ax, 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 8</span><br><span class="line"></span><br><span class="line">s:	add ax,cs:[bx]</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><code>dw</code>（define word）：定义字型数据<ul>
+<li>这里定义了 8 个字型数据，他们一共占据 16 字节的内存空间</li>
+</ul>
+</li>
+<li>字型数据的位置<ul>
+<li>代码段：因为他们在代码段中，所以他们的段地址可以通过 <code>CS</code> 寄存器获得</li>
+<li>偏移量：因为他们处于代码段的最开始，所以偏移地址为 0</li>
+</ul>
+</li>
+<li><code>bx</code>寄存器通过自加 2 来移动到下一个字型数据的位置</li>
+</ul>
+<p>使用 <code>dw</code> 定义的数据，在内存中也被以二进制的形式存放进去。通过 <code>debug</code> 调试查看上述程序。</p>
+<p><code>u</code>指令：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_42be46.png" alt="U 指令"></p>
+<p>可以看到，在 <code>0b3d:0013</code> 以前的代码几乎是“看不懂”的。因为这一段存储的是原始的二进制数据，所以 <code>debug</code> 无法解析出对应的汇编语句。</p>
+<p>当我们使用 <code>d</code> 语句就可以看到该代码段存放的其实就是那 8 个字型数据了。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_035d52.png" alt="原始二进制数据"></p>
+<p>当然这个时候你就不能直接使用 <code>t</code> 指令来执行语句了。正如前面所说的，<code>CS:IP</code>指向了程序的开头，也就是存放 <code>dw</code> 定义的字型数据的地方，哪些地方根本不对应那些汇编语句。</p>
+<p>我们需要手动将 <code>IP</code> 设置为 <code>10h</code>，从而使<code>CS:IP</code> 执行程序中的第一条指令。接着再用 <code>t</code> 或<code>p</code>或 <code>g</code> 命令执行。</p>
+<p>这样的程序有显而易见的缺漏：</p>
+<ul>
+<li>我们必须使用 <code>debug</code> 来启动程序<ul>
+<li>在系统中直接运行可能会出现问题，因为程序的入口并不是我们期望的指令</li>
+</ul>
+</li>
+</ul>
+<p>现在我们来解决程序入口问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">	</span><br><span class="line">start: mov bx, 0</span><br><span class="line">	mov ax, 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 8</span><br><span class="line"></span><br><span class="line">s:	add ax,cs:[bx]</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li>程序的入口指令面前加上<code>start</code><ul>
+<li>伪指令 <code>end</code> 后面同样加上<code>start</code></li>
+</ul>
+</li>
+<li><code>end</code>的作用<ul>
+<li>通知编译器程序结束</li>
+<li>通知编译器程序的入口在什么地方</li>
+</ul>
+</li>
+<li>单任务系统中，可执行文件的程序执行过程如下<ul>
+<li>由其他程序 (<code>Debug</code>, <code>command</code> 或其他程序)将可执行文件中的程序加载入内存</li>
+<li>设置 <code>CS:IP</code> 指向程序的第一条要执行的指令（程序的入口），从而使程序得以运行<ul>
+<li>根据可执行文件中的描述信息指明哪一条指令是第一条指令</li>
+<li>源程序中的“描述信息”部分，合乎上面中的 <code>end</code> 相关语句；易言之，<code>end start</code>指明程序的入口，被转化为一个入口地址，存储在可执行文件的描述信息中</li>
+</ul>
+</li>
+<li>程序结束运行之后，返回到加载者</li>
+</ul>
+</li>
+</ul>
+<p>现在我们可以这样安排程序框架：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line">code segment</span><br><span class="line">	...</span><br><span class="line">	data</span><br><span class="line">	...</span><br><span class="line">start:</span><br><span class="line">	...</span><br><span class="line">	code</span><br><span class="line">	...</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<h1 id="6-2- 在代码段中使用栈"><a href="#6-2- 在代码段中使用栈" class="headerlink" title="6.2 在代码段中使用栈"></a>6.2 在代码段中使用栈</h1><blockquote>
+<p>完成下面程序，利用栈，将程序中定义的数据逆序存放</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&gt; assume cs:codeseg</span><br><span class="line">&gt; codeseg segment</span><br><span class="line">&gt; 	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">&gt; 	?</span><br><span class="line">&gt; codeseg ends</span><br><span class="line">&gt; end</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+</blockquote>
+<p><em>思路</em>：</p>
+<ul>
+<li>程序运行时，定义数据存放在 <code>cs:0~cs:F</code> 单元中，共  8 个字单元</li>
+<li>依次将这 8 个字单元中的数据入栈，然后再依次出栈到这 8 个字单元中，从而实现逆序存放</li>
+</ul>
+<p>要解决的问题就是必须要有一段可以使用的栈空间。我们需要在程序中通过定义数据来取得一段空间，将之当做栈空间来使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg</span><br><span class="line">codeseg segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">	dw 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">	; 用 dw 定义 16 个字型数据，在程序加载后，将取得的 16 个字</span><br><span class="line">	; 内存空间，存放这 16 个数据</span><br><span class="line">	; 在后面的程序中将这段空间当做栈来使用</span><br><span class="line">start:</span><br><span class="line">	mov ax, cs</span><br><span class="line">	mov ss, ax</span><br><span class="line">	mov sp, 30h		; 设置栈顶 ss:sp 指向 cs:30</span><br><span class="line">	</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 8</span><br><span class="line">	</span><br><span class="line">s:	push cx:[bx]	; 将 0~15 单元中的 8 个字型数据依次入栈</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 8</span><br><span class="line">	</span><br><span class="line">s0:	pop cs:[bx]		; 依次出栈</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s0</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p>使用 <code>dw</code> 的真正目的是“开辟”存储空间，所以不管用什么值去申请都是可以的。申请之后我们在代码中将他作为栈来使用。</p>
+<h4 id="检测点 -6-1"><a href="# 检测点 -6-1" class="headerlink" title="检测点 6.1"></a>检测点 6.1</h4><blockquote>
+<p>下面的程序实现依次用内存 <code>0:0~0:15</code> 单元中的内容改写程序中的数据，完成程序：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg</span><br><span class="line">codeseg segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">	</span><br><span class="line">start:</span><br><span class="line">	mov ax, 0</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov bx, 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 8</span><br><span class="line">s:	mov ax, [bx]</span><br><span class="line">	_________</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p>填入的答案应该是<code>mov cs:[bx], ax</code>。</p>
+<ul>
+<li><code>cs:ip</code>指向的是下一条指令的位置<ul>
+<li><code>cs</code>存储着代码代码段，而 <code>[bx]</code> 表示偏移量，也正是代表着这个程序在内存空间中最开始的那一段</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>下面的程序实现依次用内存 <code>0:0~0:15</code> 单元中的内容改写程序中的数据，数据的传送用栈来进行。栈空间设置在程序内。完成程序：</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg</span><br><span class="line">codeseg segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">	dw 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">	mov ax, ____</span><br><span class="line">	mov ss, ax</span><br><span class="line">	mov sp, ____</span><br><span class="line">	</span><br><span class="line">	mov ax, 0</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 8</span><br><span class="line"></span><br><span class="line">s:	push [bx]</span><br><span class="line">	_________</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><em>思路</em>：</p>
+<ul>
+<li>继续我们上一个例子的想法，本程序源码存放在 <code>cs</code> 代码段，在内存中，排在前面的是两段我们申请空间，大小分别为 16 个字节和 20 个字节<ul>
+<li>前者是数据段，后者用来做栈</li>
+<li>栈内空闲时，指针指向栈底部，所以<code>sp = 36 = 16+20</code> –&gt; <code>sp = 0024h</code></li>
+</ul>
+</li>
+<li>要用 <code>0:0~0:15</code> 的数据将我们定义的数据段内的数据重写</li>
+</ul>
+<p>步骤是：</p>
+<ul>
+<li>将 <code>0:0~0:15</code>空间数据依次入栈，后出栈到在 <code>cs</code> 段的数据</li>
+</ul>
+<p>故而完整程序为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg</span><br><span class="line">codeseg segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">	dw 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">	mov ax, cs		; 指向程序存放的代码段，以便找到数据段和栈段</span><br><span class="line">	mov ss, ax</span><br><span class="line">	mov sp, 24h		; 设置栈底</span><br><span class="line">	</span><br><span class="line">	mov ax, 0</span><br><span class="line">	mov ds, ax		; 指向要修改的目标内存地址</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 8</span><br><span class="line"></span><br><span class="line">s:	push [bx]		; 将 0:0~0:15 数据依次入栈</span><br><span class="line">	pop  cs:[bx]	; 将栈内数据弹出到我们定义的数据段内</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<ul>
+<li>参见 <a href="http://www.cnblogs.com/Base-Of-Practice/articles/6883898.html" target="_blank" rel="external">检测点 6.1</a></li>
+</ul>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Más viejo</strong>
+            <div class="article-nav-title">5 [BX] 和 loop 指令</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            rosuh &copy; 2017 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+        </div>
+    </div>
+</footer>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
