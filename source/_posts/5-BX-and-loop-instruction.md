@@ -544,9 +544,40 @@ end
 
 
 
+#  实验四 `[BX]`和`loop`的使用
+
+#### 题目一
+
+> 编程，向内存`0:200~0:23f`依次传送数据`0~63(3FH)`
+
+```assembly
+assume cs:code
+code segment
+	mov ax, 0
+	mov ds, ax
+	mov bx, 0200h		;使 ds:bx=0:200h
+	
+	mov cx, 64			; 初始化循环计数器
+	mov dx, 0
+
+s:  mov [bx], dx
+	inc bx
+	inc dx
+	loop s
+	
+	mov ax,2c00h
+	int 21h
+code ends
+end
+```
+
+使用`ml`编译链接之后，使用`debug`调试即可。
 
 
 
+####  题目二
+
+> 编程，向内存`0:200~0:23f`依次传送数据`0~63(3FH)`，程序只能使用 9 条指令，9 条指令中包括`mov ax, 4c00h`和`int 21h`
 
 
 
