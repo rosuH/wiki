@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://wiki.rosuh.me/Android-%E5%BC%80%E5%8F%91/9-Using-layouts-and-Widgets-to-create-UI/</loc>
+    
+    <lastmod>2017-12-26T08:56:48.568Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://wiki.rosuh.me/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/5-BX-and-loop-instruction/</loc>
     
     <lastmod>2017-12-26T08:23:07.162Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>https://wiki.rosuh.me/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/6-including-several-segment-program/</loc>
     
     <lastmod>2017-12-26T08:23:07.162Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://wiki.rosuh.me/Android-%E5%BC%80%E5%8F%91/9-Using-layouts-and-Widgets-to-create-UI/</loc>
-    
-    <lastmod>2017-12-22T08:40:05.242Z</lastmod>
     
   </url>
   

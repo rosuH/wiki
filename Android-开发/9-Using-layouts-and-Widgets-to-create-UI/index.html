@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_b86613.png">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_d75c2a.png">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_bcea44.png">
-<meta property="og:updated_time" content="2017-12-22T08:40:05.242Z">
+<meta property="og:updated_time" content="2017-12-26T08:56:48.568Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="9 使用布局和组件创建用户界面">
 <meta name="twitter:description" content="9.1 使用图形布局工具  除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。 图形布局工具界面：  中间区域是界面预览窗口 右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例 左边是组件面板 左下是组件树 右边是属性界面  9.2 引入ConstraintLayout ConstraintLayout工具可以为布局添加一系列约束 组件位置关系因为约束而发生变化   在 C">
@@ -323,7 +323,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/">
-            <time datetime="2017-12-22T08:40:05.242Z" itemprop="datePublished">2017-12-22</time>
+            <time datetime="2017-12-26T08:56:48.568Z" itemprop="datePublished">2017-12-26</time>
         </a>
     </div>
 
@@ -454,7 +454,100 @@
 <li>约束的名字是 <code>constraintTop</code>，这表示它是<code>ImageView</code> 的顶部约束</li>
 <li>属性以 <code>toTopof=&quot;parent&quot;</code> 结束，表示约束是连接到父组件的</li>
 </ul>
-<h4 id="编辑属性"><a href="# 编辑属性" class="headerlink" title="编辑属性"></a>编辑属性</h4>
+<h4 id="编辑属性"><a href="# 编辑属性" class="headerlink" title="编辑属性"></a>编辑属性 </h4><p> 可视化界面的编辑属性功能十分易用。选中组件后即可编辑。</p>
+<h4 id="动态设置列表项"><a href="# 动态设置列表项" class="headerlink" title="动态设置列表项"></a>动态设置列表项 </h4><p> 为了有选择性地显示一些组件（此处是手铐图片），我们可以通过修改 <code>ImageView</code> 组件解决。</p>
+<ul>
+<li>更新 <code>ImageView</code> 组件的 ID</li>
+<li>在组件树里选中它，然后在视图属性窗口将 ID 修改为<code>crime_solved</code></li>
+</ul>
+<p>接下来要在代码中使用这个组件。</p>
+<p><em>控制图片显示（<code>CrimeListFragment.java</code>）</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeListFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line"> ...</span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span></span><br><span class="line"><span class="class">            <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span>  Crime mCrime;</span><br><span class="line">        <span class="keyword">private</span> TextView mTitleTextView;</span><br><span class="line">        <span class="keyword">private</span> TextView mDateTextView;</span><br><span class="line">        <span class="keyword">private</span> ImageView mSolvedImageView;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CrimeHolder</span><span class="params">(LayoutInflater inflater, ViewGroup parent)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(inflater.inflate(R.layout.list_item_crime, parent,<span class="keyword">false</span>));</span><br><span class="line"></span><br><span class="line">            mTitleTextView = (TextView)itemView.findViewById(R.id.crime_title);</span><br><span class="line">            mDateTextView = (TextView)itemView.findViewById(R.id.crime_date);</span><br><span class="line">            mSolvedImageView = (ImageView)itemView.findViewById(R.id.crime_solved);</span><br><span class="line">            itemView.setOnClickListener(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Crime crime)</span> </span>&#123;</span><br><span class="line">            mCrime = crime;</span><br><span class="line">            mTitleTextView.setText(mCrime.getTitle());</span><br><span class="line">            mDateTextView.setText(mCrime.getDate().toString());</span><br><span class="line">            mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此处书里的做法是：</p>
+<ul>
+<li>在 <code>crime</code> 数据中存放一个标志<code>solved</code><ul>
+<li><code>crimeLab</code>中使用 <code>crime.setSolved(i % 2 == 0)</code> 将偶数项的 <code>solved</code> 置为<code>1</code></li>
+</ul>
+</li>
+<li>在 <code>bind</code> 中判断是否需要将 <code>mSolvedImageView</code> 设置为<code>View.GONE</code></li>
+</ul>
+<p>这样的方法比我之前自己想的使用 <code>RecyclerView.viewType</code> 的方法要方便、简洁和易操作。</p>
+<h1 id="9-3- 深入学习布局属性"><a href="#9-3- 深入学习布局属性" class="headerlink" title="9.3 深入学习布局属性"></a>9.3 深入学习布局属性 </h1><h4 id="dp，sp 以及屏幕像素密度"><a href="#dp，sp 以及屏幕像素密度" class="headerlink" title="dp，sp 以及屏幕像素密度"></a><code>dp</code>，<code>sp</code> 以及屏幕像素密度</h4><ul>
+<li>常见的视图属性值<ul>
+<li>文字大小：指定设备上显示的文字的像素高度</li>
+<li>边距：指定视图组件间的举例</li>
+<li>内边距：指定视图外边框与其内容之间的举例</li>
+</ul>
+</li>
+<li>不同设备之间的兼容问题<ul>
+<li>Android 提供了与密度无关的尺寸单位，应用这种单位可在不通的屏幕像素密度的设备上获得相同的尺寸</li>
+</ul>
+</li>
+<li>常见的单位<ul>
+<li><code>px</code><ul>
+<li>英文 pixel 的缩写，即像素</li>
+<li>无论屏幕密度多少，一个像素单位对应一个屏幕像素单位</li>
+<li><strong>不推荐使用，因为他不会根据屏幕密度自动缩放</strong></li>
+</ul>
+</li>
+<li><code>dp (dip)</code><ul>
+<li>英文 density-independent pixel 的缩写，意为 <strong> 密度无关像素</strong></li>
+<li>在设置边距、内边距或任何不打算按像素值指定尺寸的情况下，通常都使用 <code>dp</code> 这种单位</li>
+<li>如果屏幕密度较高，密度无关像素会相应扩展到整个屏幕</li>
+<li><strong>无论屏幕密度任何，总能获得同样的尺寸</strong></li>
+</ul>
+</li>
+<li><code>sp</code><ul>
+<li>英文 cale-independet pixel 的缩写，意思为缩放无关像素</li>
+<li>它是一种与密度无关的像素，这种像素会受用户字体偏好设置的影响</li>
+<li>通常使用 <code>sp</code> 来设置屏幕上的字体大小</li>
+</ul>
+</li>
+<li><code>pt, mm, in</code><ul>
+<li>类似于 <code>dp</code> 的缩放单位，允许以点、毫米或尺寸为单位指定用户界面尺寸</li>
+<li>在实际开发中不建议使用这些单位，因为并不是所有设备都能按照这些单位进行正确的尺寸缩放配置</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对于我们常用的 <code>sp</code> 和<code>dp</code>，Android 会在运行时自动将他们转换为像素单位</li>
+</ul>
+<h4 id="边距与内边距"><a href="# 边距与内边距" class="headerlink" title="边距与内边距"></a>边距与内边距</h4><ul>
+<li><strong>边距属性是布局参数</strong><ul>
+<li>决定了组件之间的举例</li>
+<li>组件对外界一无所知，边距必须由该组件的父组件负责</li>
+</ul>
+</li>
+<li><strong>内边距不是布局参数</strong><ul>
+<li><code>android:padding</code>告诉组件：在绘制组件自身时，要比所含内容大多少</li>
+</ul>
+</li>
+</ul>
+<h4 id="样式、主题及主题属性"><a href="# 样式、主题及主题属性" class="headerlink" title="样式、主题及主题属性"></a>样式、主题及主题属性</h4><ul>
+<li>样式 (style) 是 <code>XML</code> 资源文件，含有用来描述组件行为和外观的属性定义</li>
+<li>可以自己创建自己的样式文件<ul>
+<li>然后在布局文件中以 <code>@style/my_own_style</code> 的形式引用</li>
+</ul>
+</li>
+<li>例子中的两个 <code>TextView</code> 组件都有一个引用 Android 自带样式文件的 <code>style</code> 属性<ul>
+<li>该预定义样式来自于应用主题</li>
+</ul>
+</li>
+<li>主题是各种样式的集合<ul>
+<li>从结构上来说，主题本身也是一种资源，只不过他的属性指向了其他样式资源</li>
+<li>使用主题属性引用，可将预定义的应用主题样式添加给指定组件<ul>
+<li>比如<code>?android:listSeparatorTextViewStyle</code></li>
+<li>使用主题属性引用就是告诉 Android 运行资源管理器：“在应用主题里找到 <code>listSeparatorTextViewStyle</code> 的属性。该属性指向其他样式资源，请将其资源的值放在这里”</li>
+</ul>
+</li>
+<li>所有 Android 主题都包括名为 <code>listSeparatorTextViewStyle</code> 的属性，不过他们的定义略有不同</li>
+<li>使用主题引用，可以确保 <code>TextView</code> 组件在应用中拥有正确一致的显示风格</li>
+</ul>
+</li>
+</ul>
+<h4 id="Android- 应用的设置原则"><a href="#Android- 应用的设置原则" class="headerlink" title="Android 应用的设置原则"></a>Android 应用的设置原则</h4><p><a href="https://material.io/guidelines/" target="_blank" rel="external">Material Design</a></p>
+<h1 id="9-4- 图形布局工具使用小结"><a href="#9-4- 图形布局工具使用小结" class="headerlink" title="9.4 图形布局工具使用小结"></a>9.4 图形布局工具使用小结 </h1><p> 图形化很好用，直接编写 <code>XML</code> 也很不错，哪个方便就用哪个。</p>
+
             </div>
         
         <footer class="article-footer">
@@ -466,19 +559,10 @@
     
 <nav id="article-nav">
     
-        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Más nuevo</strong>
-            <div class="article-nav-title">
-                
-                    5 [BX] 和 loop 指令
-                
-            </div>
-        </a>
     
-    
-        <a href="/Android-开发/8-using-recyclerview-to-display-list/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/计算机技能/汇编基础/6-including-several-segment-program/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Más viejo</strong>
-            <div class="article-nav-title">8 使用 RecyclerView 显示列表</div>
+            <div class="article-nav-title">6 包含多个段的程序</div>
         </a>
     
 </nav>
