@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://wiki.rosuh.me/"/>
-  <updated>2017-12-27T08:43:54.173Z</updated>
+  <updated>2017-12-27T14:12:54.385Z</updated>
   <id>https://wiki.rosuh.me/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>10 使用 fragment argument</title>
+    <link href="https://wiki.rosuh.me/Android-%E5%BC%80%E5%8F%91/10-using-fragment-argument/"/>
+    <id>https://wiki.rosuh.me/Android-开发/10-using-fragment-argument/</id>
+    <published>2017-12-27T14:12:54.385Z</published>
+    <updated>2017-12-27T14:12:54.385Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><p> 我们之前的应用实现了从 <code>activity</code> 中启动 <code>activity</code> 的功能。现在我们要实现从 <code>fragment</code> 中启动 <code>activity</code>。在本例中，就是从<code>CrimeListFragment</code> 中启动 <code>CrimeActivity</code> 实例。</p><p><img src="https://img.rosuh.me/wiki/wiki_201712_602156.png" alt="示意图"></p><p>在本例中，我们将关联 <code>CriminalIntent</code> 应用的列表与明细部分。用户点击某个 <code>Cirme</code> 列表项时，会创建一个托管 <code>CrimeFragment</code> 的<code>CrimeActivity</code>。</p><h1 id="10-1- 从 fragment 中启动 activity"><a href="#10-1- 从 fragment 中启动 activity" class="headerlink" title="10.1 从 fragment 中启动 activity"></a>10.1 从 <code>fragment</code> 中启动<code>activity</code></h1><ul><li>要从 <code>fragment</code> 中启动 <code>activity</code>，类似于<code>activity</code> 中启动<code>activity</code><ul><li>我们调用 <code>Fragment.startActivity(Intent)</code> 方法</li><li>由它在后台再调用对应的 <code>Activity</code> 方法</li></ul></li></ul><p>本例中，我们将在 <code>CrimeListFragment</code> 的<code>CrimeHolder</code>类里，用启动 <code>CrimeActivity</code> 实例的代码，替换 <code>toast</code> 消息处理代码。</p><p><em>启动<code>CrimeActivity</code>（<code>CrimeListFragment.java</code>）</em>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span></span><br><span class="line"><span class="class"><span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnclickListener</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    Intent intent = <span class="keyword">new</span> Intent(getActivity(), CrimeActivity.class);</span><br><span class="line">    startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>上述代码和 <code>activity</code> 启动 <code>activity</code> 相当类似。</p><ul><li>指定要启动的 <code>activity</code> 为<code>CrimeActivity</code><ul><li><code>CrimeListFragment</code>创建了一个显式<code>itent</code></li></ul></li><li><code>CrimeListFragment</code>通过 <code>getActivity()</code> 方法传入他托管的 <code>activity</code> 来获取构造 <code>Intent</code> 所需要的 <code>Context</code> 对象</li></ul><h4 id="附加 extra 信息"><a href="# 附加 extra 信息" class="headerlink" title="附加 extra 信息"></a>附加 <code>extra</code> 信息 </h4><p> 为了实现能分辨是哪一个 <code>fragmen</code> 启动的 <code>activity</code>，我们需要在启动<code>CrimeActivity</code> 时，传递附加到 <code>Intent extra</code> 上的<code>crime ID</code>。</p><ul><li>需要使用 <code>CrimeActivity</code> 中新增<code>newIntent</code></li></ul><p><em>创建 <code>newIntent</code> 方法（<code>CrimeActivity.java</code>）</em>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeActivity</span> <span class="keyword">extends</span> <span class="title">SingleFragmentActivity</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_CRIME_ID =</span><br><span class="line">            <span class="string">"com.bignerdranch.android.criminalintent.cirme_id"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Intent <span class="title">newIntent</span><span class="params">(Context packageContext, UUID crimeId)</span> </span>&#123;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(packageContext, CrimeActivity.class);</span><br><span class="line">        intent.putExtra(EXTRA_CRIME_ID, crimeId);</span><br><span class="line">        <span class="keyword">return</span> intent;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><ul><li>创建了显式 <code>intent</code> 后，调用 <code>putExtra(...)</code> 方法，传入匹配的 <code>crimeId</code> 字符串键与键值<ul><li>此处 <code>UUID</code> 是<code>Serializable</code>对象，所以调用 <code>putExtra(String, Serializable)</code> 方法</li></ul></li></ul><p>注意，上面我们是在 <code>CtimreActivity</code> 中编写的代码，还记得我们之前学习 <code>Intent</code> 的时候说过的知识点吗？</p><blockquote><p>如何在使用 <code>intent</code> 并传递数据的时候，不考虑传递数据的细节和有效提高复用性？</p></blockquote><p>啊哈！就是这里啦。我们在被调用的 <code>activity</code> 内创建静态方法<code>newIntent</code>，让这个被调用者自己把控要传入的数据类型和个数，让调用者们直接调用而不需考虑太多；还可以提高复用性呢！</p><p>接下来看看我们如何使用 <code>newIntent</code> 方法吧。</p><p><em>传递 <code>Crime</code> 实例(<code>CrimeListFragment.java</code>）</em>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span></span><br><span class="line"><span class="class"><span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnclickListener</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());</span><br><span class="line">    startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>wow! 简直绝赞！</p><h4 id="获取 extra 信息"><a href="# 获取 extra 信息" class="headerlink" title="获取 extra 信息"></a>获取 <code>extra</code> 信息 </h4><p> 我们已经把 <code>crimeId</code> 信息安全地存储到 <code>CrimeActivity</code> 的<code>intent</code>中了。不过，要使用和获取 <code>extra</code> 信息的是 <code>CrimeFragment</code> 类。</p><p><code>fragment</code>有两种方法获取 <code>intent</code> 中的数据：</p><ul><li>简单直接的方法<ul><li><code>CrimeFragment</code>直接使用 <code>getActivity()</code> 方法获取 <code>CrimeActivity</code> 的<code>intent</code></li><li>回到 <code>CrimeFragment.java</code> 文件，取到 <code>CrimeActivity</code> 的<code>intent</code>内的 <code>extra</code> 信息</li><li>再用它获取 <code>Crime</code> 对象</li></ul></li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">  <span class="comment">// mCrime = new Crime();</span></span><br><span class="line">        UUID crimeId = (UUID)getActivity().getIntent()</span><br><span class="line">                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID);</span><br><span class="line">        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><p>我们需要理解的是，<code>CrimeFragment</code>是由 <code>CrimeActivity</code> 创建出来的。</p><p>所以其使用 <code>getActivity()</code> 就可以获取到 <code>CrimeActivity</code> 实例。接着通过该实例获取 <code>intent</code>，由<code>intent</code> 里的 <code>crimeId</code> 来从 <code>CrimeLab</code> 单例中获取特定 <code>Crime</code> 对象。</p><h4 id="使用 Crime 数据更新 CrimeFragment 视图"><a href="# 使用 Crime 数据更新 CrimeFragment 视图" class="headerlink" title="使用 Crime 数据更新 CrimeFragment 视图"></a>使用 <code>Crime</code> 数据更新 <code>CrimeFragment</code> 视图 </h4><p> 获取了 <code>Crime</code> 对象，<code>CrimeFragment</code>视图便可以显示该 <code>Crime</code> 对象的数据了。</p><p>我们需要更新 <code>onCreateView(...)</code> 方法，显示 <code>Crime</code> 对象的标题以及解决状态。</p><p><em>更新视图对象（<code>CrimeFragment.java</code>）</em>：</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container,</span></span></span><br><span class="line"><span class="function"><span class="params">                         Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  mTitleField.setText(mCrime.getTitle());</span><br><span class="line">  ...</span><br><span class="line">  mSolvedCheckBox.setChecked(mCrime.isSolver);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h4 id="直接获取 -extra- 信息的缺点"><a href="# 直接获取 -extra- 信息的缺点" class="headerlink" title="直接获取 extra 信息的缺点"></a>直接获取 extra 信息的缺点 </h4><p> 在上述方式中，我们简单使用几行代码，便可以让 <code>fragment</code> 直接从托管 <code>activity</code> 的<code>intent</code>中获取信息。</p><p>然而，这样的方式破坏了 <code>fragment</code> 的封装。</p><ul><li><code>CrimeFragment</code>不再是可复用的构建单元<ul><li>因为它现在由某个特定的 <code>activity</code> 托管着</li><li>该特定的 <code>activity</code> 的<code>Intent</code>又定义了名为 <code>com.bignerdranch.android.criminalintent.crime_id</code> 的<code>extra</code></li></ul></li><li><code>CrimeFragment</code>再也无法被其他 <code>activity</code> 使用</li></ul><p>一个更好的做法，是将 <code>crimeID</code> 存储在属于 <code>CrimeFragment</code> 的某个地方，而不是保存在 <code>CrimeActivity</code> 的私有空间里。这样，无需依赖 <code>CrimeActivity</code> 的<code>intent</code>内的 <code>extra</code>，<code>CrimeFragment</code> 就能获取自己所需的 <code>extra</code> 数据。</p><p>一般，那个某个地方就是实际上就是 <code>fragment</code> 的<code>argument bundle</code>。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;# 前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言 &lt;/h1&gt;&lt;p&gt; 我们之前的应用实现了从 &lt;code&gt;activity&lt;/code&gt; 中启动 &lt;code&gt;activity&lt;/code&gt; 的功能。现在我
+      
+    
+    </summary>
+    
+      <category term="Android 开发" scheme="https://wiki.rosuh.me/categories/Android-%E5%BC%80%E5%8F%91/"/>
+    
+    
+      <category term="Android" scheme="https://wiki.rosuh.me/tags/Android/"/>
+    
+      <category term="fragment argument" scheme="https://wiki.rosuh.me/tags/fragment-argument/"/>
+    
+  </entry>
   
   <entry>
     <title>7 更灵活的定位内存地址的方法</title>
@@ -210,84 +237,6 @@
   </entry>
   
   <entry>
-    <title>4 积极的环境能改变人</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/4.0-positive-environment-can-change-person/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/4.0-positive-environment-can-change-person/</id>
-    <published>2017-11-23T14:15:32.663Z</published>
-    <updated>2017-11-11T02:41:27.513Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="改变"><a href="# 改变" class="headerlink" title="改变"></a>改变</h3><ul><li>传播真正有用的东西<ul><li>传播真实的知识</li><li>研究</li></ul></li><li>“精英民主化”<ul><li>学习优秀的，让全体都变得优秀</li></ul></li><li>“阻止改变的障碍”<ul><li>低估了自己带来变化的能力</li></ul></li><li>“改变如何发生”？<ul><li>改变可以呈几何级数扩散 &lt;–&gt; 理解人群中的指数效应 &lt;–&gt; 扩大影响力</li><li>“蝴蝶效应”</li><li>“六度分离现象”</li><li>“微笑效应”</li></ul></li><li>“凭外因无法令人幸福”<ul><li>剧烈的外界环境变化对幸福感的影响只持续一段时间，之后将会回到原来的水平</li><li>一旦满足基本需求之后，幸福感将不会再有很大提升</li><li>并不是说毫无变化，只是外界某一因素 剧烈变化，易会导致其他因素协同变化，人生会出现新的体验，会让你开心亦会让你伤心，所以幸福值又回到了原来水平<ul><li>社会制度影响除外，民主制度下的人们比独裁统治下的人们更幸福（可能是后者没有得到基本的满足</li></ul></li><li>“降低期望不能根本性提高幸福值”<ul><li>只能维持一段时间</li></ul></li></ul></li><li>“正确的期望才能获得幸福”<ul><li>感受幸福的意愿和可能性主要取决于 <strong> 我们的精神状态</strong><ul><li>而不是银行存款或其他</li></ul></li><li>关键在于：<ul><li>改变我们的观念和精神状态</li><li>在于改变我们看待这个世界的方式、看待成败的方式</li><li>在于我们选择去理解什么、去关注什么</li></ul></li></ul></li></ul><h3 id="人性"><a href="# 人性" class="headerlink" title="人性"></a>人性</h3><ul><li>人性是否应该受到限制？<ul><li>人性约束观：认为人性无法改变，他是恒定的。我们有特定的本能、偏好，他们是固定不变的；作为一个物种，与生俱来的；我们身上的缺点无法被改变<ul><li>除了放弃之外，可以选择对其进行引导；建立体制引导缺陷</li></ul></li><li>非人性约束观：认为人性可以不断进步；人性可以得到完善<ul><li>建立体制完善缺陷、改善缺陷</li></ul></li></ul></li><li>“成为平凡人”  – 人性约束观<ul><li>生活具有多样性，不是一直都是积极的</li><li>不要为了“积极”而积极，这样会付出极大的成本并且往往不遂人意</li><li>留给自己一个私人的空间，在这个房间里做一个凡人</li><li>“动机悖论”：善于接受自己的情绪，不要过度压抑</li></ul></li><li>情感、行为和认知<ul><li>情感 &lt;–&gt; 情绪：情绪没有正邪之分；糟糕的情绪亦是人的本性<ul><li>问题在于：<strong>我用什么态度对待和表达情绪</strong>？ </li></ul></li><li>行为：表达情绪的方式<ul><li>这个问题就涉及到道德领域，即有好坏之分；我们可以选择道德或不道德的方式对待其他人</li></ul></li><li>认知：改变自己对糟糕情绪的看法<ul><li>真诚地面对好坏情绪</li></ul></li></ul></li><li>“主动接受”<ul><li>识别好坏的能力</li></ul></li><li>冥想<ul><li>静坐</li><li>注意了转移到呼吸</li><li>深呼吸</li><li>思考世界和我们的联系、纽带</li><li>深呼吸</li><li>注意力转移到情绪上，接受你的情绪改变，让你的情绪随呼吸流出</li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;改变&quot;&gt;&lt;a href=&quot;# 改变&quot; class=&quot;headerlink&quot; title=&quot;改变&quot;&gt;&lt;/a&gt;改变&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;传播真正有用的东西&lt;ul&gt;
-&lt;li&gt;传播真实的知识&lt;/li&gt;
-&lt;li&gt;研究&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;“精英民
-      
-    
-    </summary>
-    
-      <category term="软技能" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
-    
-      <category term="积极心理学" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/"/>
-    
-    
-      <category term="哈佛幸福课" scheme="https://wiki.rosuh.me/tags/%E5%93%88%E4%BD%9B%E5%B9%B8%E7%A6%8F%E8%AF%BE/"/>
-    
-      <category term="笔记" scheme="https://wiki.rosuh.me/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="视频" scheme="https://wiki.rosuh.me/tags/%E8%A7%86%E9%A2%91/"/>
-    
-      <category term="幸福" scheme="https://wiki.rosuh.me/tags/%E5%B9%B8%E7%A6%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2 为什么要学习积极心理学</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/</id>
-    <published>2017-11-23T14:15:32.663Z</published>
-    <updated>2017-11-11T02:42:09.340Z</updated>
-    
-    <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p><ul><li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul><li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li></ul></li><li> 为什么要学习积极心理学？<ul><li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul><li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li></ul></li><li> 快乐并不只是对痛苦的否定 </li><li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li></ul></li></ul><ul><li> 如何研究出有效的方法？（如何探究积极心理学？<ul><li> 解决方法就在问题本身：特定问题创造特定现实 </li><li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul><li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li><li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li></ul></li><li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li></ul></li><li> 改善眼界 <ul><li> 关注优点、设立目标 –&gt; 内心理想主义 </li><li> 注意现实、立刻行动 –&gt; 客观现实主义 </li></ul></li><li> 利人利己的上升螺旋 <ul><li> 承认需要（承认弱点）</li><li> 接受帮助并帮助他人 </li><li> 善于选择优良的社会帮助 </li></ul></li><li> 适应力 <ul><li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li><li> 养成：<ul><li> 一个榜样 </li><li>“我们要好好树立自己的信念”<ul><li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li><li>“别再埋怨”“别再埋怨社会、老师、父母”</li></ul></li><li> 将目光放在长处和优点上并加以培养 </li><li> 自我激励 </li></ul></li><li>“如何让自己的大学时光变得更加有意义？”<ul><li> 你要为这段时光负起责任 </li></ul></li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;em&gt;2017-8-2 09:28:38&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt; 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 &lt;ul&gt;
-&lt;li&gt;1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 &lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;l
-      
-    
-    </summary>
-    
-      <category term="软技能" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
-    
-      <category term="积极心理学" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/"/>
-    
-    
-      <category term="哈佛幸福课" scheme="https://wiki.rosuh.me/tags/%E5%93%88%E4%BD%9B%E5%B9%B8%E7%A6%8F%E8%AF%BE/"/>
-    
-      <category term="笔记" scheme="https://wiki.rosuh.me/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="视频" scheme="https://wiki.rosuh.me/tags/%E8%A7%86%E9%A2%91/"/>
-    
-      <category term="幸福" scheme="https://wiki.rosuh.me/tags/%E5%B9%B8%E7%A6%8F/"/>
-    
-  </entry>
-  
-  <entry>
     <title>5 信念是自我实现的预言</title>
     <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/5.0-Faith-is-the-realistic-predictions/"/>
     <id>https://wiki.rosuh.me/软技能/积极心理学/5.0-Faith-is-the-realistic-predictions/</id>
@@ -392,26 +341,25 @@
   </entry>
   
   <entry>
-    <title>3 如何避免惬意的麻木</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
-    <published>2017-11-23T14:15:32.659Z</published>
-    <updated>2017-11-11T02:42:09.332Z</updated>
+    <title>2 为什么要学习积极心理学</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/</id>
+    <published>2017-11-23T14:15:32.663Z</published>
+    <updated>2017-11-11T02:42:09.340Z</updated>
     
-    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p><ul><li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul><li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li></ul></li><li> 为什么要学习积极心理学？<ul><li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul><li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li></ul></li><li> 快乐并不只是对痛苦的否定 </li><li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li></ul></li></ul><ul><li> 如何研究出有效的方法？（如何探究积极心理学？<ul><li> 解决方法就在问题本身：特定问题创造特定现实 </li><li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul><li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li><li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li></ul></li><li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li></ul></li><li> 改善眼界 <ul><li> 关注优点、设立目标 –&gt; 内心理想主义 </li><li> 注意现实、立刻行动 –&gt; 客观现实主义 </li></ul></li><li> 利人利己的上升螺旋 <ul><li> 承认需要（承认弱点）</li><li> 接受帮助并帮助他人 </li><li> 善于选择优良的社会帮助 </li></ul></li><li> 适应力 <ul><li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li><li> 养成：<ul><li> 一个榜样 </li><li>“我们要好好树立自己的信念”<ul><li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li><li>“别再埋怨”“别再埋怨社会、老师、父母”</li></ul></li><li> 将目光放在长处和优点上并加以培养 </li><li> 自我激励 </li></ul></li><li>“如何让自己的大学时光变得更加有意义？”<ul><li> 你要为这段时光负起责任 </li></ul></li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;ul&gt;
-&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
-&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
-&lt;li&gt;Saluto-genesis&lt;/li&gt;
-&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
+        &lt;p&gt;&lt;em&gt;2017-8-2 09:28:38&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt; 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 &lt;ul&gt;
+&lt;li&gt;1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;
+&lt;l
       
     
     </summary>
@@ -432,19 +380,25 @@
   </entry>
   
   <entry>
-    <title>6 乐观</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/6.0-positive/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/6.0-positive/</id>
-    <published>2017-11-23T14:15:32.659Z</published>
-    <updated>2017-11-11T02:42:09.332Z</updated>
+    <title>4 积极的环境能改变人</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/4.0-positive-environment-can-change-person/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/4.0-positive-environment-can-change-person/</id>
+    <published>2017-11-23T14:15:32.663Z</published>
+    <updated>2017-11-11T02:41:27.513Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="如何创建积极的环境"><a href="# 如何创建积极的环境" class="headerlink" title="如何创建积极的环境"></a>如何创建积极的环境 </h2><p><strong> 相信改变会发生，相信即便微小的难以记住的东西也会对心理产生极大的暗示</strong>。</p><ul><li>欣赏你爱的人的图片</li><li>欣赏美好的事物</li><li>在目力所及的地方放上令你感觉温暖、能让你感受到爱和友善的东西</li><li>名人名言</li><li>音乐、电影</li></ul><h2 id="自我效能的力量"><a href="# 自我效能的力量" class="headerlink" title="自我效能的力量"></a>自我效能的力量</h2><ul><li>“思考只是成功定律的一部分”<ul><li>成功离不开自我效能、艰苦奋斗和不断的失败</li></ul></li><li>“自我效能决定命运”<ul><li><a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E6%95%88%E8%83%BD" target="_blank" rel="external">自我效能</a>：用于衡量个体本身对完成任务和达成目标能力的信念的程度或强度</li><li>“安慰剂效应”</li></ul></li></ul><h2 id="如何平衡期许和现实"><a href="# 如何平衡期许和现实" class="headerlink" title="如何平衡期许和现实"></a>如何平衡期许和现实 </h2><h3 id="两种调节机制"><a href="# 两种调节机制" class="headerlink" title="两种调节机制"></a> 两种调节机制</h3><ul><li>动力（motivation）：<ul><li>如果相信在某方面能做得更好，你更有可能做得更好</li></ul></li><li>统一性（consistency）<ul><li>人们会对世界产生 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%9B%BE%E5%BC%8F" target="_blank" rel="external"> 心理图式</a><ul><li><strong>自我图式 </strong>（self-schema）是指一个长期及稳定的<a href="https://zh.wikipedia.org/wiki/%E8%A8%98%E6%86%B6" target="_blank" rel="external"> 记忆 </a>，内容是有关在特定行为领域下的<a href="https://zh.wikipedia.org/wiki/%E4%BF%A1%E5%BF%B5" target="_blank" rel="external"> 信念 </a>、<a href="https://zh.wikipedia.org/wiki/%E7%B6%93%E9%A9%97" target="_blank" rel="external"> 经验 </a> 及对 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91" target="_blank" rel="external"> 自我 </a> 的总括；也作“过去知识和经验的表征形式”</li><li>比如我们“知道”，如果把东西留着半空中，这个东西“就会掉下来”</li><li>比如“主观印象”</li></ul></li><li>心理图式对应的“客观世界”<ul><li>比如，留在半空中的东西确实掉下去了，是为客观事实</li></ul></li><li><strong>大脑不善于接受现实和理想之间的差距</strong><ul><li><strong>甚至会逃避、忽视这样的差距</strong></li></ul></li><li>为了让两者保持统一，要么 <strong> 改变客观事实 </strong>，<strong> 要么改变自己的想法</strong></li></ul></li></ul><h3 id="修复现实和理想的裂痕"><a href="# 修复现实和理想的裂痕" class="headerlink" title="修复现实和理想的裂痕"></a>修复现实和理想的裂痕</h3><ol><li>更新我们的主观想法</li><li>屏蔽客观信息</li><li>主动证实信息</li><li>创造一个新的现实 </li></ol><p>我们经常使用的是第二和第三种方法，因为我们不愿意“更新”我们的最初的想法，所以一旦发生了不符合我们预期的事情，我们会选择性忽略（不更新，屏蔽客观信息），然后去寻找支持我们原来想法的证据（主动证实信息）。</p><p>比如，我们以前认为小明是坏人。而小明最近几天一直在做好事，有很多人不善于接受新的改变，而持有一种观点“小明以前做过什么坏事”，然后去证实这件事。</p><p>也即是“问题创造现实”。这样的情况可以被避免。只要我们 <strong> 不要忽略掉积极的事情，并且小心求证消极的事情</strong>。</p><ul><li>客观现实的主观解释<ul><li>失败 –&gt; 成功证明某事不成功</li><li>成功 –&gt; 成功</li></ul></li><li>信念的功用<ul><li>“我相信” –&gt; “我会更努力工作” √</li><li>“我相信” –&gt; “会成功” ×</li><li>简言之：信念是为了更好地工作</li></ul></li><li>“失败和成功的次数一样多”<ul><li>迪安·西蒙顿（Dean Simonton）的研究：历史上最成功的科学家和艺术家也同样是那些失败最多次的</li><li>注意逻辑关系！失败最多次并不代表就会变成最成功的</li></ul></li><li>失败的功用<ul><li>成功需要行动 –&gt; 行动会产生失败 –&gt; 失败是不可避免的</li><li>不断从失败中汲取经验</li></ul></li></ul><h2 id="目标设立"><a href="# 目标设立" class="headerlink" title="目标设立"></a>目标设立 </h2><h3 id="积极和悲观主义者的区别"><a href="# 积极和悲观主义者的区别" class="headerlink" title="积极和悲观主义者的区别"></a> 积极和悲观主义者的区别</h3><ul><li>悲观主义者：无论长期或是短期，其设立的目标都很现实<ul><li>期望值不高, 信念不强 –&gt; 可能做得不好 &lt;-(思维一致性)-&gt; 调低目标难度<ul><li><strong>表现平平</strong>：“我早就说过我做不好” &lt;–&gt; “是的，你早就说过了，你真实在”</li><li><strong>表现优秀</strong>：“我这次可能是瞎猫碰上死耗子”“用尽了我一生的运气”</li></ul></li></ul></li><li>乐观主义者：短期目标 <strong> 天马行空</strong>，长期目标比较现实<ul><li>期望值高，动力十足 –&gt; 我能做得很好 &lt;–(思维一致性)–&gt; 调高目标难度<ul><li>表现平平：“我能从中学到什么？”“这是一次机会” &lt;–&gt; “为什么你就不能实际一点呢？稍微和 xx 学习一下吧” &lt;–&gt; 保持高度积极和高动力，不断努力直到把不可能化为可能</li></ul></li></ul></li><li>解释客观现实<ul><li>悲观主义者：将负面情况看成普遍现象<ul><li>“这一次没有成功，我不可能成功”“我就是这样的人”</li><li>“要么行，要么不行”</li></ul></li><li>乐观主义者：现实可以被学习并改变<ul><li>“我可以从中学到什么？”</li><li>“这是一次机会”</li></ul></li></ul></li></ul><h3 id="心理健康与生理健康"><a href="# 心理健康与生理健康" class="headerlink" title="心理健康与生理健康"></a>心理健康与生理健康</h3><ul><li>客观事实解释角度会影响人体的免疫系统和复原力水平</li></ul><h2 id="乐观的等级"><a href="# 乐观的等级" class="headerlink" title="乐观的等级"></a>乐观的等级 </h2><p><strong> 如何分辨现实与非现实？</strong></p><ul><li>斯托克代尔悖论（Stockdale Paradox）：不要把最终胜利的信念和现实的磨练这个两个因素混淆起来，其中前者 <strong> 必不可少</strong>，而后者无论如何都要接受</li></ul><h3 id="成功：乐观、激情和勤奋"><a href="# 成功：乐观、激情和勤奋" class="headerlink" title="成功：乐观、激情和勤奋"></a>成功：乐观、激情和勤奋</h3><ul><li>乐观：相信自己能成功</li><li>激情：对所做事业充满激情</li><li>勤奋：努力地工作 –&gt; “勤奋没有替代品”</li></ul><h3 id="高期望和失望？"><a href="# 高期望和失望？" class="headerlink" title="高期望和失望？"></a>高期望和失望？</h3><ul><li>为什么人不互相鼓励追求高的目标？<ul><li>害怕伤及我们的自尊 &lt;–&gt; “期望和现实的比值为幸福值” &lt;–&gt; 期望低，幸福值高 （×）</li></ul></li><li><strong>幸福有自己的稳态</strong><ul><li>“现实不如期望” &lt;–&gt; 幸福感降低 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li><li>“现实优于期望” &lt;–&gt; 幸福感升高 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li></ul></li><li>“稳态的缺点”<ul><li>幸福感是固定的吗？是由我的基因决定的吗？我无法一直提升我的幸福感吗？</li></ul></li></ul><h3 id="提升你的基础幸福感：解决问题而不是逃避问题"><a href="# 提升你的基础幸福感：解决问题而不是逃避问题" class="headerlink" title="提升你的基础幸福感：解决问题而不是逃避问题"></a>提升你的基础幸福感：解决问题而不是逃避问题</h3><ul><li>解决问题：允许自己冒险，处于“学习区”中，承担失败的风险；处理、解决以及直面你的问题</li><li>依据？<ul><li>自我认知：“我们使用同一种方法来判断自己和他人”<ul><li>你不敢做的事，不敢尝试的事情，往往会给与之高的评价，一旦自己做了，也会给自己高度评价</li><li>比如，发表演讲、争取权利等等</li></ul></li></ul></li></ul>]]></content>
+    <content type="html"><![CDATA[<h3 id="改变"><a href="# 改变" class="headerlink" title="改变"></a>改变</h3><ul><li>传播真正有用的东西<ul><li>传播真实的知识</li><li>研究</li></ul></li><li>“精英民主化”<ul><li>学习优秀的，让全体都变得优秀</li></ul></li><li>“阻止改变的障碍”<ul><li>低估了自己带来变化的能力</li></ul></li><li>“改变如何发生”？<ul><li>改变可以呈几何级数扩散 &lt;–&gt; 理解人群中的指数效应 &lt;–&gt; 扩大影响力</li><li>“蝴蝶效应”</li><li>“六度分离现象”</li><li>“微笑效应”</li></ul></li><li>“凭外因无法令人幸福”<ul><li>剧烈的外界环境变化对幸福感的影响只持续一段时间，之后将会回到原来的水平</li><li>一旦满足基本需求之后，幸福感将不会再有很大提升</li><li>并不是说毫无变化，只是外界某一因素 剧烈变化，易会导致其他因素协同变化，人生会出现新的体验，会让你开心亦会让你伤心，所以幸福值又回到了原来水平<ul><li>社会制度影响除外，民主制度下的人们比独裁统治下的人们更幸福（可能是后者没有得到基本的满足</li></ul></li><li>“降低期望不能根本性提高幸福值”<ul><li>只能维持一段时间</li></ul></li></ul></li><li>“正确的期望才能获得幸福”<ul><li>感受幸福的意愿和可能性主要取决于 <strong> 我们的精神状态</strong><ul><li>而不是银行存款或其他</li></ul></li><li>关键在于：<ul><li>改变我们的观念和精神状态</li><li>在于改变我们看待这个世界的方式、看待成败的方式</li><li>在于我们选择去理解什么、去关注什么</li></ul></li></ul></li></ul><h3 id="人性"><a href="# 人性" class="headerlink" title="人性"></a>人性</h3><ul><li>人性是否应该受到限制？<ul><li>人性约束观：认为人性无法改变，他是恒定的。我们有特定的本能、偏好，他们是固定不变的；作为一个物种，与生俱来的；我们身上的缺点无法被改变<ul><li>除了放弃之外，可以选择对其进行引导；建立体制引导缺陷</li></ul></li><li>非人性约束观：认为人性可以不断进步；人性可以得到完善<ul><li>建立体制完善缺陷、改善缺陷</li></ul></li></ul></li><li>“成为平凡人”  – 人性约束观<ul><li>生活具有多样性，不是一直都是积极的</li><li>不要为了“积极”而积极，这样会付出极大的成本并且往往不遂人意</li><li>留给自己一个私人的空间，在这个房间里做一个凡人</li><li>“动机悖论”：善于接受自己的情绪，不要过度压抑</li></ul></li><li>情感、行为和认知<ul><li>情感 &lt;–&gt; 情绪：情绪没有正邪之分；糟糕的情绪亦是人的本性<ul><li>问题在于：<strong>我用什么态度对待和表达情绪</strong>？ </li></ul></li><li>行为：表达情绪的方式<ul><li>这个问题就涉及到道德领域，即有好坏之分；我们可以选择道德或不道德的方式对待其他人</li></ul></li><li>认知：改变自己对糟糕情绪的看法<ul><li>真诚地面对好坏情绪</li></ul></li></ul></li><li>“主动接受”<ul><li>识别好坏的能力</li></ul></li><li>冥想<ul><li>静坐</li><li>注意了转移到呼吸</li><li>深呼吸</li><li>思考世界和我们的联系、纽带</li><li>深呼吸</li><li>注意力转移到情绪上，接受你的情绪改变，让你的情绪随呼吸流出</li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;如何创建积极的环境&quot;&gt;&lt;a href=&quot;# 如何创建积极的环境&quot; class=&quot;headerlink&quot; title=&quot;如何创建积极的环境&quot;&gt;&lt;/a&gt;如何创建积极的环境 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt; 相信改变会发生，相信即便微小的难以记住的东西也会对心理产生极大
+        &lt;h3 id=&quot;改变&quot;&gt;&lt;a href=&quot;# 改变&quot; class=&quot;headerlink&quot; title=&quot;改变&quot;&gt;&lt;/a&gt;改变&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;传播真正有用的东西&lt;ul&gt;
+&lt;li&gt;传播真实的知识&lt;/li&gt;
+&lt;li&gt;研究&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;“精英民
       
     
     </summary>
@@ -498,19 +452,59 @@
   </entry>
   
   <entry>
-    <title>8 感激</title>
-    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/8.0-appreciate/"/>
-    <id>https://wiki.rosuh.me/软技能/积极心理学/8.0-appreciate/</id>
-    <published>2017-11-23T14:15:32.655Z</published>
-    <updated>2017-11-11T02:42:09.340Z</updated>
+    <title>6 乐观</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/6.0-positive/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/6.0-positive/</id>
+    <published>2017-11-23T14:15:32.659Z</published>
+    <updated>2017-11-11T02:42:09.332Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="是什么阻止我们乐观？"><a href="# 是什么阻止我们乐观？" class="headerlink" title="是什么阻止我们乐观？"></a>是什么阻止我们乐观？</h2><h3 id="舆论是乐观的杀手"><a href="# 舆论是乐观的杀手" class="headerlink" title="舆论是乐观的杀手"></a>舆论是乐观的杀手</h3><blockquote><p>媒体的职能之一就是突出那些本可以被纠正的错误，并发动大家一起去纠正，去改善。</p></blockquote><ul><li>媒体报道那些糟糕的、负面的信息，加上现在信息过载，加剧了负面信息的传播<ul><li>这是媒体的责任亦是媒体的“偏见”</li><li>过度聚焦负面信息只会加剧负面情绪</li><li>让人对现实产生负面联系<ul><li>过度报道某大公司非法交易 –&gt; 你想变得成功吗？那就得坑蒙拐骗</li><li>过度报道政客丑闻 –&gt; 政客都是骗子</li></ul></li></ul></li><li>“我们需要直面现实，直面负面消息的存在”</li></ul><h2 id="感激"><a href="# 感激" class="headerlink" title="感激"></a>感激</h2><ul><li>发自肺腑的感激能让积极情绪升值</li><li>感激帮助我们创造更积极的环境</li><li>感激能创造“积极情绪的螺旋上升”</li></ul><h3 id="适应性"><a href="# 适应性" class="headerlink" title="适应性"></a>适应性</h3><ul><li>对负面、异常情况的警觉是生存的本能</li><li>对异常情况产生适应性亦是生存本能</li><li>不要对生活“习以为常”<ul><li>不要认为那些平常的事物是“理所当然”的</li></ul></li></ul><h3 id="寻找值得感激的事物"><a href="# 寻找值得感激的事物" class="headerlink" title="寻找值得感激的事物"></a>寻找值得感激的事物</h3><ul><li>让自己更多地关注与生活中美的、积极的事物上</li><li>感激自己身上、周围值得感激的事物</li><li><strong>养成寻找幸福和感激 </strong> 的习惯<ul><li>一旦我们学会感激，我们就不会变得“理所当然”</li></ul></li></ul><h4 id="行动"><a href="# 行动" class="headerlink" title="行动"></a>行动</h4><ul><li>感受每一天<ul><li>“你通常干什么事情会不由自主地专心致志？”</li><li>认真地去做这些事情，不只是做这些事，同时你还在感激生活</li></ul></li></ul><h5 id="在每晚睡前写下五件让你感激的事物"><a href="# 在每晚睡前写下五件让你感激的事物" class="headerlink" title="在每晚睡前写下五件让你感激的事物"></a>在每晚睡前写下五件让你感激的事物</h5><ul><li>如何解决“习以为常”？当这件事已经失去新鲜感之后呢？当这件事已经变成例行公事之后呢？</li><li><p>解决方法：</p><ul><li>引入多种多样的人和事物</li><li>同样的事情多角度描写</li><li><em>艾伦·朗格</em> –&gt; “用心法则”：用心 –&gt; 创造新的区别<ul><li>用心观察，专注于此，发现新的区别</li><li>从专注中保持新鲜感</li></ul></li><li>词语形象化</li></ul><hr><blockquote><p>善用你的眼睛吧，犹如明天你将遭到失明的灾难；聆听乐曲的妙音，似乎你明天就会失聪。<br>抚摸每一件你想要抚摸的物品吧，犹如你明天的触觉将会衰减。嗅闻每一件你想要抚摸的物件 <br> 吧，犹如你明天即将失去嗅觉和味觉一样。 – 海伦·凯勒</p></blockquote></li></ul>]]></content>
+    <content type="html"><![CDATA[<h2 id="如何创建积极的环境"><a href="# 如何创建积极的环境" class="headerlink" title="如何创建积极的环境"></a>如何创建积极的环境 </h2><p><strong> 相信改变会发生，相信即便微小的难以记住的东西也会对心理产生极大的暗示</strong>。</p><ul><li>欣赏你爱的人的图片</li><li>欣赏美好的事物</li><li>在目力所及的地方放上令你感觉温暖、能让你感受到爱和友善的东西</li><li>名人名言</li><li>音乐、电影</li></ul><h2 id="自我效能的力量"><a href="# 自我效能的力量" class="headerlink" title="自我效能的力量"></a>自我效能的力量</h2><ul><li>“思考只是成功定律的一部分”<ul><li>成功离不开自我效能、艰苦奋斗和不断的失败</li></ul></li><li>“自我效能决定命运”<ul><li><a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E6%95%88%E8%83%BD" target="_blank" rel="external">自我效能</a>：用于衡量个体本身对完成任务和达成目标能力的信念的程度或强度</li><li>“安慰剂效应”</li></ul></li></ul><h2 id="如何平衡期许和现实"><a href="# 如何平衡期许和现实" class="headerlink" title="如何平衡期许和现实"></a>如何平衡期许和现实 </h2><h3 id="两种调节机制"><a href="# 两种调节机制" class="headerlink" title="两种调节机制"></a> 两种调节机制</h3><ul><li>动力（motivation）：<ul><li>如果相信在某方面能做得更好，你更有可能做得更好</li></ul></li><li>统一性（consistency）<ul><li>人们会对世界产生 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%9B%BE%E5%BC%8F" target="_blank" rel="external"> 心理图式</a><ul><li><strong>自我图式 </strong>（self-schema）是指一个长期及稳定的<a href="https://zh.wikipedia.org/wiki/%E8%A8%98%E6%86%B6" target="_blank" rel="external"> 记忆 </a>，内容是有关在特定行为领域下的<a href="https://zh.wikipedia.org/wiki/%E4%BF%A1%E5%BF%B5" target="_blank" rel="external"> 信念 </a>、<a href="https://zh.wikipedia.org/wiki/%E7%B6%93%E9%A9%97" target="_blank" rel="external"> 经验 </a> 及对 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91" target="_blank" rel="external"> 自我 </a> 的总括；也作“过去知识和经验的表征形式”</li><li>比如我们“知道”，如果把东西留着半空中，这个东西“就会掉下来”</li><li>比如“主观印象”</li></ul></li><li>心理图式对应的“客观世界”<ul><li>比如，留在半空中的东西确实掉下去了，是为客观事实</li></ul></li><li><strong>大脑不善于接受现实和理想之间的差距</strong><ul><li><strong>甚至会逃避、忽视这样的差距</strong></li></ul></li><li>为了让两者保持统一，要么 <strong> 改变客观事实 </strong>，<strong> 要么改变自己的想法</strong></li></ul></li></ul><h3 id="修复现实和理想的裂痕"><a href="# 修复现实和理想的裂痕" class="headerlink" title="修复现实和理想的裂痕"></a>修复现实和理想的裂痕</h3><ol><li>更新我们的主观想法</li><li>屏蔽客观信息</li><li>主动证实信息</li><li>创造一个新的现实 </li></ol><p>我们经常使用的是第二和第三种方法，因为我们不愿意“更新”我们的最初的想法，所以一旦发生了不符合我们预期的事情，我们会选择性忽略（不更新，屏蔽客观信息），然后去寻找支持我们原来想法的证据（主动证实信息）。</p><p>比如，我们以前认为小明是坏人。而小明最近几天一直在做好事，有很多人不善于接受新的改变，而持有一种观点“小明以前做过什么坏事”，然后去证实这件事。</p><p>也即是“问题创造现实”。这样的情况可以被避免。只要我们 <strong> 不要忽略掉积极的事情，并且小心求证消极的事情</strong>。</p><ul><li>客观现实的主观解释<ul><li>失败 –&gt; 成功证明某事不成功</li><li>成功 –&gt; 成功</li></ul></li><li>信念的功用<ul><li>“我相信” –&gt; “我会更努力工作” √</li><li>“我相信” –&gt; “会成功” ×</li><li>简言之：信念是为了更好地工作</li></ul></li><li>“失败和成功的次数一样多”<ul><li>迪安·西蒙顿（Dean Simonton）的研究：历史上最成功的科学家和艺术家也同样是那些失败最多次的</li><li>注意逻辑关系！失败最多次并不代表就会变成最成功的</li></ul></li><li>失败的功用<ul><li>成功需要行动 –&gt; 行动会产生失败 –&gt; 失败是不可避免的</li><li>不断从失败中汲取经验</li></ul></li></ul><h2 id="目标设立"><a href="# 目标设立" class="headerlink" title="目标设立"></a>目标设立 </h2><h3 id="积极和悲观主义者的区别"><a href="# 积极和悲观主义者的区别" class="headerlink" title="积极和悲观主义者的区别"></a> 积极和悲观主义者的区别</h3><ul><li>悲观主义者：无论长期或是短期，其设立的目标都很现实<ul><li>期望值不高, 信念不强 –&gt; 可能做得不好 &lt;-(思维一致性)-&gt; 调低目标难度<ul><li><strong>表现平平</strong>：“我早就说过我做不好” &lt;–&gt; “是的，你早就说过了，你真实在”</li><li><strong>表现优秀</strong>：“我这次可能是瞎猫碰上死耗子”“用尽了我一生的运气”</li></ul></li></ul></li><li>乐观主义者：短期目标 <strong> 天马行空</strong>，长期目标比较现实<ul><li>期望值高，动力十足 –&gt; 我能做得很好 &lt;–(思维一致性)–&gt; 调高目标难度<ul><li>表现平平：“我能从中学到什么？”“这是一次机会” &lt;–&gt; “为什么你就不能实际一点呢？稍微和 xx 学习一下吧” &lt;–&gt; 保持高度积极和高动力，不断努力直到把不可能化为可能</li></ul></li></ul></li><li>解释客观现实<ul><li>悲观主义者：将负面情况看成普遍现象<ul><li>“这一次没有成功，我不可能成功”“我就是这样的人”</li><li>“要么行，要么不行”</li></ul></li><li>乐观主义者：现实可以被学习并改变<ul><li>“我可以从中学到什么？”</li><li>“这是一次机会”</li></ul></li></ul></li></ul><h3 id="心理健康与生理健康"><a href="# 心理健康与生理健康" class="headerlink" title="心理健康与生理健康"></a>心理健康与生理健康</h3><ul><li>客观事实解释角度会影响人体的免疫系统和复原力水平</li></ul><h2 id="乐观的等级"><a href="# 乐观的等级" class="headerlink" title="乐观的等级"></a>乐观的等级 </h2><p><strong> 如何分辨现实与非现实？</strong></p><ul><li>斯托克代尔悖论（Stockdale Paradox）：不要把最终胜利的信念和现实的磨练这个两个因素混淆起来，其中前者 <strong> 必不可少</strong>，而后者无论如何都要接受</li></ul><h3 id="成功：乐观、激情和勤奋"><a href="# 成功：乐观、激情和勤奋" class="headerlink" title="成功：乐观、激情和勤奋"></a>成功：乐观、激情和勤奋</h3><ul><li>乐观：相信自己能成功</li><li>激情：对所做事业充满激情</li><li>勤奋：努力地工作 –&gt; “勤奋没有替代品”</li></ul><h3 id="高期望和失望？"><a href="# 高期望和失望？" class="headerlink" title="高期望和失望？"></a>高期望和失望？</h3><ul><li>为什么人不互相鼓励追求高的目标？<ul><li>害怕伤及我们的自尊 &lt;–&gt; “期望和现实的比值为幸福值” &lt;–&gt; 期望低，幸福值高 （×）</li></ul></li><li><strong>幸福有自己的稳态</strong><ul><li>“现实不如期望” &lt;–&gt; 幸福感降低 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li><li>“现实优于期望” &lt;–&gt; 幸福感升高 (√) &lt;–(<strong> 一段时间</strong>)–&gt; 幸福感恢复（√）</li></ul></li><li>“稳态的缺点”<ul><li>幸福感是固定的吗？是由我的基因决定的吗？我无法一直提升我的幸福感吗？</li></ul></li></ul><h3 id="提升你的基础幸福感：解决问题而不是逃避问题"><a href="# 提升你的基础幸福感：解决问题而不是逃避问题" class="headerlink" title="提升你的基础幸福感：解决问题而不是逃避问题"></a>提升你的基础幸福感：解决问题而不是逃避问题</h3><ul><li>解决问题：允许自己冒险，处于“学习区”中，承担失败的风险；处理、解决以及直面你的问题</li><li>依据？<ul><li>自我认知：“我们使用同一种方法来判断自己和他人”<ul><li>你不敢做的事，不敢尝试的事情，往往会给与之高的评价，一旦自己做了，也会给自己高度评价</li><li>比如，发表演讲、争取权利等等</li></ul></li></ul></li></ul>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h2 id=&quot;是什么阻止我们乐观？&quot;&gt;&lt;a href=&quot;# 是什么阻止我们乐观？&quot; class=&quot;headerlink&quot; title=&quot;是什么阻止我们乐观？&quot;&gt;&lt;/a&gt;是什么阻止我们乐观？&lt;/h2&gt;&lt;h3 id=&quot;舆论是乐观的杀手&quot;&gt;&lt;a href=&quot;# 舆论是乐观的杀手&quot; c
+        &lt;h2 id=&quot;如何创建积极的环境&quot;&gt;&lt;a href=&quot;# 如何创建积极的环境&quot; class=&quot;headerlink&quot; title=&quot;如何创建积极的环境&quot;&gt;&lt;/a&gt;如何创建积极的环境 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt; 相信改变会发生，相信即便微小的难以记住的东西也会对心理产生极大
+      
+    
+    </summary>
+    
+      <category term="软技能" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
+    
+      <category term="积极心理学" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/"/>
+    
+    
+      <category term="哈佛幸福课" scheme="https://wiki.rosuh.me/tags/%E5%93%88%E4%BD%9B%E5%B9%B8%E7%A6%8F%E8%AF%BE/"/>
+    
+      <category term="笔记" scheme="https://wiki.rosuh.me/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="视频" scheme="https://wiki.rosuh.me/tags/%E8%A7%86%E9%A2%91/"/>
+    
+      <category term="幸福" scheme="https://wiki.rosuh.me/tags/%E5%B9%B8%E7%A6%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>3 如何避免惬意的麻木</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/</id>
+    <published>2017-11-23T14:15:32.659Z</published>
+    <updated>2017-11-11T02:42:09.332Z</updated>
+    
+    <content type="html"><![CDATA[<ul><li>惬意的麻木(Confortably numb)</li><li>积极心理学主要关注的是健康模式（health model） <ul><li>Saluto-genesis</li><li>生理、身体和心理的健康之源在哪？</li></ul></li><li>健康模式下不同层面的解决方式<ul><li>缺陷：我们只关注自身的不足</li><li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li><li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li><li>行动：认清兴趣、培养优势以及追求激情<ul><li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li></ul></li><li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li></ul></li></ul><h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul><li>搭建桥梁：不同学科、学术和社会等</li><li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li><li>承认人性的缺漏还是从心理层面完善他？</li><li>幸福是并且应当是我们的最终追求和道德追求</li></ul><h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul><li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul><li>相信改变是会发生的</li></ul></li><li>理论和实践之间有很多代沟<ul><li>教师和学生：马福·科林斯计划，皮革马利温效应</li><li>如何赞扬别人和提高自信？如何培训自我效能？</li><li>瑜伽能减少入狱人员的重新犯罪几率</li><li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li><li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li><li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li></ul></li><li>考虑实际，消除象牙塔和社会之间的隔阂<ul><li>作为学生要承担起上述责任</li></ul></li><li>“生长锥统计学”<ul><li>研究一般情况有助于观察当下，但无助于改善当下</li><li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li><li>心理学上的作为“普通”，实际上是“平均精神状态”<ul><li>这一概念会导致全体精神状态下降</li></ul></li><li>与“精英主义”的区别<ul><li>研究最优秀的人同时也研究普通的人</li><li>研究最优秀的人对所有人是有益的</li></ul></li></ul></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ul&gt;
+&lt;li&gt;惬意的麻木(Confortably numb)&lt;/li&gt;
+&lt;li&gt;积极心理学主要关注的是健康模式（health model） &lt;ul&gt;
+&lt;li&gt;Saluto-genesis&lt;/li&gt;
+&lt;li&gt;生理、身体和心理的健康之源在哪？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;
       
     
     </summary>
@@ -544,6 +538,39 @@
       
       
         &lt;h2 id=&quot;处理痛苦和积极情绪&quot;&gt;&lt;a href=&quot;# 处理痛苦和积极情绪&quot; class=&quot;headerlink&quot; title=&quot;处理痛苦和积极情绪&quot;&gt;&lt;/a&gt;处理痛苦和积极情绪 &lt;/h2&gt;&lt;p&gt;&lt;em&gt; 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究&lt;
+      
+    
+    </summary>
+    
+      <category term="软技能" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/"/>
+    
+      <category term="积极心理学" scheme="https://wiki.rosuh.me/categories/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/"/>
+    
+    
+      <category term="哈佛幸福课" scheme="https://wiki.rosuh.me/tags/%E5%93%88%E4%BD%9B%E5%B9%B8%E7%A6%8F%E8%AF%BE/"/>
+    
+      <category term="笔记" scheme="https://wiki.rosuh.me/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="视频" scheme="https://wiki.rosuh.me/tags/%E8%A7%86%E9%A2%91/"/>
+    
+      <category term="幸福" scheme="https://wiki.rosuh.me/tags/%E5%B9%B8%E7%A6%8F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>8 感激</title>
+    <link href="https://wiki.rosuh.me/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/8.0-appreciate/"/>
+    <id>https://wiki.rosuh.me/软技能/积极心理学/8.0-appreciate/</id>
+    <published>2017-11-23T14:15:32.655Z</published>
+    <updated>2017-11-11T02:42:09.340Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="是什么阻止我们乐观？"><a href="# 是什么阻止我们乐观？" class="headerlink" title="是什么阻止我们乐观？"></a>是什么阻止我们乐观？</h2><h3 id="舆论是乐观的杀手"><a href="# 舆论是乐观的杀手" class="headerlink" title="舆论是乐观的杀手"></a>舆论是乐观的杀手</h3><blockquote><p>媒体的职能之一就是突出那些本可以被纠正的错误，并发动大家一起去纠正，去改善。</p></blockquote><ul><li>媒体报道那些糟糕的、负面的信息，加上现在信息过载，加剧了负面信息的传播<ul><li>这是媒体的责任亦是媒体的“偏见”</li><li>过度聚焦负面信息只会加剧负面情绪</li><li>让人对现实产生负面联系<ul><li>过度报道某大公司非法交易 –&gt; 你想变得成功吗？那就得坑蒙拐骗</li><li>过度报道政客丑闻 –&gt; 政客都是骗子</li></ul></li></ul></li><li>“我们需要直面现实，直面负面消息的存在”</li></ul><h2 id="感激"><a href="# 感激" class="headerlink" title="感激"></a>感激</h2><ul><li>发自肺腑的感激能让积极情绪升值</li><li>感激帮助我们创造更积极的环境</li><li>感激能创造“积极情绪的螺旋上升”</li></ul><h3 id="适应性"><a href="# 适应性" class="headerlink" title="适应性"></a>适应性</h3><ul><li>对负面、异常情况的警觉是生存的本能</li><li>对异常情况产生适应性亦是生存本能</li><li>不要对生活“习以为常”<ul><li>不要认为那些平常的事物是“理所当然”的</li></ul></li></ul><h3 id="寻找值得感激的事物"><a href="# 寻找值得感激的事物" class="headerlink" title="寻找值得感激的事物"></a>寻找值得感激的事物</h3><ul><li>让自己更多地关注与生活中美的、积极的事物上</li><li>感激自己身上、周围值得感激的事物</li><li><strong>养成寻找幸福和感激 </strong> 的习惯<ul><li>一旦我们学会感激，我们就不会变得“理所当然”</li></ul></li></ul><h4 id="行动"><a href="# 行动" class="headerlink" title="行动"></a>行动</h4><ul><li>感受每一天<ul><li>“你通常干什么事情会不由自主地专心致志？”</li><li>认真地去做这些事情，不只是做这些事，同时你还在感激生活</li></ul></li></ul><h5 id="在每晚睡前写下五件让你感激的事物"><a href="# 在每晚睡前写下五件让你感激的事物" class="headerlink" title="在每晚睡前写下五件让你感激的事物"></a>在每晚睡前写下五件让你感激的事物</h5><ul><li>如何解决“习以为常”？当这件事已经失去新鲜感之后呢？当这件事已经变成例行公事之后呢？</li><li><p>解决方法：</p><ul><li>引入多种多样的人和事物</li><li>同样的事情多角度描写</li><li><em>艾伦·朗格</em> –&gt; “用心法则”：用心 –&gt; 创造新的区别<ul><li>用心观察，专注于此，发现新的区别</li><li>从专注中保持新鲜感</li></ul></li><li>词语形象化</li></ul><hr><blockquote><p>善用你的眼睛吧，犹如明天你将遭到失明的灾难；聆听乐曲的妙音，似乎你明天就会失聪。<br>抚摸每一件你想要抚摸的物品吧，犹如你明天的触觉将会衰减。嗅闻每一件你想要抚摸的物件 <br> 吧，犹如你明天即将失去嗅觉和味觉一样。 – 海伦·凯勒</p></blockquote></li></ul>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;是什么阻止我们乐观？&quot;&gt;&lt;a href=&quot;# 是什么阻止我们乐观？&quot; class=&quot;headerlink&quot; title=&quot;是什么阻止我们乐观？&quot;&gt;&lt;/a&gt;是什么阻止我们乐观？&lt;/h2&gt;&lt;h3 id=&quot;舆论是乐观的杀手&quot;&gt;&lt;a href=&quot;# 舆论是乐观的杀手&quot; c
       
     
     </summary>
@@ -622,36 +649,6 @@
       <category term="哈佛幸福课" scheme="https://wiki.rosuh.me/tags/%E5%93%88%E4%BD%9B%E5%B9%B8%E7%A6%8F%E8%AF%BE/"/>
     
       <category term="笔记" scheme="https://wiki.rosuh.me/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>华为 A199 救砖札记</title>
-    <link href="https://wiki.rosuh.me/%E7%8E%A9%E6%9C%BA%E6%8A%80%E5%B7%A7/save-blocked-in-A199/"/>
-    <id>https://wiki.rosuh.me/玩机技巧/save-blocked-in-A199/</id>
-    <published>2017-11-21T09:07:36.921Z</published>
-    <updated>2017-11-21T09:06:59.002Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="1- 前言"><a href="#1- 前言" class="headerlink" title="1. 前言"></a>1. 前言 </h2><p> 这货之前一直被我丢在柜子里。晚上想要注册多一个微信号，需要多一台设备来登陆。毕竟双开有被封号的风险。</p><p>之前已经刷入了第三方的 REC，所以本以为挺简单。想着先刷回官方版本，然后自己精简的。</p><p>于是安装官方的指引：</p><ol><li>官方的包解压出来，把 <code>dload</code> 放到了外置 SD 卡</li><li>设置–&gt; 关闭快速启动</li><li>设置–&gt; 关于手机–&gt; 系统更新–&gt; 本地升级</li><li>重启</li></ol><p><strong>然后就崩了</strong>…</p><p>第三方的 REC 无法识别，然后一直卡在 TWRP 的界面，重启或者试图进入 REC 都会一直卡在 TWEP 启动界面。</p><p>然后在官方论坛找了一下，没什么有用的帖子…刷机氛围真是不行…</p><p>直到看到某个官方教程帖子里说，华为的 fastboot 界面其实就是开机界面（麦芒 A199 的就是那个麦芽）。使用 <strong> 音量键减 + 开机键 </strong> 进入。</p><p>能进入 fastboot 说明还是有救的。</p><h2 id="2- 环境准备"><a href="#2- 环境准备" class="headerlink" title="2. 环境准备"></a>2. 环境准备 </h2><h3 id="2-1- 安装驱动"><a href="#2-1- 安装驱动" class="headerlink" title="2.1 安装驱动"></a>2.1 安装驱动</h3><p> 我使用的是 Win10，需要安装华为的驱动之后才能识别设备，不然 fastboot 是无法查找到设备的。</p><p><a href="http://consumer.huawei.com/cn/support/search/index.htm?keywords=%E9%BA%A6%E8%8A%92A199" target="_blank" rel="external">关键词搜索：麦芒 A199</a></p><p>华为官方的搜索界面都找不到这机子了…滑到列表最下面，看到 <code>HUAWEI Stick UTPS-V200R003B015D11SP01C983(for win10)</code> 这个选项：</p><p><img src="https://img.rosuh.me/wiki/58ca9d2bd48d2.png" alt="HUAWEI Stick UTPS-V200R003B015D11SP01C983( for win10)"></p><p>然后下载下来。如果官方撤了这个文件，可以到我分享的度盘下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1dFadWkT 密码: bdyd</span></span><br></pre></td></tr></table></figure><p>下载之后解压再解压，里面是一个 <code>iso</code> 镜像文件，可以选择装载到你的虚拟驱动器，或直接解压出来都没问题。</p><p>打开 <code>AutoRun.exe</code> 安装，就行了。</p><p>照道理现在应该已经装好了。我就是这么装的，并且之前我的系统也没有装过华为的其他驱动，所以我判断这样应该就可以。</p><h3 id="2-2- 刷入 -REC"><a href="#2-2- 刷入 -REC" class="headerlink" title="2.2 刷入 REC"></a>2.2 刷入 REC</h3><ol><li>获取 ADB 套件</li></ol><p>这一步需要用到 <code>adb</code> 套件。</p><p>点击下面的链接从 Google 官方下载：</p><p><a href="https://dl.google.com/android/repository/platform-tools-latest-windows.zip" target="_blank" rel="external">https://dl.google.com/android/repository/platform-tools-latest-windows.zip</a></p><p>如果因为某些 <strong> 不可描述 </strong> 的原因导致你无法下载，可以通过我分享的度盘链接下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1miQCxnU 密码: kyum</span></span><br></pre></td></tr></table></figure><p><em>建议从官方下载，保证取得最新版的套件</em>。</p><p>下载之后解压出来，得到 <code>adb</code>套件。</p><ol><li>获取官方的 REC</li></ol><p>麦芒的官方 REC 我在论坛没找到。所以需要从官方的 ROM 中提取出来。</p><p>下面是提取的步骤，如果你不想自己提取，可以直接用我提取出来：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1eRO689O 密码: q4f9</span></span><br></pre></td></tr></table></figure><p><a href="http://www.emui.com/plugin.php?id=hwdownload&amp;mod=detail&amp;mid=1" target="_blank" rel="external">官方 ROM 下载</a></p><p>如果官方撤掉了，从我的盘下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1c21kqDq 密码: pi7u</span></span><br></pre></td></tr></table></figure><p>提取 REC 需要用到一个提取软件，直接点下面下载：</p><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">链接: http:<span class="comment">//pan.baidu.com/s/1boDhujH 密码: 5kun</span></span><br></pre></td></tr></table></figure><p>下载完解压出来，双击运行<code>HuaweiUpdateExtractor.exe</code>。</p><p>选择 <code>Update File</code> 右边的按钮选择官方 ROM</p><p><img src="https://img.rosuh.me/wiki/58ca9fa275ed9.png" alt="HuaweiUpdateExtractor"></p><p>选择 ROM 之后，右键单击 <code>RECOVERY</code> 解压出来：</p><p><img src="https://img.rosuh.me/wiki/58caa084186d0.png" alt="解压 REC"></p><p>然后把解压出来的 <code>RECOVERY</code> 放到第一步中 ADB 套件的文件夹中。</p><ol><li>刷入 REC</li></ol><p>进入 ADB 套件文件夹，可以看到诸如 <code>adb</code>, <code>fastboot</code> 等工具。</p><p>按住键盘的 <code>Shift</code> 键，同时鼠标右键单击该文件夹的空白处，选择“在此处打开命令行窗口”：</p><p><img src="https://img.rosuh.me/wiki/58caa1a512317.png" alt="open ps"></p><p>我这里是 <code>Powershell</code> 窗口，大部分时候显示为 <code>cmd</code> 窗口。</p><p>按住手机 <strong> 音量键减 + 开机键 </strong> 进入 <code>fastboot</code> 模式，显示为开机的那个麦芽 logo。</p><p>进入命令行界面，输入以下命令检查设备是否链接：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe devices</span><br></pre></td></tr></table></figure><p>如果有输入提示（一般是含有一串数字 + 英文字母），则意味着设备已经被识别了。如果没什么输出、提示，则意味着没有被识别。那么你要自行寻找其他驱动。</p><p>接着输入以下命令，进行刷入 REC</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fastboot.exe flash recovery RECOVERY.img</span><br></pre></td></tr></table></figure><p>输入回车之后应该就开始刷入了。命令行窗口会有提示：</p><p><img src="https://img.rosuh.me/wiki/58caa385361f6.png" alt="Flash REC"></p><p>由于我之前是升级过程卡住了，刷入 REC 之后自动开始了流程，这点还是很赞的：</p><p><img src="https://img.rosuh.me/wiki/58caa3eaaed61.jpg" alt="show time"></p><p>接着就可以进行愉快地玩耍啦~</p><hr><p><em>Best Wish.</em></p><p><em>by rosu</em></p><p><em>2017-3-16</em></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;1- 前言&quot;&gt;&lt;a href=&quot;#1- 前言&quot; class=&quot;headerlink&quot; title=&quot;1. 前言&quot;&gt;&lt;/a&gt;1. 前言 &lt;/h2&gt;&lt;p&gt; 这货之前一直被我丢在柜子里。晚上想要注册多一个微信号，需要多一台设备来登陆。毕竟双开有被封号的风险。&lt;/p&gt;
-&lt;
-      
-    
-    </summary>
-    
-      <category term="玩机技巧" scheme="https://wiki.rosuh.me/categories/%E7%8E%A9%E6%9C%BA%E6%8A%80%E5%B7%A7/"/>
-    
-    
-      <category term="Android" scheme="https://wiki.rosuh.me/tags/Android/"/>
-    
-      <category term="huawei" scheme="https://wiki.rosuh.me/tags/huawei/"/>
-    
-      <category term="A199" scheme="https://wiki.rosuh.me/tags/A199/"/>
     
   </entry>
   

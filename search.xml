@@ -3,6 +3,99 @@
   
     
     <entry>
+      <title><![CDATA[10 使用 fragment argument]]></title>
+      <url>/Android-%E5%BC%80%E5%8F%91/10-using-fragment-argument/</url>
+      <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><p> 我们之前的应用实现了从 <code>activity</code> 中启动 <code>activity</code> 的功能。现在我们要实现从 <code>fragment</code> 中启动 <code>activity</code>。在本例中，就是从<code>CrimeListFragment</code> 中启动 <code>CrimeActivity</code> 实例。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_602156.png" alt="示意图"></p>
+<p>在本例中，我们将关联 <code>CriminalIntent</code> 应用的列表与明细部分。用户点击某个 <code>Cirme</code> 列表项时，会创建一个托管 <code>CrimeFragment</code> 的<code>CrimeActivity</code>。</p>
+<h1 id="10-1- 从 fragment 中启动 activity"><a href="#10-1- 从 fragment 中启动 activity" class="headerlink" title="10.1 从 fragment 中启动 activity"></a>10.1 从 <code>fragment</code> 中启动<code>activity</code></h1><ul>
+<li>要从 <code>fragment</code> 中启动 <code>activity</code>，类似于<code>activity</code> 中启动<code>activity</code><ul>
+<li>我们调用 <code>Fragment.startActivity(Intent)</code> 方法</li>
+<li>由它在后台再调用对应的 <code>Activity</code> 方法</li>
+</ul>
+</li>
+</ul>
+<p>本例中，我们将在 <code>CrimeListFragment</code> 的<code>CrimeHolder</code>类里，用启动 <code>CrimeActivity</code> 实例的代码，替换 <code>toast</code> 消息处理代码。</p>
+<p><em>启动<code>CrimeActivity</code>（<code>CrimeListFragment.java</code>）</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span></span><br><span class="line"><span class="class"><span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnclickListener</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    	Intent intent = <span class="keyword">new</span> Intent(getActivity(), CrimeActivity.class);</span><br><span class="line">    	startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码和 <code>activity</code> 启动 <code>activity</code> 相当类似。</p>
+<ul>
+<li>指定要启动的 <code>activity</code> 为<code>CrimeActivity</code><ul>
+<li><code>CrimeListFragment</code>创建了一个显式<code>itent</code></li>
+</ul>
+</li>
+<li><code>CrimeListFragment</code>通过 <code>getActivity()</code> 方法传入他托管的 <code>activity</code> 来获取构造 <code>Intent</code> 所需要的 <code>Context</code> 对象</li>
+</ul>
+<h4 id="附加 extra 信息"><a href="# 附加 extra 信息" class="headerlink" title="附加 extra 信息"></a>附加 <code>extra</code> 信息 </h4><p> 为了实现能分辨是哪一个 <code>fragmen</code> 启动的 <code>activity</code>，我们需要在启动<code>CrimeActivity</code> 时，传递附加到 <code>Intent extra</code> 上的<code>crime ID</code>。</p>
+<ul>
+<li>需要使用 <code>CrimeActivity</code> 中新增<code>newIntent</code></li>
+</ul>
+<p><em>创建 <code>newIntent</code> 方法（<code>CrimeActivity.java</code>）</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeActivity</span> <span class="keyword">extends</span> <span class="title">SingleFragmentActivity</span> </span>&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXTRA_CRIME_ID =</span><br><span class="line">            <span class="string">"com.bignerdranch.android.criminalintent.cirme_id"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Intent <span class="title">newIntent</span><span class="params">(Context packageContext, UUID crimeId)</span> </span>&#123;</span><br><span class="line">        Intent intent = <span class="keyword">new</span> Intent(packageContext, CrimeActivity.class);</span><br><span class="line">        intent.putExtra(EXTRA_CRIME_ID, crimeId);</span><br><span class="line">        <span class="keyword">return</span> intent;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建了显式 <code>intent</code> 后，调用 <code>putExtra(...)</code> 方法，传入匹配的 <code>crimeId</code> 字符串键与键值<ul>
+<li>此处 <code>UUID</code> 是<code>Serializable</code>对象，所以调用 <code>putExtra(String, Serializable)</code> 方法</li>
+</ul>
+</li>
+</ul>
+<p>注意，上面我们是在 <code>CtimreActivity</code> 中编写的代码，还记得我们之前学习 <code>Intent</code> 的时候说过的知识点吗？</p>
+<blockquote>
+<p>如何在使用 <code>intent</code> 并传递数据的时候，不考虑传递数据的细节和有效提高复用性？</p>
+</blockquote>
+<p>啊哈！就是这里啦。我们在被调用的 <code>activity</code> 内创建静态方法<code>newIntent</code>，让这个被调用者自己把控要传入的数据类型和个数，让调用者们直接调用而不需考虑太多；还可以提高复用性呢！</p>
+<p>接下来看看我们如何使用 <code>newIntent</code> 方法吧。</p>
+<p><em>传递 <code>Crime</code> 实例(<code>CrimeListFragment.java</code>）</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span></span><br><span class="line"><span class="class"><span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnclickListener</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    	Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());</span><br><span class="line">    	startActivity(intent);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>wow! 简直绝赞！</p>
+<h4 id="获取 extra 信息"><a href="# 获取 extra 信息" class="headerlink" title="获取 extra 信息"></a>获取 <code>extra</code> 信息 </h4><p> 我们已经把 <code>crimeId</code> 信息安全地存储到 <code>CrimeActivity</code> 的<code>intent</code>中了。不过，要使用和获取 <code>extra</code> 信息的是 <code>CrimeFragment</code> 类。</p>
+<p><code>fragment</code>有两种方法获取 <code>intent</code> 中的数据：</p>
+<ul>
+<li>简单直接的方法<ul>
+<li><code>CrimeFragment</code>直接使用 <code>getActivity()</code> 方法获取 <code>CrimeActivity</code> 的<code>intent</code></li>
+<li>回到 <code>CrimeFragment.java</code> 文件，取到 <code>CrimeActivity</code> 的<code>intent</code>内的 <code>extra</code> 信息</li>
+<li>再用它获取 <code>Crime</code> 对象</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">  		<span class="comment">// mCrime = new Crime();</span></span><br><span class="line">        UUID crimeId = (UUID)getActivity().getIntent()</span><br><span class="line">                .getSerializableExtra(CrimeActivity.EXTRA_CRIME_ID);</span><br><span class="line">        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们需要理解的是，<code>CrimeFragment</code>是由 <code>CrimeActivity</code> 创建出来的。</p>
+<p>所以其使用 <code>getActivity()</code> 就可以获取到 <code>CrimeActivity</code> 实例。接着通过该实例获取 <code>intent</code>，由<code>intent</code> 里的 <code>crimeId</code> 来从 <code>CrimeLab</code> 单例中获取特定 <code>Crime</code> 对象。</p>
+<h4 id="使用 Crime 数据更新 CrimeFragment 视图"><a href="# 使用 Crime 数据更新 CrimeFragment 视图" class="headerlink" title="使用 Crime 数据更新 CrimeFragment 视图"></a>使用 <code>Crime</code> 数据更新 <code>CrimeFragment</code> 视图 </h4><p> 获取了 <code>Crime</code> 对象，<code>CrimeFragment</code>视图便可以显示该 <code>Crime</code> 对象的数据了。</p>
+<p>我们需要更新 <code>onCreateView(...)</code> 方法，显示 <code>Crime</code> 对象的标题以及解决状态。</p>
+<p><em>更新视图对象（<code>CrimeFragment.java</code>）</em>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> View <span class="title">onCreateView</span><span class="params">(LayoutInflater inflater, ViewGroup container,</span></span></span><br><span class="line"><span class="function"><span class="params">                         Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">  ...</span><br><span class="line">  mTitleField.setText(mCrime.getTitle());</span><br><span class="line">  ...</span><br><span class="line">  mSolvedCheckBox.setChecked(mCrime.isSolver);</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="直接获取 -extra- 信息的缺点"><a href="# 直接获取 -extra- 信息的缺点" class="headerlink" title="直接获取 extra 信息的缺点"></a>直接获取 extra 信息的缺点 </h4><p> 在上述方式中，我们简单使用几行代码，便可以让 <code>fragment</code> 直接从托管 <code>activity</code> 的<code>intent</code>中获取信息。</p>
+<p>然而，这样的方式破坏了 <code>fragment</code> 的封装。</p>
+<ul>
+<li><code>CrimeFragment</code>不再是可复用的构建单元<ul>
+<li>因为它现在由某个特定的 <code>activity</code> 托管着</li>
+<li>该特定的 <code>activity</code> 的<code>Intent</code>又定义了名为 <code>com.bignerdranch.android.criminalintent.crime_id</code> 的<code>extra</code></li>
+</ul>
+</li>
+<li><code>CrimeFragment</code>再也无法被其他 <code>activity</code> 使用</li>
+</ul>
+<p>一个更好的做法，是将 <code>crimeID</code> 存储在属于 <code>CrimeFragment</code> 的某个地方，而不是保存在 <code>CrimeActivity</code> 的私有空间里。这样，无需依赖 <code>CrimeActivity</code> 的<code>intent</code>内的 <code>extra</code>，<code>CrimeFragment</code> 就能获取自己所需的 <code>extra</code> 数据。</p>
+<p>一般，那个某个地方就是实际上就是 <code>fragment</code> 的<code>argument bundle</code>。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Android 开发 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> fragment argument </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[7 更灵活的定位内存地址的方法]]></title>
       <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/7-more-flexible-way-to-locate-the-memory-address/</url>
       <content type="html"><![CDATA[<h1 id="7-1-and 和 or 指令"><a href="#7-1-and 和 or 指令" class="headerlink" title="7.1 and 和 or 指令"></a>7.1 <code>and</code>和 <code>or</code> 指令</h1><ul>
@@ -1837,66 +1930,76 @@
     </entry>
     
     <entry>
-      <title><![CDATA[2 为什么要学习积极心理学]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/</url>
-      <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p>
+      <title><![CDATA[1 信息、变形和课程简介]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/</url>
+      <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p>
 <ul>
-<li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul>
-<li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li>
-</ul>
-</li>
-<li> 为什么要学习积极心理学？<ul>
-<li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul>
-<li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li>
-</ul>
-</li>
-<li> 快乐并不只是对痛苦的否定 </li>
-<li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li>
+<li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul>
+<li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li>
 </ul>
 </li>
 </ul>
 <ul>
-<li> 如何研究出有效的方法？（如何探究积极心理学？<ul>
-<li> 解决方法就在问题本身：特定问题创造特定现实 </li>
-<li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul>
-<li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li>
-<li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li>
+<li>关注点<ul>
+<li>信息本身而不是信息的传递者</li>
 </ul>
 </li>
-<li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li>
+<li>以往“自助运动”的鄙陋<ul>
+<li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li>
 </ul>
 </li>
-<li> 改善眼界 <ul>
-<li> 关注优点、设立目标 –&gt; 内心理想主义 </li>
-<li> 注意现实、立刻行动 –&gt; 客观现实主义 </li>
+<li>两个阶段<ul>
+<li>学术阶段</li>
+<li>应用阶段：我如何将这些东西应用到生活中</li>
 </ul>
 </li>
-<li> 利人利己的上升螺旋 <ul>
-<li> 承认需要（承认弱点）</li>
-<li> 接受帮助并帮助他人 </li>
-<li> 善于选择优良的社会帮助 </li>
-</ul>
-</li>
-<li> 适应力 <ul>
-<li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li>
-<li> 养成：<ul>
-<li> 一个榜样 </li>
-<li>“我们要好好树立自己的信念”<ul>
-<li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li>
-<li>“别再埋怨”“别再埋怨社会、老师、父母”</li>
-</ul>
-</li>
-<li> 将目光放在长处和优点上并加以培养 </li>
-<li> 自我激励 </li>
-</ul>
-</li>
-<li>“如何让自己的大学时光变得更加有意义？”<ul>
-<li> 你要为这段时光负起责任 </li>
+<li>积极心理学<ul>
+<li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li>
 </ul>
 </li>
 </ul>
-</li>
+<blockquote>
+<p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p>
+</blockquote>
+<ul>
+<li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul>
+<li><strong>什么是信息</strong><ul>
+<li>人就像一个容器，接受外界的信息，直到填满整个容器</li>
+<li>信息并不能提高人的生存、生活质量</li>
+<li>信息是客观的，是多面的</li>
 </ul>
+</li>
+<li><strong>什么是变形</strong><ul>
+<li>改变容器的形状</li>
+<li>让信息为我所用</li>
+</ul>
+</li>
+<li><strong>利用信息</strong><ul>
+<li>如何解读信息？如何理解以及关注点？</li>
+<li>不止要获取信息，更要挖掘我们自己的潜能</li>
+</ul>
+</li>
+<li><strong>挖掘潜能</strong><ul>
+<li>“减法比加法更能让人的灵魂成长”</li>
+<li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li>
+</ul>
+</li>
+<li><strong>两面性</strong><ul>
+<li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li>
+</ul>
+</li>
+<li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li>
+<li><strong>本课程的最终内容</strong>：让你成为最好的你</li>
+</ul>
+</li>
+<li>保持向上的生活态度，自信并且保持提问</li>
+</ul>
+<hr>
+<p><em>2017-8-1_第一节课</em></p>
+<p>看了想睡觉…</p>
+<p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p>
+<p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p>
+<p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>
 ]]></content>
       
         <categories>
@@ -2070,76 +2173,66 @@
     </entry>
     
     <entry>
-      <title><![CDATA[1 信息、变形和课程简介]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/</url>
-      <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p>
+      <title><![CDATA[2 为什么要学习积极心理学]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/</url>
+      <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p>
 <ul>
-<li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul>
-<li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li>
+<li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul>
+<li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li>
+</ul>
+</li>
+<li> 为什么要学习积极心理学？<ul>
+<li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul>
+<li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li>
+</ul>
+</li>
+<li> 快乐并不只是对痛苦的否定 </li>
+<li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li>
 </ul>
 </li>
 </ul>
 <ul>
-<li>关注点<ul>
-<li>信息本身而不是信息的传递者</li>
+<li> 如何研究出有效的方法？（如何探究积极心理学？<ul>
+<li> 解决方法就在问题本身：特定问题创造特定现实 </li>
+<li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul>
+<li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li>
+<li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li>
 </ul>
 </li>
-<li>以往“自助运动”的鄙陋<ul>
-<li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li>
+<li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li>
 </ul>
 </li>
-<li>两个阶段<ul>
-<li>学术阶段</li>
-<li>应用阶段：我如何将这些东西应用到生活中</li>
+<li> 改善眼界 <ul>
+<li> 关注优点、设立目标 –&gt; 内心理想主义 </li>
+<li> 注意现实、立刻行动 –&gt; 客观现实主义 </li>
 </ul>
 </li>
-<li>积极心理学<ul>
-<li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li>
+<li> 利人利己的上升螺旋 <ul>
+<li> 承认需要（承认弱点）</li>
+<li> 接受帮助并帮助他人 </li>
+<li> 善于选择优良的社会帮助 </li>
+</ul>
+</li>
+<li> 适应力 <ul>
+<li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li>
+<li> 养成：<ul>
+<li> 一个榜样 </li>
+<li>“我们要好好树立自己的信念”<ul>
+<li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li>
+<li>“别再埋怨”“别再埋怨社会、老师、父母”</li>
+</ul>
+</li>
+<li> 将目光放在长处和优点上并加以培养 </li>
+<li> 自我激励 </li>
+</ul>
+</li>
+<li>“如何让自己的大学时光变得更加有意义？”<ul>
+<li> 你要为这段时光负起责任 </li>
 </ul>
 </li>
 </ul>
-<blockquote>
-<p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p>
-</blockquote>
-<ul>
-<li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul>
-<li><strong>什么是信息</strong><ul>
-<li>人就像一个容器，接受外界的信息，直到填满整个容器</li>
-<li>信息并不能提高人的生存、生活质量</li>
-<li>信息是客观的，是多面的</li>
-</ul>
 </li>
-<li><strong>什么是变形</strong><ul>
-<li>改变容器的形状</li>
-<li>让信息为我所用</li>
 </ul>
-</li>
-<li><strong>利用信息</strong><ul>
-<li>如何解读信息？如何理解以及关注点？</li>
-<li>不止要获取信息，更要挖掘我们自己的潜能</li>
-</ul>
-</li>
-<li><strong>挖掘潜能</strong><ul>
-<li>“减法比加法更能让人的灵魂成长”</li>
-<li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li>
-</ul>
-</li>
-<li><strong>两面性</strong><ul>
-<li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li>
-</ul>
-</li>
-<li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li>
-<li><strong>本课程的最终内容</strong>：让你成为最好的你</li>
-</ul>
-</li>
-<li>保持向上的生活态度，自信并且保持提问</li>
-</ul>
-<hr>
-<p><em>2017-8-1_第一节课</em></p>
-<p>看了想睡觉…</p>
-<p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p>
-<p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p>
-<p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>
 ]]></content>
       
         <categories>
