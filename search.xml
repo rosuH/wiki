@@ -3,6 +3,148 @@
   
     
     <entry>
+      <title><![CDATA[7 更灵活的定位内存地址的方法]]></title>
+      <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/7-more-flexible-way-to-locate-the-memory-address/</url>
+      <content type="html"><![CDATA[<h1 id="7-1-and 和 or 指令"><a href="#7-1-and 和 or 指令" class="headerlink" title="7.1 and 和 or 指令"></a>7.1 <code>and</code>和 <code>or</code> 指令</h1><ul>
+<li><code>and</code>指令：逻辑与运算指令，按位进行与运算<ul>
+<li>通过该指令可将操作对象的相应位设为 0 ，其他为不变</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">and al, 00111011B</span><br></pre></td></tr></table></figure>
+<p>执行后<code>al = 00100011B</code>。</p>
+<ul>
+<li><code>or</code>指令：逻辑或指令，按位进行或运算<ul>
+<li>通过该指令可将操作对象的相应位设为 1，其他为不变</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">or al, 00111011B</span><br></pre></td></tr></table></figure>
+<p>结果为：<code>01111011B</code></p>
+<h1 id="7-2- 关于 -ASCII- 码"><a href="#7-2- 关于 -ASCII- 码" class="headerlink" title="7.2 关于 ASCII 码"></a>7.2 关于 ASCII 码</h1><ul>
+<li>Ascii 码是一种编码方案<ul>
+<li>他约定了计算机用此种方案来表示信息<ul>
+<li>比如 <code>61h</code> 表示 <code>a</code>， <code>62h</code> 表示<code>b</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文本编辑过程中，就按照 ASCII 编码规则进行编码和解码</li>
+<li>键盘输入到屏幕显示的流程<ul>
+<li>按下 <code>a</code> 键，这个键的信息被送入计算机</li>
+<li>计算机使用 ASCII 编码规则将其转换为 <code>61H</code> 存储在内存的指定空间中</li>
+<li>文本编辑器软件从内存中取出<code>61H</code>，将其送到显卡的显存中</li>
+<li>工作在文本模式下的显卡用 ASCII 码的规则解释显存中的内容</li>
+<li>显卡驱动器将解释后的内容，也就是 <code>a</code> 的图像画到屏幕上</li>
+</ul>
+</li>
+</ul>
+<p>也就是说，要想在屏幕上显示出 <code>a</code>，就要给显卡提供<code>a</code> 的 ASCII 码（61H）。</p>
+<p>我们通过向显卡显存写入数据实现。</p>
+<h1 id="7-3- 以字符的形式给出数据"><a href="#7-3- 以字符的形式给出数据" class="headerlink" title="7.3 以字符的形式给出数据"></a>7.3 以字符的形式给出数据</h1><ul>
+<li>在汇编程序中，用单引号括起来的方式指明数据是以字符的形式给出的<ul>
+<li>编译器将他们转换为相对应的 ASCII 码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code,ds:data</span><br><span class="line">data segment</span><br><span class="line">	db &apos;unIX&apos;</span><br><span class="line">	db &apos;foRK&apos;</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">	mov al, &apos;a&apos;</span><br><span class="line">	mov bl, &apos;b&apos;</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><code>db &#39;unIX&#39;</code>相当于：<code>db 75H,6EH,49H,58H</code><ul>
+<li>因为 <code>u,n,I,X</code> 的 ASCII 码分别为 75H, 6EH, 49H 和 58H</li>
+</ul>
+</li>
+<li><code>mov al, &#39;a&#39;</code>相当于：<code>mov al, 61h</code><ul>
+<li>‘a’ 的 ASCII 码为<code>61H</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="7-4- 大小写转换问题"><a href="#7-4- 大小写转换问题" class="headerlink" title="7.4 大小写转换问题"></a>7.4 大小写转换问题</h1><blockquote>
+<p>在 <code>codeseg</code> 中填写代码，将 <code>dataseg</code> 中的第一个字符串转换为大写，第二个字符串转换为小写</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析大小写字符的 ASCII 码表规律</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_7fa815.png" alt="字母 ASCII 码表规律"></p>
+<p>可以看到两个规律：</p>
+<ol>
+<li>小写字母的 ASCII 码总比相应大写字母的大<code>20H</code></li>
+<li>无论是哪一个字母，只要是大写的，其二进制第 5 位总是 0，而小写字母第 5 位总是 1</li>
+</ol>
+<p>所以思路就是：</p>
+<ul>
+<li>使用与操作将第一个字符串中所有字符的第 5 位设为 0</li>
+<li>使用或操作将第二个字符串中所有字符的第 5 位设为 1</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">	mov ax, dataseg</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 5</span><br><span class="line">	</span><br><span class="line">s:	mov al, [bx]</span><br><span class="line">	and al, 11011111B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s</span><br><span class="line"></span><br><span class="line">	mov bx, 5</span><br><span class="line">	mov cx, 11</span><br><span class="line"></span><br><span class="line">s0: mov al, [bx]</span><br><span class="line">	or al, 00100000B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s0</span><br><span class="line"></span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<h1 id="7-5-bx-data"><a href="#7-5-bx-data" class="headerlink" title="7.5 [bx+data]"></a>7.5 <code>[bx+data]</code></h1><p>我们之前使用 <code>[bx]</code> 来指定一个内存单元，也可以使用 <code>[bx + idata]</code> 的方式指定内存单元。</p>
+<ul>
+<li><code>[bx + idata]</code>表示一个内存单元，他的偏移地址为<code>(bx) + idata</code><ul>
+<li>也就是 <code>bx</code> 中的数值加上<code>idata</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx+200]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 个字节（1 字单元），存放一个字，偏移地址为<code>bx</code> 中的数值加上 <code>200</code>，段地址在<code>ds</code> 中</li>
+<li>数字化描述：<code>(ax) = ((ds)*16 + (bx) + 200)</code></li>
+</ul>
+<p>也可作一下形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [200+bx]</span><br><span class="line">mov ax, 200[bx]</span><br><span class="line">mov ax, [bx].200</span><br></pre></td></tr></table></figure>
+<h4 id="补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思"><a href="# 补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思" class="headerlink" title="补课：关于 8086 中单元、字单元、字节和 D 指令输出的迷思"></a>补课：关于 8086 中单元、字单元、字节和 <code>D</code> 指令输出的迷思</h4><ol>
+<li>在 <code>debug</code> 中使用 <code>D</code> 指令输出</li>
+</ol>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_e86146.png" alt="D 输出"></p>
+<p>可以看到，每一排整整齐齐地格式：</p>
+<ul>
+<li>左边为地址<ul>
+<li>十六进制格式输出</li>
+<li>每一行为 16 的整数倍地址</li>
+</ul>
+</li>
+<li>右边为地址区段单元的内容<ul>
+<li>每两个数字代表一个内存单元，大小为一个字节，也就是 8 位<ul>
+<li><code>74</code>代表 <code>2000:1000H</code> 这个内存单元所存储的值<ul>
+<li>由两个十六进制的数组成</li>
+<li>每一个为 4 位，故而为 8 位</li>
+</ul>
+</li>
+<li><code>79</code>代表 <code>2000:1001H</code> 这个内存单元所存储的值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>8086 中一个字单元为 2 个字节，也就是 16 位</li>
+</ul>
+<p>下面语句执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 2000h</span><br><span class="line">mov ds, ax</span><br><span class="line">mov bx, 1000</span><br><span class="line"></span><br><span class="line">mov ax, ds:[bx]</span><br></pre></td></tr></table></figure>
+<p>此时，<code>ax =7974</code>。因为 8086 中，<code>ax</code>寄存器为 16 位，那么你使用 <code>mov</code> 指令的话，默认移动 2 个字节，即是 16 位，所以会移动：</p>
+<ul>
+<li><code>2000:1000H</code></li>
+<li><code>2000:1001H</code></li>
+</ul>
+<p>两个内存单元中的内容，并且先移动，到低位，后移动，到高位。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 计算机技能 </category>
+            
+            <category> 汇编基础 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> assembly </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[6 包含多个段的程序]]></title>
       <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/6-including-several-segment-program/</url>
       <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言</h1><ul>
@@ -1695,102 +1837,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[1 信息、变形和课程简介]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/</url>
-      <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p>
-<ul>
-<li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul>
-<li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>关注点<ul>
-<li>信息本身而不是信息的传递者</li>
-</ul>
-</li>
-<li>以往“自助运动”的鄙陋<ul>
-<li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li>
-</ul>
-</li>
-<li>两个阶段<ul>
-<li>学术阶段</li>
-<li>应用阶段：我如何将这些东西应用到生活中</li>
-</ul>
-</li>
-<li>积极心理学<ul>
-<li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p>
-</blockquote>
-<ul>
-<li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul>
-<li><strong>什么是信息</strong><ul>
-<li>人就像一个容器，接受外界的信息，直到填满整个容器</li>
-<li>信息并不能提高人的生存、生活质量</li>
-<li>信息是客观的，是多面的</li>
-</ul>
-</li>
-<li><strong>什么是变形</strong><ul>
-<li>改变容器的形状</li>
-<li>让信息为我所用</li>
-</ul>
-</li>
-<li><strong>利用信息</strong><ul>
-<li>如何解读信息？如何理解以及关注点？</li>
-<li>不止要获取信息，更要挖掘我们自己的潜能</li>
-</ul>
-</li>
-<li><strong>挖掘潜能</strong><ul>
-<li>“减法比加法更能让人的灵魂成长”</li>
-<li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li>
-</ul>
-</li>
-<li><strong>两面性</strong><ul>
-<li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li>
-</ul>
-</li>
-<li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li>
-<li><strong>本课程的最终内容</strong>：让你成为最好的你</li>
-</ul>
-</li>
-<li>保持向上的生活态度，自信并且保持提问</li>
-</ul>
-<hr>
-<p><em>2017-8-1_第一节课</em></p>
-<p>看了想睡觉…</p>
-<p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p>
-<p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p>
-<p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[2 为什么要学习积极心理学]]></title>
       <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/</url>
       <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p>
@@ -1998,6 +2044,102 @@
 </ul>
 </li>
 </ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1 信息、变形和课程简介]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/</url>
+      <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p>
+<ul>
+<li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul>
+<li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>关注点<ul>
+<li>信息本身而不是信息的传递者</li>
+</ul>
+</li>
+<li>以往“自助运动”的鄙陋<ul>
+<li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li>
+</ul>
+</li>
+<li>两个阶段<ul>
+<li>学术阶段</li>
+<li>应用阶段：我如何将这些东西应用到生活中</li>
+</ul>
+</li>
+<li>积极心理学<ul>
+<li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p>
+</blockquote>
+<ul>
+<li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul>
+<li><strong>什么是信息</strong><ul>
+<li>人就像一个容器，接受外界的信息，直到填满整个容器</li>
+<li>信息并不能提高人的生存、生活质量</li>
+<li>信息是客观的，是多面的</li>
+</ul>
+</li>
+<li><strong>什么是变形</strong><ul>
+<li>改变容器的形状</li>
+<li>让信息为我所用</li>
+</ul>
+</li>
+<li><strong>利用信息</strong><ul>
+<li>如何解读信息？如何理解以及关注点？</li>
+<li>不止要获取信息，更要挖掘我们自己的潜能</li>
+</ul>
+</li>
+<li><strong>挖掘潜能</strong><ul>
+<li>“减法比加法更能让人的灵魂成长”</li>
+<li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li>
+</ul>
+</li>
+<li><strong>两面性</strong><ul>
+<li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li>
+</ul>
+</li>
+<li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li>
+<li><strong>本课程的最终内容</strong>：让你成为最好的你</li>
+</ul>
+</li>
+<li>保持向上的生活态度，自信并且保持提问</li>
+</ul>
+<hr>
+<p><em>2017-8-1_第一节课</em></p>
+<p>看了想睡觉…</p>
+<p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p>
+<p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p>
+<p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>
 ]]></content>
       
         <categories>

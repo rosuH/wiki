@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <title>7 更灵活的定位内存地址的方法 | rosu&#39;s wiki</title>
+    
+    
+        <meta name="keywords" content="assembly" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="7.1 and和 or 指令 and指令：逻辑与运算指令，按位进行与运算 通过该指令可将操作对象的相应位设为 0 ，其他为不变    12mov al, 01100011Band al, 00111011B 执行后al = 00100011B。  or指令：逻辑或指令，按位进行或运算 通过该指令可将操作对象的相应位设为 1，其他为不变    12mov al, 01100011Bor al, 00">
+<meta name="keywords" content="assembly">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7 更灵活的定位内存地址的方法">
+<meta property="og:url" content="https://wiki.rosuh.me/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/index.html">
+<meta property="og:site_name" content="rosu&#39;s wiki">
+<meta property="og:description" content="7.1 and和 or 指令 and指令：逻辑与运算指令，按位进行与运算 通过该指令可将操作对象的相应位设为 0 ，其他为不变    12mov al, 01100011Band al, 00111011B 执行后al = 00100011B。  or指令：逻辑或指令，按位进行或运算 通过该指令可将操作对象的相应位设为 1，其他为不变    12mov al, 01100011Bor al, 00">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_7fa815.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_e86146.png">
+<meta property="og:updated_time" content="2017-12-27T08:43:54.173Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="7 更灵活的定位内存地址的方法">
+<meta name="twitter:description" content="7.1 and和 or 指令 and指令：逻辑与运算指令，按位进行与运算 通过该指令可将操作对象的相应位设为 0 ，其他为不变    12mov al, 01100011Band al, 00111011B 执行后al = 00100011B。  or指令：逻辑或指令，按位进行或运算 通过该指令可将操作对象的相应位设为 1，其他为不变    12mov al, 01100011Bor al, 00">
+<meta name="twitter:image" content="https://img.rosuh.me/wiki/wiki_201712_7fa815.png">
+<meta name="twitter:creator" content="@rosu_h">
+    
+
+    
+        <link rel="alternate" href="/atom.xml" title="rosu&#39;s wiki" type="application/atom+xml" />
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">rosu&#39;s wiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">此站点</a>
+                
+                    <a class="main-nav-link" href="https://rosuh.me">找我</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">此站点</a></td>
+                
+                    <td><a class="main-nav-link" href="https://rosuh.me">找我</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Android 开发
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/">9 使用布局和组件创建用户界面</a></li>  <li class="file"><a href="/Android-开发/8-using-recyclerview-to-display-list/">8 使用 RecyclerView 显示列表</a></li>  <li class="file"><a href="/Android-开发/7-UI-Fragment-and-fragmen-manager/">7 UI Fragmnet 与 fragment 管理器</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Linux & VPS
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/Linux-VPS/softwares/">Ubuntu 安装软件合集</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            玩机技巧
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/玩机技巧/save-blocked-in-A199/">华为 A199 救砖札记</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            计算机技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            汇编基础
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/">7 更灵活的定位内存地址的方法</a></li>  <li class="file"><a href="/计算机技能/汇编基础/6-including-several-segment-program/">6 包含多个段的程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            软技能
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            积极心理学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/软技能/积极心理学/11-habit/">11 习惯</a></li>  <li class="file"><a href="/软技能/积极心理学/10-change/">10 改变</a></li>  <li class="file"><a href="/软技能/积极心理学/9.0-positive-emotions/">9 积极情绪</a></li>  <li class="file"><a href="/软技能/积极心理学/8.0-appreciate/">8 感激</a></li>  <li class="file"><a href="/软技能/积极心理学/7.0-adversity-or-chance/">7 逆境和机遇</a></li>  <li class="file"><a href="/软技能/积极心理学/6.0-positive/">6 乐观</a></li>  <li class="file"><a href="/软技能/积极心理学/5.0-Faith-is-the-realistic-predictions/">5 信念是自我实现的预言</a></li>  <li class="file"><a href="/软技能/积极心理学/4.0-positive-environment-can-change-person/">4 积极的环境能改变人</a></li>  <li class="file"><a href="/软技能/积极心理学/3.0-how-can-we-get-beyond-the-comfortably-nomb/">3 如何避免惬意的麻木</a></li>  <li class="file"><a href="/软技能/积极心理学/2.0-The-reason-of-learning-positive-psychology/">2 为什么要学习积极心理学</a></li>  <li class="file"><a href="/软技能/积极心理学/1.0-Information-transforation-and-introduction/">1 信息、变形和课程简介</a></li>  <li class="file"><a href="/软技能/积极心理学/积极心理学资料索引与声明/">积极心理学资料索引与声明</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-7-more-flexible-way-to-locate-the-memory-address" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/计算机技能/">计算机技能</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/计算机技能/汇编基础/">汇编基础</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/assembly/">assembly</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/">
+            <time datetime="2017-12-27T08:43:54.173Z" itemprop="datePublished">2017-12-27</time>
+        </a>
+    </div>
+
+
+                        
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/raw/hexo/source/_posts/7-more-flexible-way-to-locate-the-memory-address.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/edit/hexo/source/_posts/7-more-flexible-way-to-locate-the-memory-address.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a href='https://github.com/rosuH/wiki/commits/hexo/source/_posts/7-more-flexible-way-to-locate-the-memory-address.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            7 更灵活的定位内存地址的方法
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">Catalogue</strong>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#7-1-and 和 or 指令"><span class="toc-number">1.</span> <span class="toc-text">7.1 and和 or 指令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-2- 关于 -ASCII- 码"><span class="toc-number">2.</span> <span class="toc-text">7.2 关于 ASCII 码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-3- 以字符的形式给出数据"><span class="toc-number">3.</span> <span class="toc-text">7.3 以字符的形式给出数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-4- 大小写转换问题"><span class="toc-number">4.</span> <span class="toc-text">7.4 大小写转换问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#7-5-bx-data"><span class="toc-number">5.</span> <span class="toc-text">7.5 [bx+data]</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思"><span class="toc-number">5.0.0.1.</span> <span class="toc-text">补课：关于 8086 中单元、字单元、字节和 D 指令输出的迷思</span></a></li></ol></li></ol></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <h1 id="7-1-and 和 or 指令"><a href="#7-1-and 和 or 指令" class="headerlink" title="7.1 and 和 or 指令"></a>7.1 <code>and</code>和 <code>or</code> 指令</h1><ul>
+<li><code>and</code>指令：逻辑与运算指令，按位进行与运算<ul>
+<li>通过该指令可将操作对象的相应位设为 0 ，其他为不变</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">and al, 00111011B</span><br></pre></td></tr></table></figure>
+<p>执行后<code>al = 00100011B</code>。</p>
+<ul>
+<li><code>or</code>指令：逻辑或指令，按位进行或运算<ul>
+<li>通过该指令可将操作对象的相应位设为 1，其他为不变</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">or al, 00111011B</span><br></pre></td></tr></table></figure>
+<p>结果为：<code>01111011B</code></p>
+<h1 id="7-2- 关于 -ASCII- 码"><a href="#7-2- 关于 -ASCII- 码" class="headerlink" title="7.2 关于 ASCII 码"></a>7.2 关于 ASCII 码</h1><ul>
+<li>Ascii 码是一种编码方案<ul>
+<li>他约定了计算机用此种方案来表示信息<ul>
+<li>比如 <code>61h</code> 表示 <code>a</code>， <code>62h</code> 表示<code>b</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文本编辑过程中，就按照 ASCII 编码规则进行编码和解码</li>
+<li>键盘输入到屏幕显示的流程<ul>
+<li>按下 <code>a</code> 键，这个键的信息被送入计算机</li>
+<li>计算机使用 ASCII 编码规则将其转换为 <code>61H</code> 存储在内存的指定空间中</li>
+<li>文本编辑器软件从内存中取出<code>61H</code>，将其送到显卡的显存中</li>
+<li>工作在文本模式下的显卡用 ASCII 码的规则解释显存中的内容</li>
+<li>显卡驱动器将解释后的内容，也就是 <code>a</code> 的图像画到屏幕上</li>
+</ul>
+</li>
+</ul>
+<p>也就是说，要想在屏幕上显示出 <code>a</code>，就要给显卡提供<code>a</code> 的 ASCII 码（61H）。</p>
+<p>我们通过向显卡显存写入数据实现。</p>
+<h1 id="7-3- 以字符的形式给出数据"><a href="#7-3- 以字符的形式给出数据" class="headerlink" title="7.3 以字符的形式给出数据"></a>7.3 以字符的形式给出数据</h1><ul>
+<li>在汇编程序中，用单引号括起来的方式指明数据是以字符的形式给出的<ul>
+<li>编译器将他们转换为相对应的 ASCII 码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code,ds:data</span><br><span class="line">data segment</span><br><span class="line">	db &apos;unIX&apos;</span><br><span class="line">	db &apos;foRK&apos;</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">	mov al, &apos;a&apos;</span><br><span class="line">	mov bl, &apos;b&apos;</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><code>db &#39;unIX&#39;</code>相当于：<code>db 75H,6EH,49H,58H</code><ul>
+<li>因为 <code>u,n,I,X</code> 的 ASCII 码分别为 75H, 6EH, 49H 和 58H</li>
+</ul>
+</li>
+<li><code>mov al, &#39;a&#39;</code>相当于：<code>mov al, 61h</code><ul>
+<li>‘a’ 的 ASCII 码为<code>61H</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="7-4- 大小写转换问题"><a href="#7-4- 大小写转换问题" class="headerlink" title="7.4 大小写转换问题"></a>7.4 大小写转换问题</h1><blockquote>
+<p>在 <code>codeseg</code> 中填写代码，将 <code>dataseg</code> 中的第一个字符串转换为大写，第二个字符串转换为小写</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析大小写字符的 ASCII 码表规律</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_7fa815.png" alt="字母 ASCII 码表规律"></p>
+<p>可以看到两个规律：</p>
+<ol>
+<li>小写字母的 ASCII 码总比相应大写字母的大<code>20H</code></li>
+<li>无论是哪一个字母，只要是大写的，其二进制第 5 位总是 0，而小写字母第 5 位总是 1</li>
+</ol>
+<p>所以思路就是：</p>
+<ul>
+<li>使用与操作将第一个字符串中所有字符的第 5 位设为 0</li>
+<li>使用或操作将第二个字符串中所有字符的第 5 位设为 1</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">	mov ax, dataseg</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 5</span><br><span class="line">	</span><br><span class="line">s:	mov al, [bx]</span><br><span class="line">	and al, 11011111B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s</span><br><span class="line"></span><br><span class="line">	mov bx, 5</span><br><span class="line">	mov cx, 11</span><br><span class="line"></span><br><span class="line">s0: mov al, [bx]</span><br><span class="line">	or al, 00100000B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s0</span><br><span class="line"></span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<h1 id="7-5-bx-data"><a href="#7-5-bx-data" class="headerlink" title="7.5 [bx+data]"></a>7.5 <code>[bx+data]</code></h1><p>我们之前使用 <code>[bx]</code> 来指定一个内存单元，也可以使用 <code>[bx + idata]</code> 的方式指定内存单元。</p>
+<ul>
+<li><code>[bx + idata]</code>表示一个内存单元，他的偏移地址为<code>(bx) + idata</code><ul>
+<li>也就是 <code>bx</code> 中的数值加上<code>idata</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx+200]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 个字节（1 字单元），存放一个字，偏移地址为<code>bx</code> 中的数值加上 <code>200</code>，段地址在<code>ds</code> 中</li>
+<li>数字化描述：<code>(ax) = ((ds)*16 + (bx) + 200)</code></li>
+</ul>
+<p>也可作一下形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [200+bx]</span><br><span class="line">mov ax, 200[bx]</span><br><span class="line">mov ax, [bx].200</span><br></pre></td></tr></table></figure>
+<h4 id="补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思"><a href="# 补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思" class="headerlink" title="补课：关于 8086 中单元、字单元、字节和 D 指令输出的迷思"></a>补课：关于 8086 中单元、字单元、字节和 <code>D</code> 指令输出的迷思</h4><ol>
+<li>在 <code>debug</code> 中使用 <code>D</code> 指令输出</li>
+</ol>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_e86146.png" alt="D 输出"></p>
+<p>可以看到，每一排整整齐齐地格式：</p>
+<ul>
+<li>左边为地址<ul>
+<li>十六进制格式输出</li>
+<li>每一行为 16 的整数倍地址</li>
+</ul>
+</li>
+<li>右边为地址区段单元的内容<ul>
+<li>每两个数字代表一个内存单元，大小为一个字节，也就是 8 位<ul>
+<li><code>74</code>代表 <code>2000:1000H</code> 这个内存单元所存储的值<ul>
+<li>由两个十六进制的数组成</li>
+<li>每一个为 4 位，故而为 8 位</li>
+</ul>
+</li>
+<li><code>79</code>代表 <code>2000:1001H</code> 这个内存单元所存储的值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>8086 中一个字单元为 2 个字节，也就是 16 位</li>
+</ul>
+<p>下面语句执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 2000h</span><br><span class="line">mov ds, ax</span><br><span class="line">mov bx, 1000</span><br><span class="line"></span><br><span class="line">mov ax, ds:[bx]</span><br></pre></td></tr></table></figure>
+<p>此时，<code>ax =7974</code>。因为 8086 中，<code>ax</code>寄存器为 16 位，那么你使用 <code>mov</code> 指令的话，默认移动 2 个字节，即是 16 位，所以会移动：</p>
+<ul>
+<li><code>2000:1000H</code></li>
+<li><code>2000:1001H</code></li>
+</ul>
+<p>两个内存单元中的内容，并且先移动，到低位，后移动，到高位。</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/计算机技能/汇编基础/6-including-several-segment-program/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">6 包含多个段的程序</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            rosuh &copy; 2017 
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+        </div>
+    </div>
+</footer>
+        
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
