@@ -19,7 +19,9 @@
 <meta property="og:locale" content="zh-cn">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_42be46.png">
 <meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_035d52.png">
-<meta property="og:updated_time" content="2017-12-26T08:23:07.162Z">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_8986c0.png">
+<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_40ec33.png">
+<meta property="og:updated_time" content="2017-12-27T03:17:40.698Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="6 包含多个段的程序">
 <meta name="twitter:description" content="前言 在操作系统环境中，合法地通过操作系统取得的空间都是合法的 在操作系统允许的情况下，程序可以取得任意容量的空间   程序取得所需空间的方法 加载程序时候为程序分配 在源码这种做出说明 通过定义段来获取内存空间   程序执行过程中向系统申请    在本课程中，我们只讨论第一种。  在一个段中存放数据、代码和栈，我们先来体会一下不使用多个段的情况 将数据、代码和栈放入不同的段中  6.1 在代码段">
@@ -322,7 +324,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/计算机技能/汇编基础/6-including-several-segment-program/">
-            <time datetime="2017-12-26T08:23:07.162Z" itemprop="datePublished">2017-12-26</time>
+            <time datetime="2017-12-27T03:17:40.698Z" itemprop="datePublished">2017-12-27</time>
         </a>
     </div>
 
@@ -356,7 +358,7 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">Catálogo</strong>
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-1- 在代码段中使用数据"><span class="toc-number">2.</span> <span class="toc-text">6.1 在代码段中使用数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-2- 在代码段中使用栈"><span class="toc-number">3.</span> <span class="toc-text">6.2 在代码段中使用栈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检测点 -6-1"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">检测点 6.1</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-1- 在代码段中使用数据"><span class="toc-number">2.</span> <span class="toc-text">6.1 在代码段中使用数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-2- 在代码段中使用栈"><span class="toc-number">3.</span> <span class="toc-text">6.2 在代码段中使用栈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#检测点 -6-1"><span class="toc-number">3.0.0.1.</span> <span class="toc-text">检测点 6.1</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#6-3- 将数据、代码和栈放入不同的段中"><span class="toc-number">4.</span> <span class="toc-text">6.3 将数据、代码和栈放入不同的段中 </span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实验五 - 编写、调试具有多个段的程序"><span class="toc-number">5.</span> <span class="toc-text">实验五 编写、调试具有多个段的程序</span></a></li></ol>
                 </div>
             
         
@@ -495,6 +497,85 @@
 <ul>
 <li>参见 <a href="http://www.cnblogs.com/Base-Of-Practice/articles/6883898.html" target="_blank" rel="external">检测点 6.1</a></li>
 </ul>
+<h1 id="6-3- 将数据、代码和栈放入不同的段中"><a href="#6-3- 将数据、代码和栈放入不同的段中" class="headerlink" title="6.3 将数据、代码和栈放入不同的段中"></a>6.3 将数据、代码和栈放入不同的段中 </h1><p> 将数据、代码和栈放入同一段中有两个问题：</p>
+<ul>
+<li>使程序变得混乱</li>
+<li>数据、栈和代码需要的空间可能会超过 64KB。在 8086 模式中一个段容量不能大于 64KB</li>
+</ul>
+<p>所以我们需要使用多个段来存放不同的东西。那么该怎么做呢？</p>
+<p>想想我们之前的定义代码段的方法，实际上是类似的。</p>
+<ul>
+<li>使用和定义代码段的方法来定义多个段</li>
+<li>然后在这些段内定义需要的数据或通过定义数据来取得栈空间</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code, ds:data, ss:stack</span><br><span class="line">data segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">	dw 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">start: </span><br><span class="line">	mov ax, stack</span><br><span class="line">	mov ss, ax</span><br><span class="line">    mov sp, 20h</span><br><span class="line">    </span><br><span class="line">    mov ax, data</span><br><span class="line">    mov ds, ax</span><br><span class="line">    </span><br><span class="line">    mov bx, 0</span><br><span class="line">    </span><br><span class="line">    mov cx, 8</span><br><span class="line">    </span><br><span class="line">s:	</span><br><span class="line">	push [bx]		; 将 data 段中 0~15 单元中的 8 个字型数据依次入栈</span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s</span><br><span class="line">	</span><br><span class="line">	mov bx, 0</span><br><span class="line">	</span><br><span class="line">	mov cx, 8</span><br><span class="line">s0:</span><br><span class="line">	pop [bx]		; 将栈中 8 个字型数据依次出栈到 data 段的 0~15 单元中 </span><br><span class="line">	add bx, 2</span><br><span class="line">	loop s0</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><p>定义多个段的方法</p>
+<ul>
+<li>定义一个段和前面所讲的定义代码段的方法没有区别</li>
+<li>需要不同的短命</li>
+</ul>
+</li>
+<li><p>对段地址的引用</p>
+<ul>
+<li><p>在多个段的情况下，段名就相当于一个标号，它代表了段地址</p>
+<ul>
+<li><code>mov ax, data</code>：将名称为 <code>data</code> 的段的地址送入<code>ax</code></li>
+</ul>
+</li>
+<li><p>偏移地址要看他在段中的位置</p>
+<ul>
+<li><p><code>data</code>段中数据 <code>0abch</code> 的地址就是 <code>data:6</code>，要将之送入<code>bx</code> 中，就要用到如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, data</span><br><span class="line">mov ds, ax</span><br><span class="line">mov bx, ds:[6]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不能使用如下指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ds, data</span><br><span class="line">mov bx, ds:[6]</span><br></pre></td></tr></table></figure>
+<p>因为 8086 不允许将一个数值直接送入段寄存器中；程序中对段名的引用，如指令 <code>mov ds, data</code> 中的<code>data</code>，将被编译器处理为一个表示段地址的数值</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>“代码段”、“数据段”、“栈段”完全是我们安排的</p>
+<ul>
+<li>命名不会决定用途，只是为了便于阅读源码</li>
+<li>伪指令<code>assume cs:code,ds:data,ss:stack</code><ul>
+<li>将 <code>cs, ds</code> 和<code>ss</code>分别和 <code>code, data</code> 和<code>stack</code>段相连</li>
+<li>这样做的目仅仅是将段和寄存器联系起来。伪指令由编译器执行，CPU 不会知道具体用途</li>
+</ul>
+</li>
+<li>要 CPU 按照我们的安排形式，就要使用机器指令控制它<ul>
+<li><code>end start</code>通知 CPU 那个段是程序入口</li>
+<li><code>mov ax, stack</code>， <code>mov ss, ax</code>和 <code>mov sp, 20h</code> 就是将 <code>stack</code> 段用途指定为栈</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="实验五 - 编写、调试具有多个段的程序"><a href="# 实验五 - 编写、调试具有多个段的程序" class="headerlink" title="实验五 编写、调试具有多个段的程序"></a>实验五 编写、调试具有多个段的程序</h1><ol>
+<li>将下面程序编译、链接，用 <code>Debug</code> 加载、跟踪然后回答问题</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code, ds:data, ss:stack</span><br><span class="line">data segment</span><br><span class="line">	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h</span><br><span class="line">data ends</span><br><span class="line"></span><br><span class="line">stack segment</span><br><span class="line">	dw 0, 0, 0, 0, 0, 0, 0, 0</span><br><span class="line">stack ends</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">start:</span><br><span class="line">	mov ax, stack</span><br><span class="line">	mov ss, ax</span><br><span class="line">	mov sp, 16</span><br><span class="line">	</span><br><span class="line">	mov ax, data</span><br><span class="line">	mov ds, ax</span><br><span class="line">	</span><br><span class="line">	push ds:[0]</span><br><span class="line">	push ds:[2]</span><br><span class="line">	pop ds:[2]</span><br><span class="line">	pop ds:[0]</span><br><span class="line">	</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ol>
+<li>CPU 执行程序，程序返回前，<code>data</code>段中是数据为多少</li>
+<li>CPU 执行程序，程序返回前，cs = <strong> , ss = </strong> ,  ds = __</li>
+<li>设程序加载后，<code>code</code>段的段地址为 <code>X</code>，则<code>data</code> 段的段地址为 <strong> , <code>stack</code> 段的段地址为 </strong></li>
+</ol>
+</blockquote>
+<p><em>解答</em>：</p>
+<ul>
+<li><code>data</code>段中数据为：</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_8986c0.png" alt="data 段中数据"></p>
+<ul>
+<li>cs = <strong> , ss = </strong> ,  ds = __</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_40ec33.png" alt="寄存器的值"></p>
+<ul>
+<li><code>data = X - 2</code>， <code>stack = X -1</code></li>
+</ul>
 
             </div>
         
@@ -507,19 +588,10 @@
     
 <nav id="article-nav">
     
-        <a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Más nuevo</strong>
-            <div class="article-nav-title">
-                
-                    9 使用布局和组件创建用户界面
-                
-            </div>
-        </a>
     
-    
-        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/Android-开发/9-Using-layouts-and-Widgets-to-create-UI/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Más viejo</strong>
-            <div class="article-nav-title">5 [BX] 和 loop 指令</div>
+            <div class="article-nav-title">9 使用布局和组件创建用户界面</div>
         </a>
     
 </nav>
