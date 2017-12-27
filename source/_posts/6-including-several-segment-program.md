@@ -328,6 +328,191 @@ end start
 
 
 
+#  6.3 将数据、代码和栈放入不同的段中
+
+将数据、代码和栈放入同一段中有两个问题：
+
+- 使程序变得混乱
+- 数据、栈和代码需要的空间可能会超过 64KB。在 8086 模式中一个段容量不能大于 64KB
+
+所以我们需要使用多个段来存放不同的东西。那么该怎么做呢？
+
+想想我们之前的定义代码段的方法，实际上是类似的。
+
+- 使用和定义代码段的方法来定义多个段
+- 然后在这些段内定义需要的数据或通过定义数据来取得栈空间
+
+
+
+```assembly
+assume cs:code, ds:data, ss:stack
+data segment
+	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h
+data ends
+
+stack segment
+	dw 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+stack ends
+
+code segment
+
+start: 
+	mov ax, stack
+	mov ss, ax
+    mov sp, 20h
+    
+    mov ax, data
+    mov ds, ax
+    
+    mov bx, 0
+    
+    mov cx, 8
+    
+s:	
+	push [bx]		; 将 data 段中 0~15 单元中的 8 个字型数据依次入栈
+	add bx, 2
+	loop s
+	
+	mov bx, 0
+	
+	mov cx, 8
+s0:
+	pop [bx]		; 将栈中 8 个字型数据依次出栈到 data 段的 0~15 单元中 
+	add bx, 2
+	loop s0
+	
+	mov ax, 4c00h
+	int 21h
+
+code ends
+end start
+```
+
+
+
+*解析*：
+
+- 定义多个段的方法
+
+  - 定义一个段和前面所讲的定义代码段的方法没有区别
+  - 需要不同的短命
+
+- 对段地址的引用
+
+  - 在多个段的情况下，段名就相当于一个标号，它代表了段地址
+
+    - `mov ax, data`：将名称为`data`的段的地址送入`ax`
+
+  - 偏移地址要看他在段中的位置
+
+    - `data`段中数据`0abch`的地址就是`data:6`，要将之送入`bx`中，就要用到如下代码
+
+      ```assembly
+      mov ax, data
+      mov ds, ax
+      mov bx, ds:[6]
+      ```
+
+    - 不能使用如下指令
+
+      ```assembly
+      mov ds, data
+      mov bx, ds:[6]
+      ```
+
+      因为 8086 不允许将一个数值直接送入段寄存器中；程序中对段名的引用，如指令`mov ds, data`中的`data`，将被编译器处理为一个表示段地址的数值
+
+- “代码段”、“数据段”、“栈段”完全是我们安排的
+
+  - 命名不会决定用途，只是为了便于阅读源码
+  - 伪指令`assume cs:code,ds:data,ss:stack`
+    - 将`cs, ds`和`ss`分别和`code, data`和`stack`段相连
+    - 这样做的目仅仅是将段和寄存器联系起来。伪指令由编译器执行，CPU 不会知道具体用途
+  - 要 CPU 按照我们的安排形式，就要使用机器指令控制它
+    - `end start`通知 CPU 那个段是程序入口
+    - `mov ax, stack`， `mov ss, ax`和`mov sp, 20h`就是将`stack`段用途指定为栈
+
+
+
+# 实验五 编写、调试具有多个段的程序
+
+1. 将下面程序编译、链接，用`Debug`加载、跟踪然后回答问题
+
+```assembly
+assume cs:code, ds:data, ss:stack
+data segment
+	dw 0123h, 0456h, 0789h, 0abch, 0defh, 0fedh, 0cbah, 0987h
+data ends
+
+stack segment
+	dw 0, 0, 0, 0, 0, 0, 0, 0
+stack ends
+
+code segment
+
+start:
+	mov ax, stack
+	mov ss, ax
+	mov sp, 16
+	
+	mov ax, data
+	mov ds, ax
+	
+	push ds:[0]
+	push ds:[2]
+	pop ds:[2]
+	pop ds:[0]
+	
+	mov ax, 4c00h
+	int 21h
+code ends
+end start
+```
+
+>1. CPU 执行程序，程序返回前，`data`段中是数据为多少
+>2. CPU 执行程序，程序返回前，cs = __ , ss = __ ,  ds = __
+>3. 设程序加载后，`code`段的段地址为`X`，则`data`段的段地址为__ , `stack`段的段地址为 __
+
+*解答*：
+
+- `data`段中数据为：
+
+![data 段中数据](https://img.rosuh.me/wiki/wiki_201712_8986c0.png)
+
+- cs = __ , ss = __ ,  ds = __
+
+![寄存器的值](https://img.rosuh.me/wiki/wiki_201712_40ec33.png)
+
+
+
+- `data = X - 2`， `stack = X -1`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
