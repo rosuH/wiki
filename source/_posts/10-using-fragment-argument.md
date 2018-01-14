@@ -170,9 +170,149 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
 
 
 
+#  10.2 `fragment argument`
+
+- 每一个`fragment`实例都可以附带一个`Bundle`对象
+  - 该`Bundle`包含键值对，方便我们像`Activity`的`Intent`中那样使用它们
+  - 一个键值对就是一个`argument`
+
+**创建`fragment argument`的方法：**
+
+- 创建`Bundle`对象
+- 使用`Bundle`限定类型的的`put`方法，将`argument`添加到`bundle`中
+
+```java
+Bundle args = new Bundle();
+args.putSerializable(ARGS_MY_OBJECT, myObject);
+args.putInt(ARGS_MY_INT, myInt);
+args.outCharSequence(ARG_MY_STRING, myString);
+```
 
 
 
+####  附加`argument`到`fragment`
+
+- 调用`Fragment.setArguement(Bundle)`方法来附加`argument bundle`给`fragment`
+  - 附加时机需要在 `fragment`创建后，添加给`acticity`之前
+- 合适的做法：`newInstance()`
+  - 添加一个名为`newInstance()`的静态方法给`Fragment`类
+  - 使用该方法完成`fragment`实例以及`Bundle`对象的创建
+  - 然后将`argument`放入`bundle`中
+  - 最后附加给`fragment`
+
+我们之前需要使用`fragment`实例时，使用 `activity`调用`Fragment`构造方法。现在我们转而调用`newInstance()`方法，既可以创建`fragment`实例，`activity`又可以给`newInstance()`方法传入任何需要的参数。
+
+*`CrimeFragment.java`*
+
+```java
+public static CrimeFragment newInstance(UUID crimeId) {
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_CRIME_ID, crimeId);
+
+        CrimeFragment fragment = new CrimeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+```
+
+这里：
+
+- 创建了一个属于`CrimeFrgament.java`的静态方法`newInstance()`
+- 在里面完成了附加`argument`到`fragment`的一系列工作
+
+使用：
+
+- `CrimeActivity`调用`CrimeFragment.newInstance(UUID)`并传入从它的`extra`获取的`UUID`参数值
+
+回到`CrimeActivity`类中，在`createFragment()`方法里，从`CrimeActivity`的`intent`中获取`extra`数据：
+
+*`CrimeActivity.java`*
+
+```java
+@Override
+    protected Fragment createFragment() {
+        UUID crimeId = (UUID) getIntent()
+                .getSerializableExtra(EXTRA_CRIME_ID);
+        return CrimeFragment.newInstance(crimeId);
+    }
+```
+
+这里：
+
+- 托管`activity`知道`CrimeFragment`内部细节，这是必须的
+- `fragment`不一定需要知道`activity`内部细节，特别是保持`fragment`通用独立的时候
+
+
+
+####  获取`argument`
+
+- `fragment`要获取`argument`，会先调用`Fragment`类的`getArgument()`方法
+- 再调用`Bundle`限定类型的`get`方法
+
+*`CrimeFragment.java`*
+
+```java
+@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
+        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+    }
+```
+
+
+
+#  10.3 刷新显示列表项
+
+我们进入了具体列表项，然后修改数据（或者本身进入的这个行为已经是一种数据），退出去之后需要更新列表项以反映出变化。
+
+常见的例子，比如点击过的列表项，先改变其颜色来表示已访问；修改列表项中的某些状态，比如本例子，那就要在列表中反映出来。
+
+- 模型层保存的数据若有变化，应该通知`RecyclerView`的`Adapter`，以便其及时获取最新数据并刷新显示列表项
+  - 在恰当的时机，与系统的`ActicityManager`回退栈协同运作 ，可实现列表项的刷新功能
+
+本例子中的回退栈流程为：
+
+- `CrimeListFragment`启动`CrimeActivity`实例后
+  - `CrimeActivity`被置于回退栈顶
+  - `CrimeListActiciy`实例被暂停并停止
+- 用户点击后退键回到列表项界面
+  - `CrimeActivity`随机弹出栈并被销毁
+  - `CrimeListActivity`立即重新启动并恢复运行
+- `CrimeListActivity`恢复运行之后，操作系统发出调用`onResume()`生命周期方法的指令
+  - `CrimeListActivity`接到指令之后 ，其`FragmentManager`调用当前被`activity`托管的`fragment`的`onResume()`方法
+    - 本例中为`CrimeListFragment`
+- 在`CrimeListFragment`中，覆盖`onResume()`方法，触发调用`updateUI()`方法刷新显示列表项
+  - 如果已配置好`CrimeAdapter`，就调用`notifyDataSetChange()`方法来修改`updateUI()`方法
+
+
+
+*`CrimeListFragemnt.java`*
+
+```java
+...
+@Override
+public void onResume() {
+  super.onResume();
+  updateUI();
+}
+
+private void updateUI() {
+        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        List<Crime> crimes = crimeLab.getCrimes();
+
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimes);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+```
+
+
+
+#  10.4 通过`fragment`获取返回结果
 
 
 
