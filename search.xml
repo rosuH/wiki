@@ -219,148 +219,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[7 更灵活的定位内存地址的方法]]></title>
-      <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/7-more-flexible-way-to-locate-the-memory-address/</url>
-      <content type="html"><![CDATA[<h1 id="7-1-and 和 or 指令"><a href="#7-1-and 和 or 指令" class="headerlink" title="7.1 and 和 or 指令"></a>7.1 <code>and</code>和 <code>or</code> 指令</h1><ul>
-<li><code>and</code>指令：逻辑与运算指令，按位进行与运算<ul>
-<li>通过该指令可将操作对象的相应位设为 0 ，其他为不变</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">and al, 00111011B</span><br></pre></td></tr></table></figure>
-<p>执行后<code>al = 00100011B</code>。</p>
-<ul>
-<li><code>or</code>指令：逻辑或指令，按位进行或运算<ul>
-<li>通过该指令可将操作对象的相应位设为 1，其他为不变</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">or al, 00111011B</span><br></pre></td></tr></table></figure>
-<p>结果为：<code>01111011B</code></p>
-<h1 id="7-2- 关于 -ASCII- 码"><a href="#7-2- 关于 -ASCII- 码" class="headerlink" title="7.2 关于 ASCII 码"></a>7.2 关于 ASCII 码</h1><ul>
-<li>Ascii 码是一种编码方案<ul>
-<li>他约定了计算机用此种方案来表示信息<ul>
-<li>比如 <code>61h</code> 表示 <code>a</code>， <code>62h</code> 表示<code>b</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>文本编辑过程中，就按照 ASCII 编码规则进行编码和解码</li>
-<li>键盘输入到屏幕显示的流程<ul>
-<li>按下 <code>a</code> 键，这个键的信息被送入计算机</li>
-<li>计算机使用 ASCII 编码规则将其转换为 <code>61H</code> 存储在内存的指定空间中</li>
-<li>文本编辑器软件从内存中取出<code>61H</code>，将其送到显卡的显存中</li>
-<li>工作在文本模式下的显卡用 ASCII 码的规则解释显存中的内容</li>
-<li>显卡驱动器将解释后的内容，也就是 <code>a</code> 的图像画到屏幕上</li>
-</ul>
-</li>
-</ul>
-<p>也就是说，要想在屏幕上显示出 <code>a</code>，就要给显卡提供<code>a</code> 的 ASCII 码（61H）。</p>
-<p>我们通过向显卡显存写入数据实现。</p>
-<h1 id="7-3- 以字符的形式给出数据"><a href="#7-3- 以字符的形式给出数据" class="headerlink" title="7.3 以字符的形式给出数据"></a>7.3 以字符的形式给出数据</h1><ul>
-<li>在汇编程序中，用单引号括起来的方式指明数据是以字符的形式给出的<ul>
-<li>编译器将他们转换为相对应的 ASCII 码</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code,ds:data</span><br><span class="line">data segment</span><br><span class="line">	db &apos;unIX&apos;</span><br><span class="line">	db &apos;foRK&apos;</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">	mov al, &apos;a&apos;</span><br><span class="line">	mov bl, &apos;b&apos;</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-<p><em>解析</em>：</p>
-<ul>
-<li><code>db &#39;unIX&#39;</code>相当于：<code>db 75H,6EH,49H,58H</code><ul>
-<li>因为 <code>u,n,I,X</code> 的 ASCII 码分别为 75H, 6EH, 49H 和 58H</li>
-</ul>
-</li>
-<li><code>mov al, &#39;a&#39;</code>相当于：<code>mov al, 61h</code><ul>
-<li>‘a’ 的 ASCII 码为<code>61H</code></li>
-</ul>
-</li>
-</ul>
-<h1 id="7-4- 大小写转换问题"><a href="#7-4- 大小写转换问题" class="headerlink" title="7.4 大小写转换问题"></a>7.4 大小写转换问题</h1><blockquote>
-<p>在 <code>codeseg</code> 中填写代码，将 <code>dataseg</code> 中的第一个字符串转换为大写，第二个字符串转换为小写</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-<ul>
-<li>分析大小写字符的 ASCII 码表规律</li>
-</ul>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_7fa815.png" alt="字母 ASCII 码表规律"></p>
-<p>可以看到两个规律：</p>
-<ol>
-<li>小写字母的 ASCII 码总比相应大写字母的大<code>20H</code></li>
-<li>无论是哪一个字母，只要是大写的，其二进制第 5 位总是 0，而小写字母第 5 位总是 1</li>
-</ol>
-<p>所以思路就是：</p>
-<ul>
-<li>使用与操作将第一个字符串中所有字符的第 5 位设为 0</li>
-<li>使用或操作将第二个字符串中所有字符的第 5 位设为 1</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">	mov ax, dataseg</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 5</span><br><span class="line">	</span><br><span class="line">s:	mov al, [bx]</span><br><span class="line">	and al, 11011111B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s</span><br><span class="line"></span><br><span class="line">	mov bx, 5</span><br><span class="line">	mov cx, 11</span><br><span class="line"></span><br><span class="line">s0: mov al, [bx]</span><br><span class="line">	or al, 00100000B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s0</span><br><span class="line"></span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
-<h1 id="7-5-bx-data"><a href="#7-5-bx-data" class="headerlink" title="7.5 [bx+data]"></a>7.5 <code>[bx+data]</code></h1><p>我们之前使用 <code>[bx]</code> 来指定一个内存单元，也可以使用 <code>[bx + idata]</code> 的方式指定内存单元。</p>
-<ul>
-<li><code>[bx + idata]</code>表示一个内存单元，他的偏移地址为<code>(bx) + idata</code><ul>
-<li>也就是 <code>bx</code> 中的数值加上<code>idata</code></li>
-</ul>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx+200]</span><br></pre></td></tr></table></figure>
-<ul>
-<li>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 个字节（1 字单元），存放一个字，偏移地址为<code>bx</code> 中的数值加上 <code>200</code>，段地址在<code>ds</code> 中</li>
-<li>数字化描述：<code>(ax) = ((ds)*16 + (bx) + 200)</code></li>
-</ul>
-<p>也可作一下形式：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [200+bx]</span><br><span class="line">mov ax, 200[bx]</span><br><span class="line">mov ax, [bx].200</span><br></pre></td></tr></table></figure>
-<h4 id="补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思"><a href="# 补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思" class="headerlink" title="补课：关于 8086 中单元、字单元、字节和 D 指令输出的迷思"></a>补课：关于 8086 中单元、字单元、字节和 <code>D</code> 指令输出的迷思</h4><ol>
-<li>在 <code>debug</code> 中使用 <code>D</code> 指令输出</li>
-</ol>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_e86146.png" alt="D 输出"></p>
-<p>可以看到，每一排整整齐齐地格式：</p>
-<ul>
-<li>左边为地址<ul>
-<li>十六进制格式输出</li>
-<li>每一行为 16 的整数倍地址</li>
-</ul>
-</li>
-<li>右边为地址区段单元的内容<ul>
-<li>每两个数字代表一个内存单元，大小为一个字节，也就是 8 位<ul>
-<li><code>74</code>代表 <code>2000:1000H</code> 这个内存单元所存储的值<ul>
-<li>由两个十六进制的数组成</li>
-<li>每一个为 4 位，故而为 8 位</li>
-</ul>
-</li>
-<li><code>79</code>代表 <code>2000:1001H</code> 这个内存单元所存储的值</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>8086 中一个字单元为 2 个字节，也就是 16 位</li>
-</ul>
-<p>下面语句执行：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 2000h</span><br><span class="line">mov ds, ax</span><br><span class="line">mov bx, 1000</span><br><span class="line"></span><br><span class="line">mov ax, ds:[bx]</span><br></pre></td></tr></table></figure>
-<p>此时，<code>ax =7974</code>。因为 8086 中，<code>ax</code>寄存器为 16 位，那么你使用 <code>mov</code> 指令的话，默认移动 2 个字节，即是 16 位，所以会移动：</p>
-<ul>
-<li><code>2000:1000H</code></li>
-<li><code>2000:1001H</code></li>
-</ul>
-<p>两个内存单元中的内容，并且先移动，到低位，后移动，到高位。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 计算机技能 </category>
-            
-            <category> 汇编基础 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> assembly </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[6 包含多个段的程序]]></title>
       <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/6-including-several-segment-program/</url>
       <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言</h1><ul>
@@ -590,218 +448,6 @@
         <tags>
             
             <tag> assembly </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[9 使用布局和组件创建用户界面]]></title>
-      <url>/Android-%E5%BC%80%E5%8F%91/9-Using-layouts-and-Widgets-to-create-UI/</url>
-      <content type="html"><![CDATA[<h1 id="9-1- 使用图形布局工具"><a href="#9-1- 使用图形布局工具" class="headerlink" title="9.1 使用图形布局工具"></a>9.1 使用图形布局工具 </h1><p> 除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。</p>
-<p>图形布局工具界面：</p>
-<ul>
-<li>中间区域是界面预览窗口</li>
-<li>右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例</li>
-<li>左边是组件面板</li>
-<li>左下是组件树</li>
-<li>右边是属性界面</li>
-</ul>
-<h1 id="9-2- 引入 ConstraintLayout"><a href="#9-2- 引入 ConstraintLayout" class="headerlink" title="9.2 引入 ConstraintLayout"></a>9.2 引入<code>ConstraintLayout</code></h1><ul>
-<li><code>ConstraintLayout</code>工具可以为布局添加一系列约束<ul>
-<li>组件位置关系因为约束而发生变化</li>
-</ul>
-</li>
-<li>在 <code>ConstraintLayout</code> 里布置视图，只需要添加约束就可以<ul>
-<li>组件的大小调整方式有三<ul>
-<li>组件自己决定（<code>wrap_content</code></li>
-<li>手动调整</li>
-<li>让组件充满约束布局</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h4 id="引入步骤"><a href="# 引入步骤" class="headerlink" title="引入步骤"></a>引入步骤</h4><ol>
-<li>切换到 <code>design</code> 布局</li>
-<li>右击要转换的布局</li>
-<li>选中 <code>convert ... to ConstraintLayout</code> 即可</li>
-</ol>
-<p>现在 Android Studio 会自动添加依赖，所以不需要手动家加入。</p>
-<h4 id="约束编辑器"><a href="# 约束编辑器" class="headerlink" title="约束编辑器"></a>约束编辑器 </h4><p> 在布局预览窗口顶部的工具栏上，有一些约束选项：</p>
-<ul>
-<li>显示所有约束</li>
-<li>自动连接切换开关<ul>
-<li>启动后，在预览界面拖移视图时，约束会自动配置</li>
-<li>Android Studio 会猜测你的布局配置意图，然后自动连接</li>
-</ul>
-</li>
-<li>清除全部约束</li>
-<li>猜测约束<ul>
-<li>类似自动连接</li>
-<li>Android Studio 会自动帮你创建约束</li>
-</ul>
-</li>
-</ul>
-<p>我们先手动清除根视图的所有约束，然后一步一步添加回来。</p>
-<h4 id="腾出空间"><a href="# 腾出空间" class="headerlink" title="腾出空间"></a>腾出空间 </h4><p> 选中某个组件，右边就可以编辑该组件的属性了。</p>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_b86613.png" alt="TextView 的属性"></p>
-<ul>
-<li>组件的水平和竖直方向的尺寸是分别由宽度设置和高度设置决定的</li>
-</ul>
-<p>能设置的值有以下三种：</p>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_d75c2a.png" alt="三种视图尺寸设置"></p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">设置类型</th>
-<th style="text-align:center">设置值</th>
-<th style="text-align:center">用法</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">固定大小</td>
-<td style="text-align:center">Xdp</td>
-<td style="text-align:center">以 dp 为单元，为视图指定固定值</td>
-</tr>
-<tr>
-<td style="text-align:center">包裹内容</td>
-<td style="text-align:center">wrap_content</td>
-<td style="text-align:center">设置视图想要的尺寸（随内容走），大到足够容纳内容</td>
-</tr>
-<tr>
-<td style="text-align:center">动态适应</td>
-<td style="text-align:center">0dp</td>
-<td style="text-align:center">允许视图缩放以满足指定约束</td>
-</tr>
-</tbody>
-</table>
-<p>至于添加约束的方式，其实就是拉动组件轮廓四周的四个圆圈，然后吸附到另一个组件轮廓上。</p>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_bcea44.png" alt="设置约束"></p>
-<h4 id="约束的 -XML- 格式"><a href="# 约束的 -XML- 格式" class="headerlink" title="约束的 XML 格式"></a>约束的 XML 格式 </h4><p> 刚刚添加了一个 <code>ImgaeVIew</code> 组件，并为之三个边添加了约束，使之呆在布局的右边。</p>
-<p>我们来看看刚刚添加的组件的约束 XML 代码：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/imageView"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginEnd</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:srcCompat</span>=<span class="string">"@drawable/ic_solved"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<p>可以看到约束相关的属性皆是 <code>app:layout_constraint</code> 开头的：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintBottom_toBottomOf="parent"</span><br><span class="line">app:layout_constraintEnd_toEndOf="parent"</span><br><span class="line">app:layout_constraintTop_toTopOf="parent"</span><br></pre></td></tr></table></figure>
-<ul>
-<li>属性以 <code>layout_</code> 开头皆属于布局参数（<code>layout parameter</code>）<ul>
-<li>组件的布局参数是用来向其父组件做指示用的：用来告诉父布局如何安排自己</li>
-</ul>
-</li>
-</ul>
-<p>想想之前那个<code>layout_margin</code>，还有<code>layout_height</code>，都是布局参数。</p>
-<ul>
-<li>约束的名字是 <code>constraintTop</code>，这表示它是<code>ImageView</code> 的顶部约束</li>
-<li>属性以 <code>toTopof=&quot;parent&quot;</code> 结束，表示约束是连接到父组件的</li>
-</ul>
-<h4 id="编辑属性"><a href="# 编辑属性" class="headerlink" title="编辑属性"></a>编辑属性 </h4><p> 可视化界面的编辑属性功能十分易用。选中组件后即可编辑。</p>
-<h4 id="动态设置列表项"><a href="# 动态设置列表项" class="headerlink" title="动态设置列表项"></a>动态设置列表项 </h4><p> 为了有选择性地显示一些组件（此处是手铐图片），我们可以通过修改 <code>ImageView</code> 组件解决。</p>
-<ul>
-<li>更新 <code>ImageView</code> 组件的 ID</li>
-<li>在组件树里选中它，然后在视图属性窗口将 ID 修改为<code>crime_solved</code></li>
-</ul>
-<p>接下来要在代码中使用这个组件。</p>
-<p><em>控制图片显示（<code>CrimeListFragment.java</code>）</em></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeListFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line"> ...</span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span></span><br><span class="line"><span class="class">            <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span>  Crime mCrime;</span><br><span class="line">        <span class="keyword">private</span> TextView mTitleTextView;</span><br><span class="line">        <span class="keyword">private</span> TextView mDateTextView;</span><br><span class="line">        <span class="keyword">private</span> ImageView mSolvedImageView;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CrimeHolder</span><span class="params">(LayoutInflater inflater, ViewGroup parent)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(inflater.inflate(R.layout.list_item_crime, parent,<span class="keyword">false</span>));</span><br><span class="line"></span><br><span class="line">            mTitleTextView = (TextView)itemView.findViewById(R.id.crime_title);</span><br><span class="line">            mDateTextView = (TextView)itemView.findViewById(R.id.crime_date);</span><br><span class="line">            mSolvedImageView = (ImageView)itemView.findViewById(R.id.crime_solved);</span><br><span class="line">            itemView.setOnClickListener(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Crime crime)</span> </span>&#123;</span><br><span class="line">            mCrime = crime;</span><br><span class="line">            mTitleTextView.setText(mCrime.getTitle());</span><br><span class="line">            mDateTextView.setText(mCrime.getDate().toString());</span><br><span class="line">            mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以看到，此处书里的做法是：</p>
-<ul>
-<li>在 <code>crime</code> 数据中存放一个标志<code>solved</code><ul>
-<li><code>crimeLab</code>中使用 <code>crime.setSolved(i % 2 == 0)</code> 将偶数项的 <code>solved</code> 置为<code>1</code></li>
-</ul>
-</li>
-<li>在 <code>bind</code> 中判断是否需要将 <code>mSolvedImageView</code> 设置为<code>View.GONE</code></li>
-</ul>
-<p>这样的方法比我之前自己想的使用 <code>RecyclerView.viewType</code> 的方法要方便、简洁和易操作。</p>
-<h1 id="9-3- 深入学习布局属性"><a href="#9-3- 深入学习布局属性" class="headerlink" title="9.3 深入学习布局属性"></a>9.3 深入学习布局属性 </h1><h4 id="dp，sp 以及屏幕像素密度"><a href="#dp，sp 以及屏幕像素密度" class="headerlink" title="dp，sp 以及屏幕像素密度"></a><code>dp</code>，<code>sp</code> 以及屏幕像素密度</h4><ul>
-<li>常见的视图属性值<ul>
-<li>文字大小：指定设备上显示的文字的像素高度</li>
-<li>边距：指定视图组件间的举例</li>
-<li>内边距：指定视图外边框与其内容之间的举例</li>
-</ul>
-</li>
-<li>不同设备之间的兼容问题<ul>
-<li>Android 提供了与密度无关的尺寸单位，应用这种单位可在不通的屏幕像素密度的设备上获得相同的尺寸</li>
-</ul>
-</li>
-<li>常见的单位<ul>
-<li><code>px</code><ul>
-<li>英文 pixel 的缩写，即像素</li>
-<li>无论屏幕密度多少，一个像素单位对应一个屏幕像素单位</li>
-<li><strong>不推荐使用，因为他不会根据屏幕密度自动缩放</strong></li>
-</ul>
-</li>
-<li><code>dp (dip)</code><ul>
-<li>英文 density-independent pixel 的缩写，意为 <strong> 密度无关像素</strong></li>
-<li>在设置边距、内边距或任何不打算按像素值指定尺寸的情况下，通常都使用 <code>dp</code> 这种单位</li>
-<li>如果屏幕密度较高，密度无关像素会相应扩展到整个屏幕</li>
-<li><strong>无论屏幕密度任何，总能获得同样的尺寸</strong></li>
-</ul>
-</li>
-<li><code>sp</code><ul>
-<li>英文 cale-independet pixel 的缩写，意思为缩放无关像素</li>
-<li>它是一种与密度无关的像素，这种像素会受用户字体偏好设置的影响</li>
-<li>通常使用 <code>sp</code> 来设置屏幕上的字体大小</li>
-</ul>
-</li>
-<li><code>pt, mm, in</code><ul>
-<li>类似于 <code>dp</code> 的缩放单位，允许以点、毫米或尺寸为单位指定用户界面尺寸</li>
-<li>在实际开发中不建议使用这些单位，因为并不是所有设备都能按照这些单位进行正确的尺寸缩放配置</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>对于我们常用的 <code>sp</code> 和<code>dp</code>，Android 会在运行时自动将他们转换为像素单位</li>
-</ul>
-<h4 id="边距与内边距"><a href="# 边距与内边距" class="headerlink" title="边距与内边距"></a>边距与内边距</h4><ul>
-<li><strong>边距属性是布局参数</strong><ul>
-<li>决定了组件之间的举例</li>
-<li>组件对外界一无所知，边距必须由该组件的父组件负责</li>
-</ul>
-</li>
-<li><strong>内边距不是布局参数</strong><ul>
-<li><code>android:padding</code>告诉组件：在绘制组件自身时，要比所含内容大多少</li>
-</ul>
-</li>
-</ul>
-<h4 id="样式、主题及主题属性"><a href="# 样式、主题及主题属性" class="headerlink" title="样式、主题及主题属性"></a>样式、主题及主题属性</h4><ul>
-<li>样式 (style) 是 <code>XML</code> 资源文件，含有用来描述组件行为和外观的属性定义</li>
-<li>可以自己创建自己的样式文件<ul>
-<li>然后在布局文件中以 <code>@style/my_own_style</code> 的形式引用</li>
-</ul>
-</li>
-<li>例子中的两个 <code>TextView</code> 组件都有一个引用 Android 自带样式文件的 <code>style</code> 属性<ul>
-<li>该预定义样式来自于应用主题</li>
-</ul>
-</li>
-<li>主题是各种样式的集合<ul>
-<li>从结构上来说，主题本身也是一种资源，只不过他的属性指向了其他样式资源</li>
-<li>使用主题属性引用，可将预定义的应用主题样式添加给指定组件<ul>
-<li>比如<code>?android:listSeparatorTextViewStyle</code></li>
-<li>使用主题属性引用就是告诉 Android 运行资源管理器：“在应用主题里找到 <code>listSeparatorTextViewStyle</code> 的属性。该属性指向其他样式资源，请将其资源的值放在这里”</li>
-</ul>
-</li>
-<li>所有 Android 主题都包括名为 <code>listSeparatorTextViewStyle</code> 的属性，不过他们的定义略有不同</li>
-<li>使用主题引用，可以确保 <code>TextView</code> 组件在应用中拥有正确一致的显示风格</li>
-</ul>
-</li>
-</ul>
-<h4 id="Android- 应用的设置原则"><a href="#Android- 应用的设置原则" class="headerlink" title="Android 应用的设置原则"></a>Android 应用的设置原则</h4><p><a href="https://material.io/guidelines/" target="_blank" rel="external">Material Design</a></p>
-<h1 id="9-4- 图形布局工具使用小结"><a href="#9-4- 图形布局工具使用小结" class="headerlink" title="9.4 图形布局工具使用小结"></a>9.4 图形布局工具使用小结 </h1><p> 图形化很好用，直接编写 <code>XML</code> 也很不错，哪个方便就用哪个。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> Android 开发 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Android </tag>
-            
-            <tag> RecyclerView </tag>
             
         </tags>
         
@@ -1093,6 +739,330 @@
     </entry>
     
     <entry>
+      <title><![CDATA[4 第一个程序]]></title>
+      <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/4-the-first-program/</url>
+      <content type="html"><![CDATA[<h1 id="4-1- 一个源程序从写出到执行的过程"><a href="#4-1- 一个源程序从写出到执行的过程" class="headerlink" title="4.1 一个源程序从写出到执行的过程"></a>4.1 一个源程序从写出到执行的过程</h1><ol>
+<li>编写汇编源程序<ul>
+<li>产生一个存储源程序的文本文件</li>
+</ul>
+</li>
+<li>对源程序进行编译链接<ul>
+<li>使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>可执行文件包含两部分内容<ul>
+<li>程序和数据<ul>
+<li>程序：从源程序中的汇编指令翻译过来的机器码</li>
+<li>数据：源程序中定义的数据</li>
+</ul>
+</li>
+<li>相关的描述信息<ul>
+<li>描述类似程序多大、占用多少内存空间等等</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>执行可执行文件中的程序<ul>
+<li>操作系统依照可执行文件中的描述信息，将可执行文件中的机器码和数据加载入内存，并进行相关的初始化（比如设置 CS:IP 指向第一条要执行的指令），容纳后由 CPU 执行程序</li>
+</ul>
+</li>
+</ol>
+<h1 id="4-2- 源程序"><a href="#4-2- 源程序" class="headerlink" title="4.2 源程序"></a>4.2 源程序 </h1><p> 下面时一段简单的汇编程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line">codesg segment</span><br><span class="line">    mov ax, 0123H</span><br><span class="line">    mov bx, 0456H</span><br><span class="line">    add ax, bx</span><br><span class="line">    add ax, ax</span><br><span class="line"></span><br><span class="line">    mov ax, 4c00H</span><br><span class="line">    int 21H</span><br><span class="line">codesg ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p><strong>程序说明</strong></p>
+<h2 id="伪指令"><a href="# 伪指令" class="headerlink" title="伪指令"></a>伪指令 </h2><p> 在汇编程序中有两种指令：</p>
+<ul>
+<li>汇编指令<ul>
+<li>对应机器码，被编译为机器指令，最终被 CPU 执行</li>
+</ul>
+</li>
+<li>伪指令<ul>
+<li>编译器执行伪指令。编译器将根据伪指令来进行相关的编译工作</li>
+</ul>
+</li>
+</ul>
+<p>在上面的例子中的伪指令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">XXX segment</span><br><span class="line">	:</span><br><span class="line">	:</span><br><span class="line">	:</span><br><span class="line">XXX ends</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><p><code>segment</code>和 <code>ends</code> 是成对使用的伪指令</p>
+<ul>
+<li><p>这是在写可被编译器编译的汇编程序时必须要用到的一对伪指令</p>
+</li>
+<li><p><code>segmnet</code>和 <code>ends</code> 的功能是定义一个段</p>
+<ul>
+<li><code>segment</code>说明一个段的开始</li>
+<li><code>ends</code>说明一个段的结束</li>
+</ul>
+</li>
+<li><p>使用格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">段名 segment</span><br><span class="line">	:</span><br><span class="line">段名 ends</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<p><em>一个汇编程序由多个段组成，这些段被用来存放代码、数据或当作栈空间来使用</em></p>
+<ul>
+<li><code>end</code><ul>
+<li>汇编程序的结束标记</li>
+<li>如果程序写完了，就要在结尾处加上指令<code>end</code>，否则编译器无法知道程序在何处结束</li>
+</ul>
+</li>
+<li><code>assume</code><ul>
+<li>这条伪指令的含义为“假设”。他假设某一段寄存器和程序中的某一个 <code>segment...ends</code> 定义的段相关联，通过 <code>assume</code> 说明这种关联</li>
+<li>在需要的情况下，编译程序可以将段寄存器和某一个具体的段相联系</li>
+</ul>
+</li>
+</ul>
+<p><em>在例子中，<code>code segment...codeseg ends</code>定义了一个名为 <code>codeseg</code> 的段，在这个段中存放代码，所以这个段是一个代码段。在程序的开头，用 <code>assume cs:codeseg</code> 将用作代码段的段 <code>codeseg</code> 和 CPU 中的段寄存器 <code>cs</code> 联系起来</em>。</p>
+<h2 id="源程序中的“程序”"><a href="# 源程序中的“程序”" class="headerlink" title="源程序中的“程序”"></a>源程序中的“程序”</h2><p>用汇编语言写的源程序，包括伪指令和汇编指令：</p>
+<ul>
+<li>汇编指令组成了最终由计算机执行的程序</li>
+<li>源程序中的伪指令由编译器执行</li>
+</ul>
+<p><strong>源程序汇总最终由计算机执行、处理的程序或数据，称为程序 </strong>。<strong> 程序最先以汇编指令的形式存在于源程序中，经过编译、链接后转变为机器码，存储在可执行文件中</strong>。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_f.png" alt="程序经编译链接后变为机器码"></p>
+<h2 id="标号"><a href="# 标号" class="headerlink" title="标号"></a>标号</h2><ul>
+<li>源程序中除了汇编指令和伪指令外，还有一些标号，比如<code>codeseg</code></li>
+<li>一个标号指代了一个地址<ul>
+<li><code>codeseg</code>在 <code>segment</code> 的前面，作为一个段的名称，这个段最终将被编译、链接程序处理为一个段的段地址</li>
+</ul>
+</li>
+</ul>
+<h2 id="程序的结构"><a href="# 程序的结构" class="headerlink" title="程序的结构"></a>程序的结构</h2><ol>
+<li><p>定义一个程序段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	:</span><br><span class="line">abc ends</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>在段中写入指令，实现任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>指出程序在何时结束</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+<li><p>将程序段和寄存器联系起来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">assume cs:abc</span><br><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="程序返回"><a href="# 程序返回" class="headerlink" title="程序返回"></a>程序返回</h2><ul>
+<li>当一个程序结束后，将 CPU 的控制权交还给是他得以运行的程序，这个过程就叫程序返回</li>
+<li>在程序的末尾添加返回的程序段以实现程序返回</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 4c00H</span><br><span class="line">int 21H</span><br></pre></td></tr></table></figure>
+<h2 id="语法错误和逻辑错误"><a href="# 语法错误和逻辑错误" class="headerlink" title="语法错误和逻辑错误"></a>语法错误和逻辑错误</h2><h1 id="4-3- 编辑源程序"><a href="#4-3- 编辑源程序" class="headerlink" title="4.3 编辑源程序"></a>4.3 编辑源程序</h1><ul>
+<li>可以使用 <code>Edit</code> 的方式编辑源程序</li>
+<li>也可以使用其他类型文本编辑器，然后保存后缀为 <code>asm</code> 文件</li>
+</ul>
+<h1 id="4-4- 编译"><a href="#4-4- 编译" class="headerlink" title="4.4 编译"></a>4.4 编译</h1><ul>
+<li><code>source.asm</code>–&gt;<code>target.obj</code><ul>
+<li>源文件编译之后产生目标文件</li>
+<li>中途可以选择生成 <strong> 列表文件</strong>，这个文件是编译器将源程序编译为目标文件的过程中产生的中间结果</li>
+<li>中途还可以加入 <strong> 交叉引用文件</strong></li>
+</ul>
+</li>
+<li>编译环境 <br> 编译的环境，从 windows 的 <code>masm</code>和 <code>ml</code> 到 Linux 的<code>fasm</code>，不一而足。不同的环境对编译伪指令的支持不一样，需要查阅文档。</li>
+</ul>
+<h1 id="4-5- 链接"><a href="#4-5- 链接" class="headerlink" title="4.5 链接"></a>4.5 链接</h1><ul>
+<li><code>target.obj</code> –&gt; <em>Linked</em> –&gt; <code>execute.exe</code><ul>
+<li>将目标文件链接之后产生可执行文件</li>
+</ul>
+</li>
+<li>链接环境 <br>windows 下的<code>link.exe</code> 和<code>ml.exe</code></li>
+<li>链接的作用是什么？<ul>
+<li>如果源程序很大，可以将它分为多个源程序来编译，每个源程序编译成目标文件后，再用链接程序将它们链接到一起，生成一个可执行文件</li>
+<li>程序中调用了某个库文件中的子程序，需要将这个库文件和该程序生成的目标文件链接到一起，生成一个可执行文件</li>
+<li>一个源程序编译后，得到了存有机器码的目标文件，目标文件中的有些内容不能直接用来生成可执行文件，链接程序将这些内容处理为最终的可执行信息</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-6- 谁来执行可执行文件？"><a href="#4-6- 谁来执行可执行文件？" class="headerlink" title="4.6 谁来执行可执行文件？"></a>4.6 谁来执行可执行文件？</h1><ul>
+<li>CPU 控制权<ul>
+<li>在 DOS 中，可执行文件中的程序 <code>P1</code> 若要运行，必须由一个正在运行的程序 <code>P2</code>，将<code>P1</code> 从可执行文件中载入内存，将 CPU 的控制权交给它；当 <code>P1</code> 运行完毕后，<code>P1</code>将 CPU 控制权交还<code>P2</code></li>
+</ul>
+</li>
+</ul>
+<p>在上述程序中，将 <code>1.exe</code> 载入内存的，就是<code>shell</code>。</p>
+<h3 id="操作系统的 -Shell"><a href="# 操作系统的 -Shell" class="headerlink" title="操作系统的 Shell"></a>操作系统的 Shell</h3><ul>
+<li>任何通用的操作系统，都要提供一个 shell （外壳）程序，供操作人员使用这个程序来操作计算机</li>
+<li>DOS 的 shell<ul>
+<li>DOS 中有一个<code>command.com</code>，这个被称为命令解释器的东西就是 DOS 系统的 shell 了</li>
+<li>DOS 启动完成初始化之后，就会运行<code>command.com</code></li>
+<li><code>command.com</code>运行后，执行完其他任务之后，在屏幕上显示出当前盘符和路径组成的提示符，等待用户输入</li>
+</ul>
+</li>
+</ul>
+<h1 id="4-9- 程序执行过程的跟踪"><a href="#4-9- 程序执行过程的跟踪" class="headerlink" title="4.9 程序执行过程的跟踪"></a>4.9 程序执行过程的跟踪</h1><ul>
+<li>为了查看程序运行过程的细节，以便跟踪错误，我们可以使用 <code>debug</code> 来查看单步执行的过程</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debug 1.exe</span><br></pre></td></tr></table></figure>
+<p>进入 <code>debug</code> 环境后，就可以使用 <code>debug</code> 的指令来控制程序的运行了。</p>
+<ul>
+<li><code>r</code><ul>
+<li><code>CX</code>寄存器表示当前程序的长度</li>
+</ul>
+</li>
+</ul>
+<h3 id="程序被藏在了哪里？"><a href="# 程序被藏在了哪里？" class="headerlink" title="程序被藏在了哪里？"></a>程序被藏在了哪里？</h3><ul>
+<li><code>debug</code>会先找一个单元作为起止地址为<code>SA:0000</code>（即起止地址的偏移地址为 0）的容量足够的空闲内存区</li>
+<li>在这段内存区的前 256 个字节中，创建一个称为程序段前缀（PSP）的数据区，DOS 要利用 PSP 来和被加载的程序进行通信</li>
+<li>从这段内存区的 256 字节处开始（在 PSP 的后面），将程序装入，程序的地址被设为<code>SA+10H:0</code></li>
+<li>将该段内存区的段地址存入 <code>ds</code> 中，初始化其他相关寄存器后，设置 <code>CS:IP</code> 指向程序的入口</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_2017_7.png" alt="EXE 文件中程序的加载过程"></p>
+<ul>
+<li><code>int 21</code> 执行之后，程序显示出 <code>Program terminated normally</code> 返回到 <code>debug</code> 中，则表示程序正常结束了<ul>
+<li>要使用 <code>P</code> 命令执行<code>int 21</code></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 计算机技能 </category>
+            
+            <category> 汇编基础 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> assembly </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[4 积极的环境能改变人]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/4.0-positive-environment-can-change-person/</url>
+      <content type="html"><![CDATA[<h3 id="改变"><a href="# 改变" class="headerlink" title="改变"></a>改变</h3><ul>
+<li>传播真正有用的东西<ul>
+<li>传播真实的知识</li>
+<li>研究</li>
+</ul>
+</li>
+<li>“精英民主化”<ul>
+<li>学习优秀的，让全体都变得优秀</li>
+</ul>
+</li>
+<li>“阻止改变的障碍”<ul>
+<li>低估了自己带来变化的能力</li>
+</ul>
+</li>
+<li>“改变如何发生”？<ul>
+<li>改变可以呈几何级数扩散 &lt;–&gt; 理解人群中的指数效应 &lt;–&gt; 扩大影响力</li>
+<li>“蝴蝶效应”</li>
+<li>“六度分离现象”</li>
+<li>“微笑效应”</li>
+</ul>
+</li>
+<li>“凭外因无法令人幸福”<ul>
+<li>剧烈的外界环境变化对幸福感的影响只持续一段时间，之后将会回到原来的水平</li>
+<li>一旦满足基本需求之后，幸福感将不会再有很大提升</li>
+<li>并不是说毫无变化，只是外界某一因素 剧烈变化，易会导致其他因素协同变化，人生会出现新的体验，会让你开心亦会让你伤心，所以幸福值又回到了原来水平<ul>
+<li>社会制度影响除外，民主制度下的人们比独裁统治下的人们更幸福（可能是后者没有得到基本的满足</li>
+</ul>
+</li>
+<li>“降低期望不能根本性提高幸福值”<ul>
+<li>只能维持一段时间</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>“正确的期望才能获得幸福”<ul>
+<li>感受幸福的意愿和可能性主要取决于 <strong> 我们的精神状态</strong><ul>
+<li>而不是银行存款或其他</li>
+</ul>
+</li>
+<li>关键在于：<ul>
+<li>改变我们的观念和精神状态</li>
+<li>在于改变我们看待这个世界的方式、看待成败的方式</li>
+<li>在于我们选择去理解什么、去关注什么</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="人性"><a href="# 人性" class="headerlink" title="人性"></a>人性</h3><ul>
+<li>人性是否应该受到限制？<ul>
+<li>人性约束观：认为人性无法改变，他是恒定的。我们有特定的本能、偏好，他们是固定不变的；作为一个物种，与生俱来的；我们身上的缺点无法被改变<ul>
+<li>除了放弃之外，可以选择对其进行引导；建立体制引导缺陷</li>
+</ul>
+</li>
+<li>非人性约束观：认为人性可以不断进步；人性可以得到完善<ul>
+<li>建立体制完善缺陷、改善缺陷</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>“成为平凡人”  – 人性约束观<ul>
+<li>生活具有多样性，不是一直都是积极的</li>
+<li>不要为了“积极”而积极，这样会付出极大的成本并且往往不遂人意</li>
+<li>留给自己一个私人的空间，在这个房间里做一个凡人</li>
+<li>“动机悖论”：善于接受自己的情绪，不要过度压抑</li>
+</ul>
+</li>
+<li>情感、行为和认知<ul>
+<li>情感 &lt;–&gt; 情绪：情绪没有正邪之分；糟糕的情绪亦是人的本性<ul>
+<li>问题在于：<strong>我用什么态度对待和表达情绪</strong>？ </li>
+</ul>
+</li>
+<li>行为：表达情绪的方式<ul>
+<li>这个问题就涉及到道德领域，即有好坏之分；我们可以选择道德或不道德的方式对待其他人</li>
+</ul>
+</li>
+<li>认知：改变自己对糟糕情绪的看法<ul>
+<li>真诚地面对好坏情绪</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>“主动接受”<ul>
+<li>识别好坏的能力</li>
+</ul>
+</li>
+<li>冥想<ul>
+<li>静坐</li>
+<li>注意了转移到呼吸</li>
+<li>深呼吸</li>
+<li>思考世界和我们的联系、纽带</li>
+<li>深呼吸</li>
+<li>注意力转移到情绪上，接受你的情绪改变，让你的情绪随呼吸流出</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[8 使用 RecyclerView 显示列表]]></title>
       <url>/Android-%E5%BC%80%E5%8F%91/8-using-recyclerview-to-display-list/</url>
       <content type="html"><![CDATA[<h1 id="前言"><a href="# 前言" class="headerlink" title="前言"></a>前言 </h1><p> 为了实现我们的本次的项目，也就是 <code>CriminalIntent</code> 应用中显示 <code>crime</code> 列表的功能，我们需要用 <code>RecyclerView</code> 来实现列表显示。</p>
@@ -1360,6 +1330,97 @@
             <tag> Android </tag>
             
             <tag> RecyclerView </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[8 感激]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/8.0-appreciate/</url>
+      <content type="html"><![CDATA[<h2 id="是什么阻止我们乐观？"><a href="# 是什么阻止我们乐观？" class="headerlink" title="是什么阻止我们乐观？"></a>是什么阻止我们乐观？</h2><h3 id="舆论是乐观的杀手"><a href="# 舆论是乐观的杀手" class="headerlink" title="舆论是乐观的杀手"></a>舆论是乐观的杀手</h3><blockquote>
+<p>媒体的职能之一就是突出那些本可以被纠正的错误，并发动大家一起去纠正，去改善。</p>
+</blockquote>
+<ul>
+<li>媒体报道那些糟糕的、负面的信息，加上现在信息过载，加剧了负面信息的传播<ul>
+<li>这是媒体的责任亦是媒体的“偏见”</li>
+<li>过度聚焦负面信息只会加剧负面情绪</li>
+<li>让人对现实产生负面联系<ul>
+<li>过度报道某大公司非法交易 –&gt; 你想变得成功吗？那就得坑蒙拐骗</li>
+<li>过度报道政客丑闻 –&gt; 政客都是骗子</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>“我们需要直面现实，直面负面消息的存在”</li>
+</ul>
+<h2 id="感激"><a href="# 感激" class="headerlink" title="感激"></a>感激</h2><ul>
+<li>发自肺腑的感激能让积极情绪升值</li>
+<li>感激帮助我们创造更积极的环境</li>
+<li>感激能创造“积极情绪的螺旋上升”</li>
+</ul>
+<h3 id="适应性"><a href="# 适应性" class="headerlink" title="适应性"></a>适应性</h3><ul>
+<li>对负面、异常情况的警觉是生存的本能</li>
+<li>对异常情况产生适应性亦是生存本能</li>
+<li>不要对生活“习以为常”<ul>
+<li>不要认为那些平常的事物是“理所当然”的</li>
+</ul>
+</li>
+</ul>
+<h3 id="寻找值得感激的事物"><a href="# 寻找值得感激的事物" class="headerlink" title="寻找值得感激的事物"></a>寻找值得感激的事物</h3><ul>
+<li>让自己更多地关注与生活中美的、积极的事物上</li>
+<li>感激自己身上、周围值得感激的事物</li>
+<li><strong>养成寻找幸福和感激 </strong> 的习惯<ul>
+<li>一旦我们学会感激，我们就不会变得“理所当然”</li>
+</ul>
+</li>
+</ul>
+<h4 id="行动"><a href="# 行动" class="headerlink" title="行动"></a>行动</h4><ul>
+<li>感受每一天<ul>
+<li>“你通常干什么事情会不由自主地专心致志？”</li>
+<li>认真地去做这些事情，不只是做这些事，同时你还在感激生活</li>
+</ul>
+</li>
+</ul>
+<h5 id="在每晚睡前写下五件让你感激的事物"><a href="# 在每晚睡前写下五件让你感激的事物" class="headerlink" title="在每晚睡前写下五件让你感激的事物"></a>在每晚睡前写下五件让你感激的事物</h5><ul>
+<li>如何解决“习以为常”？当这件事已经失去新鲜感之后呢？当这件事已经变成例行公事之后呢？</li>
+<li><p>解决方法：</p>
+<ul>
+<li>引入多种多样的人和事物</li>
+<li>同样的事情多角度描写</li>
+<li><em>艾伦·朗格</em> –&gt; “用心法则”：用心 –&gt; 创造新的区别<ul>
+<li>用心观察，专注于此，发现新的区别</li>
+<li>从专注中保持新鲜感</li>
+</ul>
+</li>
+<li>词语形象化</li>
+</ul>
+<hr>
+<blockquote>
+<p>善用你的眼睛吧，犹如明天你将遭到失明的灾难；聆听乐曲的妙音，似乎你明天就会失聪。<br>抚摸每一件你想要抚摸的物品吧，犹如你明天的触觉将会衰减。嗅闻每一件你想要抚摸的物件 <br> 吧，犹如你明天即将失去嗅觉和味觉一样。 – 海伦·凯勒</p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
             
         </tags>
         
@@ -1729,718 +1790,76 @@
     </entry>
     
     <entry>
-      <title><![CDATA[4 第一个程序]]></title>
-      <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/4-the-first-program/</url>
-      <content type="html"><![CDATA[<h1 id="4-1- 一个源程序从写出到执行的过程"><a href="#4-1- 一个源程序从写出到执行的过程" class="headerlink" title="4.1 一个源程序从写出到执行的过程"></a>4.1 一个源程序从写出到执行的过程</h1><ol>
-<li>编写汇编源程序<ul>
-<li>产生一个存储源程序的文本文件</li>
+      <title><![CDATA[7 逆境和机遇]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/</url>
+      <content type="html"><![CDATA[<h2 id="如何变得更加乐观"><a href="# 如何变得更加乐观" class="headerlink" title="如何变得更加乐观"></a>如何变得更加乐观 </h2><h3 id="1- 付诸行动"><a href="#1- 付诸行动" class="headerlink" title="1. 付诸行动"></a>1. 付诸行动</h3><p><em> 基于 艾伯特·班杜拉(Albert Bandura) 的研究</em></p>
+<ul>
+<li>不顾事实的夸奖会对目标产生伤害<ul>
+<li>诸如早上起床对镜子里的自己说十句赞美自己的话之类的</li>
 </ul>
 </li>
-<li>对源程序进行编译链接<ul>
-<li>使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件</li>
+<li>一味夸奖不如 <strong> 付诸行动</strong><ul>
+<li><strong>努力和解决问题是通向成功的唯一途径</strong>：通过努力和实践会取得更大的成功</li>
+<li>“让人看到自己的努力，看到自己步入正轨”</li>
+<li>苏林·祁克果(Soren Kierkegarrd) –&gt; “敢于尝试只会暂时失去立足处，不敢尝试将失去自我”</li>
+</ul>
+</li>
+</ul>
+<h3 id="2- 想象：把目标呈现在心中"><a href="#2- 想象：把目标呈现在心中" class="headerlink" title="2. 想象：把目标呈现在心中"></a>2. 想象：把目标呈现在心中 </h3><p><em> 基于 斯蒂芬·科斯林(Stephen Kosslyn) 的研究</em></p>
+<ul>
+<li>“大脑可能分不清楚真实事物和想象事物的区别”</li>
+<li>“模拟练习”<ul>
+<li>引入各种器官，以便使想象更加地真实</li>
+</ul>
+</li>
+</ul>
+<h3 id="3- 认知疗法"><a href="#3- 认知疗法" class="headerlink" title="3. 认知疗法"></a>3. 认知疗法 </h3><p><em> 马丁·塞利格曼(Martin Seligman), 阿伦·贝克(Aaron Temkin Beck)</em></p>
+<ul>
+<li>“感情受思想的驱动”</li>
+</ul>
+<ul>
+<li>Event –&gt; <strong>Evaluation(thought)</strong> –&gt; Emotion<ul>
+<li>如果要想改变情绪，要从想法开始改变</li>
+<li><strong>“重建理性和真实”</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="3Ms- 学说"><a href="#3Ms- 学说" class="headerlink" title="3Ms 学说"></a>3Ms 学说</h3><ul>
+<li>3Ms：三个导致非理性思想的陷阱<ol>
+<li>夸大理论：夸张了已发生的事实 &lt;–&gt; 归纳法与过度归纳<ul>
+<li>归纳法：从已知的事情，来判断未知的类似的事情 –&gt; “这次干得不好” &lt;–&gt; “可能哪里出了问题”</li>
+<li>过度归纳：“这次干得不好” &lt;–&gt; “我很蠢，这类事做不好” &lt;–&gt; “不成功便成仁”</li>
+</ul>
+</li>
+<li>缩小理论：狭隘视野<ul>
+<li>将注意力集中在某一个个体、个例上面</li>
+</ul>
+</li>
+<li>伪造、捏造和情绪化推断<ul>
+<li>推卸责任</li>
+<li>“没人回来帮你把生活过得更美好，你必须承担起生活的责任”</li>
+<li>“情绪不是现实，情绪只是对现实的推断”<ul>
+<li>看清以及理性分析现实</li>
+<li>作出正确的评估</li>
+</ul>
+</li>
 </ul>
 </li>
 </ol>
-<ul>
-<li>可执行文件包含两部分内容<ul>
-<li>程序和数据<ul>
-<li>程序：从源程序中的汇编指令翻译过来的机器码</li>
-<li>数据：源程序中定义的数据</li>
-</ul>
-</li>
-<li>相关的描述信息<ul>
-<li>描述类似程序多大、占用多少内存空间等等</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>执行可执行文件中的程序<ul>
-<li>操作系统依照可执行文件中的描述信息，将可执行文件中的机器码和数据加载入内存，并进行相关的初始化（比如设置 CS:IP 指向第一条要执行的指令），容纳后由 CPU 执行程序</li>
-</ul>
-</li>
-</ol>
-<h1 id="4-2- 源程序"><a href="#4-2- 源程序" class="headerlink" title="4.2 源程序"></a>4.2 源程序 </h1><p> 下面时一段简单的汇编程序：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codesg</span><br><span class="line">codesg segment</span><br><span class="line">    mov ax, 0123H</span><br><span class="line">    mov bx, 0456H</span><br><span class="line">    add ax, bx</span><br><span class="line">    add ax, ax</span><br><span class="line"></span><br><span class="line">    mov ax, 4c00H</span><br><span class="line">    int 21H</span><br><span class="line">codesg ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p><strong>程序说明</strong></p>
-<h2 id="伪指令"><a href="# 伪指令" class="headerlink" title="伪指令"></a>伪指令 </h2><p> 在汇编程序中有两种指令：</p>
-<ul>
-<li>汇编指令<ul>
-<li>对应机器码，被编译为机器指令，最终被 CPU 执行</li>
-</ul>
-</li>
-<li>伪指令<ul>
-<li>编译器执行伪指令。编译器将根据伪指令来进行相关的编译工作</li>
-</ul>
-</li>
-</ul>
-<p>在上面的例子中的伪指令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">XXX segment</span><br><span class="line">	:</span><br><span class="line">	:</span><br><span class="line">	:</span><br><span class="line">XXX ends</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li><p><code>segment</code>和 <code>ends</code> 是成对使用的伪指令</p>
-<ul>
-<li><p>这是在写可被编译器编译的汇编程序时必须要用到的一对伪指令</p>
-</li>
-<li><p><code>segmnet</code>和 <code>ends</code> 的功能是定义一个段</p>
-<ul>
-<li><code>segment</code>说明一个段的开始</li>
-<li><code>ends</code>说明一个段的结束</li>
-</ul>
-</li>
-<li><p>使用格式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">段名 segment</span><br><span class="line">	:</span><br><span class="line">段名 ends</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<p><em>一个汇编程序由多个段组成，这些段被用来存放代码、数据或当作栈空间来使用</em></p>
-<ul>
-<li><code>end</code><ul>
-<li>汇编程序的结束标记</li>
-<li>如果程序写完了，就要在结尾处加上指令<code>end</code>，否则编译器无法知道程序在何处结束</li>
-</ul>
-</li>
-<li><code>assume</code><ul>
-<li>这条伪指令的含义为“假设”。他假设某一段寄存器和程序中的某一个 <code>segment...ends</code> 定义的段相关联，通过 <code>assume</code> 说明这种关联</li>
-<li>在需要的情况下，编译程序可以将段寄存器和某一个具体的段相联系</li>
-</ul>
-</li>
-</ul>
-<p><em>在例子中，<code>code segment...codeseg ends</code>定义了一个名为 <code>codeseg</code> 的段，在这个段中存放代码，所以这个段是一个代码段。在程序的开头，用 <code>assume cs:codeseg</code> 将用作代码段的段 <code>codeseg</code> 和 CPU 中的段寄存器 <code>cs</code> 联系起来</em>。</p>
-<h2 id="源程序中的“程序”"><a href="# 源程序中的“程序”" class="headerlink" title="源程序中的“程序”"></a>源程序中的“程序”</h2><p>用汇编语言写的源程序，包括伪指令和汇编指令：</p>
-<ul>
-<li>汇编指令组成了最终由计算机执行的程序</li>
-<li>源程序中的伪指令由编译器执行</li>
-</ul>
-<p><strong>源程序汇总最终由计算机执行、处理的程序或数据，称为程序 </strong>。<strong> 程序最先以汇编指令的形式存在于源程序中，经过编译、链接后转变为机器码，存储在可执行文件中</strong>。</p>
-<p><img src="https://img.rosuh.me/wiki/wiki_2017_f.png" alt="程序经编译链接后变为机器码"></p>
-<h2 id="标号"><a href="# 标号" class="headerlink" title="标号"></a>标号</h2><ul>
-<li>源程序中除了汇编指令和伪指令外，还有一些标号，比如<code>codeseg</code></li>
-<li>一个标号指代了一个地址<ul>
-<li><code>codeseg</code>在 <code>segment</code> 的前面，作为一个段的名称，这个段最终将被编译、链接程序处理为一个段的段地址</li>
-</ul>
-</li>
-</ul>
-<h2 id="程序的结构"><a href="# 程序的结构" class="headerlink" title="程序的结构"></a>程序的结构</h2><ol>
-<li><p>定义一个程序段</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	:</span><br><span class="line">abc ends</span><br></pre></td></tr></table></figure>
-<p>​</p>
-</li>
-<li><p>在段中写入指令，实现任务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br></pre></td></tr></table></figure>
-<p>​</p>
-</li>
-<li><p>指出程序在何时结束</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-<p>​</p>
-</li>
-<li><p>将程序段和寄存器联系起来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">assume cs:abc</span><br><span class="line">abc segment</span><br><span class="line">	mov ax, 2</span><br><span class="line">	add ax, ax</span><br><span class="line">	add ax, ax</span><br><span class="line">abc ends</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h2 id="程序返回"><a href="# 程序返回" class="headerlink" title="程序返回"></a>程序返回</h2><ul>
-<li>当一个程序结束后，将 CPU 的控制权交还给是他得以运行的程序，这个过程就叫程序返回</li>
-<li>在程序的末尾添加返回的程序段以实现程序返回</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 4c00H</span><br><span class="line">int 21H</span><br></pre></td></tr></table></figure>
-<h2 id="语法错误和逻辑错误"><a href="# 语法错误和逻辑错误" class="headerlink" title="语法错误和逻辑错误"></a>语法错误和逻辑错误</h2><h1 id="4-3- 编辑源程序"><a href="#4-3- 编辑源程序" class="headerlink" title="4.3 编辑源程序"></a>4.3 编辑源程序</h1><ul>
-<li>可以使用 <code>Edit</code> 的方式编辑源程序</li>
-<li>也可以使用其他类型文本编辑器，然后保存后缀为 <code>asm</code> 文件</li>
-</ul>
-<h1 id="4-4- 编译"><a href="#4-4- 编译" class="headerlink" title="4.4 编译"></a>4.4 编译</h1><ul>
-<li><code>source.asm</code>–&gt;<code>target.obj</code><ul>
-<li>源文件编译之后产生目标文件</li>
-<li>中途可以选择生成 <strong> 列表文件</strong>，这个文件是编译器将源程序编译为目标文件的过程中产生的中间结果</li>
-<li>中途还可以加入 <strong> 交叉引用文件</strong></li>
-</ul>
-</li>
-<li>编译环境 <br> 编译的环境，从 windows 的 <code>masm</code>和 <code>ml</code> 到 Linux 的<code>fasm</code>，不一而足。不同的环境对编译伪指令的支持不一样，需要查阅文档。</li>
-</ul>
-<h1 id="4-5- 链接"><a href="#4-5- 链接" class="headerlink" title="4.5 链接"></a>4.5 链接</h1><ul>
-<li><code>target.obj</code> –&gt; <em>Linked</em> –&gt; <code>execute.exe</code><ul>
-<li>将目标文件链接之后产生可执行文件</li>
-</ul>
-</li>
-<li>链接环境 <br>windows 下的<code>link.exe</code> 和<code>ml.exe</code></li>
-<li>链接的作用是什么？<ul>
-<li>如果源程序很大，可以将它分为多个源程序来编译，每个源程序编译成目标文件后，再用链接程序将它们链接到一起，生成一个可执行文件</li>
-<li>程序中调用了某个库文件中的子程序，需要将这个库文件和该程序生成的目标文件链接到一起，生成一个可执行文件</li>
-<li>一个源程序编译后，得到了存有机器码的目标文件，目标文件中的有些内容不能直接用来生成可执行文件，链接程序将这些内容处理为最终的可执行信息</li>
-</ul>
-</li>
-</ul>
-<h1 id="4-6- 谁来执行可执行文件？"><a href="#4-6- 谁来执行可执行文件？" class="headerlink" title="4.6 谁来执行可执行文件？"></a>4.6 谁来执行可执行文件？</h1><ul>
-<li>CPU 控制权<ul>
-<li>在 DOS 中，可执行文件中的程序 <code>P1</code> 若要运行，必须由一个正在运行的程序 <code>P2</code>，将<code>P1</code> 从可执行文件中载入内存，将 CPU 的控制权交给它；当 <code>P1</code> 运行完毕后，<code>P1</code>将 CPU 控制权交还<code>P2</code></li>
-</ul>
-</li>
-</ul>
-<p>在上述程序中，将 <code>1.exe</code> 载入内存的，就是<code>shell</code>。</p>
-<h3 id="操作系统的 -Shell"><a href="# 操作系统的 -Shell" class="headerlink" title="操作系统的 Shell"></a>操作系统的 Shell</h3><ul>
-<li>任何通用的操作系统，都要提供一个 shell （外壳）程序，供操作人员使用这个程序来操作计算机</li>
-<li>DOS 的 shell<ul>
-<li>DOS 中有一个<code>command.com</code>，这个被称为命令解释器的东西就是 DOS 系统的 shell 了</li>
-<li>DOS 启动完成初始化之后，就会运行<code>command.com</code></li>
-<li><code>command.com</code>运行后，执行完其他任务之后，在屏幕上显示出当前盘符和路径组成的提示符，等待用户输入</li>
-</ul>
-</li>
-</ul>
-<h1 id="4-9- 程序执行过程的跟踪"><a href="#4-9- 程序执行过程的跟踪" class="headerlink" title="4.9 程序执行过程的跟踪"></a>4.9 程序执行过程的跟踪</h1><ul>
-<li>为了查看程序运行过程的细节，以便跟踪错误，我们可以使用 <code>debug</code> 来查看单步执行的过程</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">debug 1.exe</span><br></pre></td></tr></table></figure>
-<p>进入 <code>debug</code> 环境后，就可以使用 <code>debug</code> 的指令来控制程序的运行了。</p>
-<ul>
-<li><code>r</code><ul>
-<li><code>CX</code>寄存器表示当前程序的长度</li>
-</ul>
-</li>
-</ul>
-<h3 id="程序被藏在了哪里？"><a href="# 程序被藏在了哪里？" class="headerlink" title="程序被藏在了哪里？"></a>程序被藏在了哪里？</h3><ul>
-<li><code>debug</code>会先找一个单元作为起止地址为<code>SA:0000</code>（即起止地址的偏移地址为 0）的容量足够的空闲内存区</li>
-<li>在这段内存区的前 256 个字节中，创建一个称为程序段前缀（PSP）的数据区，DOS 要利用 PSP 来和被加载的程序进行通信</li>
-<li>从这段内存区的 256 字节处开始（在 PSP 的后面），将程序装入，程序的地址被设为<code>SA+10H:0</code></li>
-<li>将该段内存区的段地址存入 <code>ds</code> 中，初始化其他相关寄存器后，设置 <code>CS:IP</code> 指向程序的入口</li>
-</ul>
-<p><img src="https://img.rosuh.me/wiki/wiki_2017_7.png" alt="EXE 文件中程序的加载过程"></p>
-<ul>
-<li><code>int 21</code> 执行之后，程序显示出 <code>Program terminated normally</code> 返回到 <code>debug</code> 中，则表示程序正常结束了<ul>
-<li>要使用 <code>P</code> 命令执行<code>int 21</code></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 计算机技能 </category>
-            
-            <category> 汇编基础 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> assembly </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[4 积极的环境能改变人]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/4.0-positive-environment-can-change-person/</url>
-      <content type="html"><![CDATA[<h3 id="改变"><a href="# 改变" class="headerlink" title="改变"></a>改变</h3><ul>
-<li>传播真正有用的东西<ul>
-<li>传播真实的知识</li>
-<li>研究</li>
-</ul>
-</li>
-<li>“精英民主化”<ul>
-<li>学习优秀的，让全体都变得优秀</li>
-</ul>
-</li>
-<li>“阻止改变的障碍”<ul>
-<li>低估了自己带来变化的能力</li>
-</ul>
-</li>
-<li>“改变如何发生”？<ul>
-<li>改变可以呈几何级数扩散 &lt;–&gt; 理解人群中的指数效应 &lt;–&gt; 扩大影响力</li>
-<li>“蝴蝶效应”</li>
-<li>“六度分离现象”</li>
-<li>“微笑效应”</li>
-</ul>
-</li>
-<li>“凭外因无法令人幸福”<ul>
-<li>剧烈的外界环境变化对幸福感的影响只持续一段时间，之后将会回到原来的水平</li>
-<li>一旦满足基本需求之后，幸福感将不会再有很大提升</li>
-<li>并不是说毫无变化，只是外界某一因素 剧烈变化，易会导致其他因素协同变化，人生会出现新的体验，会让你开心亦会让你伤心，所以幸福值又回到了原来水平<ul>
-<li>社会制度影响除外，民主制度下的人们比独裁统治下的人们更幸福（可能是后者没有得到基本的满足</li>
-</ul>
-</li>
-<li>“降低期望不能根本性提高幸福值”<ul>
-<li>只能维持一段时间</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>“正确的期望才能获得幸福”<ul>
-<li>感受幸福的意愿和可能性主要取决于 <strong> 我们的精神状态</strong><ul>
-<li>而不是银行存款或其他</li>
-</ul>
-</li>
-<li>关键在于：<ul>
-<li>改变我们的观念和精神状态</li>
-<li>在于改变我们看待这个世界的方式、看待成败的方式</li>
-<li>在于我们选择去理解什么、去关注什么</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="人性"><a href="# 人性" class="headerlink" title="人性"></a>人性</h3><ul>
-<li>人性是否应该受到限制？<ul>
-<li>人性约束观：认为人性无法改变，他是恒定的。我们有特定的本能、偏好，他们是固定不变的；作为一个物种，与生俱来的；我们身上的缺点无法被改变<ul>
-<li>除了放弃之外，可以选择对其进行引导；建立体制引导缺陷</li>
-</ul>
-</li>
-<li>非人性约束观：认为人性可以不断进步；人性可以得到完善<ul>
-<li>建立体制完善缺陷、改善缺陷</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>“成为平凡人”  – 人性约束观<ul>
-<li>生活具有多样性，不是一直都是积极的</li>
-<li>不要为了“积极”而积极，这样会付出极大的成本并且往往不遂人意</li>
-<li>留给自己一个私人的空间，在这个房间里做一个凡人</li>
-<li>“动机悖论”：善于接受自己的情绪，不要过度压抑</li>
-</ul>
-</li>
-<li>情感、行为和认知<ul>
-<li>情感 &lt;–&gt; 情绪：情绪没有正邪之分；糟糕的情绪亦是人的本性<ul>
-<li>问题在于：<strong>我用什么态度对待和表达情绪</strong>？ </li>
-</ul>
-</li>
-<li>行为：表达情绪的方式<ul>
-<li>这个问题就涉及到道德领域，即有好坏之分；我们可以选择道德或不道德的方式对待其他人</li>
-</ul>
-</li>
-<li>认知：改变自己对糟糕情绪的看法<ul>
-<li>真诚地面对好坏情绪</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>“主动接受”<ul>
-<li>识别好坏的能力</li>
-</ul>
-</li>
-<li>冥想<ul>
-<li>静坐</li>
-<li>注意了转移到呼吸</li>
-<li>深呼吸</li>
-<li>思考世界和我们的联系、纽带</li>
-<li>深呼吸</li>
-<li>注意力转移到情绪上，接受你的情绪改变，让你的情绪随呼吸流出</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[1 信息、变形和课程简介]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/</url>
-      <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p>
-<ul>
-<li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul>
-<li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>关注点<ul>
-<li>信息本身而不是信息的传递者</li>
-</ul>
-</li>
-<li>以往“自助运动”的鄙陋<ul>
-<li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li>
-</ul>
-</li>
-<li>两个阶段<ul>
-<li>学术阶段</li>
-<li>应用阶段：我如何将这些东西应用到生活中</li>
-</ul>
-</li>
-<li>积极心理学<ul>
-<li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p>
-</blockquote>
-<ul>
-<li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul>
-<li><strong>什么是信息</strong><ul>
-<li>人就像一个容器，接受外界的信息，直到填满整个容器</li>
-<li>信息并不能提高人的生存、生活质量</li>
-<li>信息是客观的，是多面的</li>
-</ul>
-</li>
-<li><strong>什么是变形</strong><ul>
-<li>改变容器的形状</li>
-<li>让信息为我所用</li>
-</ul>
-</li>
-<li><strong>利用信息</strong><ul>
-<li>如何解读信息？如何理解以及关注点？</li>
-<li>不止要获取信息，更要挖掘我们自己的潜能</li>
-</ul>
-</li>
-<li><strong>挖掘潜能</strong><ul>
-<li>“减法比加法更能让人的灵魂成长”</li>
-<li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li>
-</ul>
-</li>
-<li><strong>两面性</strong><ul>
-<li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li>
-</ul>
-</li>
-<li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li>
-<li><strong>本课程的最终内容</strong>：让你成为最好的你</li>
-</ul>
-</li>
-<li>保持向上的生活态度，自信并且保持提问</li>
-</ul>
-<hr>
-<p><em>2017-8-1_第一节课</em></p>
-<p>看了想睡觉…</p>
-<p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p>
-<p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p>
-<p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[5 信念是自我实现的预言]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/5.0-Faith-is-the-realistic-predictions/</url>
-      <content type="html"><![CDATA[<h2 id="追求幸福"><a href="# 追求幸福" class="headerlink" title="追求幸福"></a>追求幸福 </h2><p><strong> 幸福之作用：</strong> </p>
-<ul>
-<li>幸福让人感觉很好<ul>
-<li>幸福就是幸福</li>
-</ul>
-</li>
-<li>幸福对我们的生活、我们的人际关系也产生了积极的影响<ul>
-<li>开拓思路，帮助我们和其他人建立联系，提示自身潜力</li>
-</ul>
-</li>
-<li>“积极情绪的扩展建设理论”<ul>
-<li>积极情绪似乎会扩展人们暂时的想法，充实行动的库存并建立持久的个人资源</li>
-<li>“通过体验积极情绪，人们变得更加富有创造力、更加博学多才、更有韧性、更具社交能力以及更加健康向上”</li>
-</ul>
-</li>
-<li>“积极情绪帮助我们客服消极情绪”<ul>
-<li>当我们被负面情绪所困时，我们的思考变得狭隘和压抑；我们的注意力仅停滞在事情本身</li>
-</ul>
-</li>
-</ul>
-<h4 id="情绪转换"><a href="# 情绪转换" class="headerlink" title="情绪转换"></a>情绪转换</h4><ul>
-<li>糟糕情绪的 “N &amp; C” 循环<ul>
-<li>Narrow and Constrict &lt;–&gt; 遭受痛苦</li>
-</ul>
-</li>
-<li>积极情绪的 “B &amp; B” 循环<ul>
-<li>Broaden and Build &lt;–&gt; 积极情绪 &lt;–&gt; 扩展思路和视野</li>
-<li>来源可能是一部喜剧电影、一次深呼吸、一次与朋友间的互动</li>
-</ul>
-</li>
-<li>挑战在于：如何将积极情绪和“允许自己成为普通人”的想法结合起来，去体会情绪，转移情绪；不再不如恶性循环之中</li>
-</ul>
-<h4 id="解决问题而非逃避问题"><a href="# 解决问题而非逃避问题" class="headerlink" title="解决问题而非逃避问题"></a>解决问题而非逃避问题</h4><ul>
-<li>接受自己的糟糕的情绪</li>
-<li>选择一种方式转换为积极情绪</li>
-</ul>
-<p>这样的过程会提高我们对情绪的调控能力，进而提高我们对糟糕情绪的免疫力；使我们的思路更加清晰和开阔。</p>
-<h4 id="追求自我的幸福是自私的行为吗？"><a href="# 追求自我的幸福是自私的行为吗？" class="headerlink" title="追求自我的幸福是自私的行为吗？"></a>追求自我的幸福是自私的行为吗？</h4><ul>
-<li>幸福是一个正和博弈<ul>
-<li>幸福会传染，助人亦助己</li>
-</ul>
-</li>
-<li>自私 ≠ 不道德</li>
-</ul>
-<h5 id="传播幸福最好的方式就是经营好自己的幸福"><a href="# 传播幸福最好的方式就是经营好自己的幸福" class="headerlink" title="传播幸福最好的方式就是经营好自己的幸福"></a>传播幸福最好的方式就是经营好自己的幸福 </h5><h2 id="信念是自我实现的预言"><a href="# 信念是自我实现的预言" class="headerlink" title="信念是自我实现的预言"></a> 信念是自我实现的预言</h2><ul>
-<li>信念常常决定我们的行为、决定我们表现的优劣<ul>
-<li>它是我们成功和幸福最精准的预测</li>
-</ul>
-</li>
-<li>“期待效应”<ul>
-<li>“皮格马利翁”实验</li>
-</ul>
-</li>
-<li>“积极情景创造积极效应”<ul>
-<li>“阿希从众实验”</li>
-<li>“菲利普津巴多监狱实验”</li>
-<li>“艾伦·蓝格实验”</li>
-<li>巴吉（Barge）研究</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[11 习惯]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/11-habit/</url>
-      <content type="html"><![CDATA[<h2 id="自制力和成功"><a href="# 自制力和成功" class="headerlink" title="自制力和成功"></a>自制力和成功</h2><ul>
-<li>自制力大小和成功没有必然联系<ul>
-<li>大部分人的自制力都是固定的，不会发生改变的</li>
-<li>仅有自制力比用不足以获得成功、获得改变或获得幸福</li>
-<li>“自制力有限假说” &lt;–&gt; <em>罗伊·鲍迈斯特(Roy Baumeister) 研究</em> </li>
-</ul>
-</li>
-</ul>
-<h2 id="习惯成自然"><a href="# 习惯成自然" class="headerlink" title="习惯成自然"></a>习惯成自然</h2><blockquote>
-<p>养成习惯需要定义严谨的行为模式，还要在特定的时间付诸行动、需要以深深扎根的价值观为驱动力 – 托尼·施瓦茨 (Tony Schwartz) 和吉姆·勒尔(Jim Loehr) </p>
-</blockquote>
-<ul>
-<li>成功离不开孜孜不倦的训练和学习<ul>
-<li>自制力有限所以并非全然依靠自制力去学习或行动</li>
-<li>养成习惯之后更容易进行训练和学习 &lt;–&gt; 海明威和达芬奇</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>将行为养成习惯之后，付出的自制力将大幅降低甚至为 0 <ul>
-<li>早上起床刷牙</li>
-<li>运动员长年累月的训练</li>
-</ul>
-</li>
-<li>养成习惯需要足够的自制力<ul>
-<li>不要尝试在一段时间内养成多个习惯，因为自制力是有限的，这样更容易导致全盘皆输</li>
-<li>​</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[2 为什么要学习积极心理学]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/</url>
-      <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p>
-<ul>
-<li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul>
-<li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li>
-</ul>
-</li>
-<li> 为什么要学习积极心理学？<ul>
-<li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul>
-<li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li>
-</ul>
-</li>
-<li> 快乐并不只是对痛苦的否定 </li>
-<li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li>
-</ul>
-</li>
-</ul>
-<ul>
-<li> 如何研究出有效的方法？（如何探究积极心理学？<ul>
-<li> 解决方法就在问题本身：特定问题创造特定现实 </li>
-<li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul>
-<li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li>
-<li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li>
-</ul>
-</li>
-<li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li>
-</ul>
-</li>
-<li> 改善眼界 <ul>
-<li> 关注优点、设立目标 –&gt; 内心理想主义 </li>
-<li> 注意现实、立刻行动 –&gt; 客观现实主义 </li>
-</ul>
-</li>
-<li> 利人利己的上升螺旋 <ul>
-<li> 承认需要（承认弱点）</li>
-<li> 接受帮助并帮助他人 </li>
-<li> 善于选择优良的社会帮助 </li>
-</ul>
 </li>
-<li> 适应力 <ul>
-<li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li>
-<li> 养成：<ul>
-<li> 一个榜样 </li>
-<li>“我们要好好树立自己的信念”<ul>
-<li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li>
-<li>“别再埋怨”“别再埋怨社会、老师、父母”</li>
+<li>实践<ul>
+<li>我的结论是否贴合现实？</li>
+<li>它是否理性？</li>
+<li>我是否忽略了重要的（现实）因素？</li>
+<li>我仍需要考虑什么重要因素？</li>
+<li>“我在哪里扭曲了事实？”</li>
+<li>“我在哪里扭曲了自己的评价？扭曲了自己的思想？从而导致了不必要的负面情绪”</li>
 </ul>
 </li>
-<li> 将目光放在长处和优点上并加以培养 </li>
-<li> 自我激励 </li>
 </ul>
-</li>
-<li>“如何让自己的大学时光变得更加有意义？”<ul>
-<li> 你要为这段时光负起责任 </li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[3 如何避免惬意的麻木]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/</url>
-      <content type="html"><![CDATA[<ul>
-<li>惬意的麻木(Confortably numb)</li>
-<li>积极心理学主要关注的是健康模式（health model） <ul>
-<li>Saluto-genesis</li>
-<li>生理、身体和心理的健康之源在哪？</li>
-</ul>
-</li>
-<li>健康模式下不同层面的解决方式<ul>
-<li>缺陷：我们只关注自身的不足</li>
-<li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li>
-<li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li>
-<li>行动：认清兴趣、培养优势以及追求激情<ul>
-<li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li>
-</ul>
-</li>
-<li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li>
-</ul>
-</li>
-</ul>
-<h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul>
-<li>搭建桥梁：不同学科、学术和社会等</li>
-<li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li>
-<li>承认人性的缺漏还是从心理层面完善他？</li>
-<li>幸福是并且应当是我们的最终追求和道德追求</li>
-</ul>
-<h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul>
-<li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul>
-<li>相信改变是会发生的</li>
-</ul>
-</li>
-<li>理论和实践之间有很多代沟<ul>
-<li>教师和学生：马福·科林斯计划，皮革马利温效应</li>
-<li>如何赞扬别人和提高自信？如何培训自我效能？</li>
-<li>瑜伽能减少入狱人员的重新犯罪几率</li>
-<li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li>
-<li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li>
-<li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li>
-</ul>
-</li>
-<li>考虑实际，消除象牙塔和社会之间的隔阂<ul>
-<li>作为学生要承担起上述责任</li>
-</ul>
-</li>
-<li>“生长锥统计学”<ul>
-<li>研究一般情况有助于观察当下，但无助于改善当下</li>
-<li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li>
-<li>心理学上的作为“普通”，实际上是“平均精神状态”<ul>
-<li>这一概念会导致全体精神状态下降</li>
-</ul>
-</li>
-<li>与“精英主义”的区别<ul>
-<li>研究最优秀的人同时也研究普通的人</li>
-<li>研究最优秀的人对所有人是有益的</li>
-</ul>
-</li>
-</ul>
-</li>
+<h3 id="危机和机遇"><a href="# 危机和机遇" class="headerlink" title="危机和机遇"></a>危机和机遇</h3><ul>
+<li>几乎所有杰出的人，都是经历过巨大的考验才成就辉煌</li>
+<li><strong>挖掘苦难中的价值</strong></li>
 </ul>
 ]]></content>
       
@@ -2639,166 +2058,67 @@
     </entry>
     
     <entry>
-      <title><![CDATA[7 逆境和机遇]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/7.0-adversity-or-chance/</url>
-      <content type="html"><![CDATA[<h2 id="如何变得更加乐观"><a href="# 如何变得更加乐观" class="headerlink" title="如何变得更加乐观"></a>如何变得更加乐观 </h2><h3 id="1- 付诸行动"><a href="#1- 付诸行动" class="headerlink" title="1. 付诸行动"></a>1. 付诸行动</h3><p><em> 基于 艾伯特·班杜拉(Albert Bandura) 的研究</em></p>
+      <title><![CDATA[5 信念是自我实现的预言]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/5.0-Faith-is-the-realistic-predictions/</url>
+      <content type="html"><![CDATA[<h2 id="追求幸福"><a href="# 追求幸福" class="headerlink" title="追求幸福"></a>追求幸福 </h2><p><strong> 幸福之作用：</strong> </p>
 <ul>
-<li>不顾事实的夸奖会对目标产生伤害<ul>
-<li>诸如早上起床对镜子里的自己说十句赞美自己的话之类的</li>
+<li>幸福让人感觉很好<ul>
+<li>幸福就是幸福</li>
 </ul>
 </li>
-<li>一味夸奖不如 <strong> 付诸行动</strong><ul>
-<li><strong>努力和解决问题是通向成功的唯一途径</strong>：通过努力和实践会取得更大的成功</li>
-<li>“让人看到自己的努力，看到自己步入正轨”</li>
-<li>苏林·祁克果(Soren Kierkegarrd) –&gt; “敢于尝试只会暂时失去立足处，不敢尝试将失去自我”</li>
+<li>幸福对我们的生活、我们的人际关系也产生了积极的影响<ul>
+<li>开拓思路，帮助我们和其他人建立联系，提示自身潜力</li>
 </ul>
 </li>
-</ul>
-<h3 id="2- 想象：把目标呈现在心中"><a href="#2- 想象：把目标呈现在心中" class="headerlink" title="2. 想象：把目标呈现在心中"></a>2. 想象：把目标呈现在心中 </h3><p><em> 基于 斯蒂芬·科斯林(Stephen Kosslyn) 的研究</em></p>
-<ul>
-<li>“大脑可能分不清楚真实事物和想象事物的区别”</li>
-<li>“模拟练习”<ul>
-<li>引入各种器官，以便使想象更加地真实</li>
+<li>“积极情绪的扩展建设理论”<ul>
+<li>积极情绪似乎会扩展人们暂时的想法，充实行动的库存并建立持久的个人资源</li>
+<li>“通过体验积极情绪，人们变得更加富有创造力、更加博学多才、更有韧性、更具社交能力以及更加健康向上”</li>
 </ul>
 </li>
-</ul>
-<h3 id="3- 认知疗法"><a href="#3- 认知疗法" class="headerlink" title="3. 认知疗法"></a>3. 认知疗法 </h3><p><em> 马丁·塞利格曼(Martin Seligman), 阿伦·贝克(Aaron Temkin Beck)</em></p>
-<ul>
-<li>“感情受思想的驱动”</li>
-</ul>
-<ul>
-<li>Event –&gt; <strong>Evaluation(thought)</strong> –&gt; Emotion<ul>
-<li>如果要想改变情绪，要从想法开始改变</li>
-<li><strong>“重建理性和真实”</strong></li>
+<li>“积极情绪帮助我们客服消极情绪”<ul>
+<li>当我们被负面情绪所困时，我们的思考变得狭隘和压抑；我们的注意力仅停滞在事情本身</li>
 </ul>
 </li>
 </ul>
-<h3 id="3Ms- 学说"><a href="#3Ms- 学说" class="headerlink" title="3Ms 学说"></a>3Ms 学说</h3><ul>
-<li>3Ms：三个导致非理性思想的陷阱<ol>
-<li>夸大理论：夸张了已发生的事实 &lt;–&gt; 归纳法与过度归纳<ul>
-<li>归纳法：从已知的事情，来判断未知的类似的事情 –&gt; “这次干得不好” &lt;–&gt; “可能哪里出了问题”</li>
-<li>过度归纳：“这次干得不好” &lt;–&gt; “我很蠢，这类事做不好” &lt;–&gt; “不成功便成仁”</li>
+<h4 id="情绪转换"><a href="# 情绪转换" class="headerlink" title="情绪转换"></a>情绪转换</h4><ul>
+<li>糟糕情绪的 “N &amp; C” 循环<ul>
+<li>Narrow and Constrict &lt;–&gt; 遭受痛苦</li>
 </ul>
 </li>
-<li>缩小理论：狭隘视野<ul>
-<li>将注意力集中在某一个个体、个例上面</li>
+<li>积极情绪的 “B &amp; B” 循环<ul>
+<li>Broaden and Build &lt;–&gt; 积极情绪 &lt;–&gt; 扩展思路和视野</li>
+<li>来源可能是一部喜剧电影、一次深呼吸、一次与朋友间的互动</li>
 </ul>
 </li>
-<li>伪造、捏造和情绪化推断<ul>
-<li>推卸责任</li>
-<li>“没人回来帮你把生活过得更美好，你必须承担起生活的责任”</li>
-<li>“情绪不是现实，情绪只是对现实的推断”<ul>
-<li>看清以及理性分析现实</li>
-<li>作出正确的评估</li>
+<li>挑战在于：如何将积极情绪和“允许自己成为普通人”的想法结合起来，去体会情绪，转移情绪；不再不如恶性循环之中</li>
+</ul>
+<h4 id="解决问题而非逃避问题"><a href="# 解决问题而非逃避问题" class="headerlink" title="解决问题而非逃避问题"></a>解决问题而非逃避问题</h4><ul>
+<li>接受自己的糟糕的情绪</li>
+<li>选择一种方式转换为积极情绪</li>
+</ul>
+<p>这样的过程会提高我们对情绪的调控能力，进而提高我们对糟糕情绪的免疫力；使我们的思路更加清晰和开阔。</p>
+<h4 id="追求自我的幸福是自私的行为吗？"><a href="# 追求自我的幸福是自私的行为吗？" class="headerlink" title="追求自我的幸福是自私的行为吗？"></a>追求自我的幸福是自私的行为吗？</h4><ul>
+<li>幸福是一个正和博弈<ul>
+<li>幸福会传染，助人亦助己</li>
 </ul>
 </li>
+<li>自私 ≠ 不道德</li>
+</ul>
+<h5 id="传播幸福最好的方式就是经营好自己的幸福"><a href="# 传播幸福最好的方式就是经营好自己的幸福" class="headerlink" title="传播幸福最好的方式就是经营好自己的幸福"></a>传播幸福最好的方式就是经营好自己的幸福 </h5><h2 id="信念是自我实现的预言"><a href="# 信念是自我实现的预言" class="headerlink" title="信念是自我实现的预言"></a> 信念是自我实现的预言</h2><ul>
+<li>信念常常决定我们的行为、决定我们表现的优劣<ul>
+<li>它是我们成功和幸福最精准的预测</li>
 </ul>
 </li>
-</ol>
-</li>
-<li>实践<ul>
-<li>我的结论是否贴合现实？</li>
-<li>它是否理性？</li>
-<li>我是否忽略了重要的（现实）因素？</li>
-<li>我仍需要考虑什么重要因素？</li>
-<li>“我在哪里扭曲了事实？”</li>
-<li>“我在哪里扭曲了自己的评价？扭曲了自己的思想？从而导致了不必要的负面情绪”</li>
+<li>“期待效应”<ul>
+<li>“皮格马利翁”实验</li>
 </ul>
 </li>
+<li>“积极情景创造积极效应”<ul>
+<li>“阿希从众实验”</li>
+<li>“菲利普津巴多监狱实验”</li>
+<li>“艾伦·蓝格实验”</li>
+<li>巴吉（Barge）研究</li>
 </ul>
-<h3 id="危机和机遇"><a href="# 危机和机遇" class="headerlink" title="危机和机遇"></a>危机和机遇</h3><ul>
-<li>几乎所有杰出的人，都是经历过巨大的考验才成就辉煌</li>
-<li><strong>挖掘苦难中的价值</strong></li>
-</ul>
-]]></content>
-      
-        <categories>
-            
-            <category> 软技能 </category>
-            
-            <category> 积极心理学 </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> 哈佛幸福课 </tag>
-            
-            <tag> 笔记 </tag>
-            
-            <tag> 视频 </tag>
-            
-            <tag> 幸福 </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[8 感激]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/8.0-appreciate/</url>
-      <content type="html"><![CDATA[<h2 id="是什么阻止我们乐观？"><a href="# 是什么阻止我们乐观？" class="headerlink" title="是什么阻止我们乐观？"></a>是什么阻止我们乐观？</h2><h3 id="舆论是乐观的杀手"><a href="# 舆论是乐观的杀手" class="headerlink" title="舆论是乐观的杀手"></a>舆论是乐观的杀手</h3><blockquote>
-<p>媒体的职能之一就是突出那些本可以被纠正的错误，并发动大家一起去纠正，去改善。</p>
-</blockquote>
-<ul>
-<li>媒体报道那些糟糕的、负面的信息，加上现在信息过载，加剧了负面信息的传播<ul>
-<li>这是媒体的责任亦是媒体的“偏见”</li>
-<li>过度聚焦负面信息只会加剧负面情绪</li>
-<li>让人对现实产生负面联系<ul>
-<li>过度报道某大公司非法交易 –&gt; 你想变得成功吗？那就得坑蒙拐骗</li>
-<li>过度报道政客丑闻 –&gt; 政客都是骗子</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>“我们需要直面现实，直面负面消息的存在”</li>
-</ul>
-<h2 id="感激"><a href="# 感激" class="headerlink" title="感激"></a>感激</h2><ul>
-<li>发自肺腑的感激能让积极情绪升值</li>
-<li>感激帮助我们创造更积极的环境</li>
-<li>感激能创造“积极情绪的螺旋上升”</li>
-</ul>
-<h3 id="适应性"><a href="# 适应性" class="headerlink" title="适应性"></a>适应性</h3><ul>
-<li>对负面、异常情况的警觉是生存的本能</li>
-<li>对异常情况产生适应性亦是生存本能</li>
-<li>不要对生活“习以为常”<ul>
-<li>不要认为那些平常的事物是“理所当然”的</li>
-</ul>
-</li>
-</ul>
-<h3 id="寻找值得感激的事物"><a href="# 寻找值得感激的事物" class="headerlink" title="寻找值得感激的事物"></a>寻找值得感激的事物</h3><ul>
-<li>让自己更多地关注与生活中美的、积极的事物上</li>
-<li>感激自己身上、周围值得感激的事物</li>
-<li><strong>养成寻找幸福和感激 </strong> 的习惯<ul>
-<li>一旦我们学会感激，我们就不会变得“理所当然”</li>
-</ul>
-</li>
-</ul>
-<h4 id="行动"><a href="# 行动" class="headerlink" title="行动"></a>行动</h4><ul>
-<li>感受每一天<ul>
-<li>“你通常干什么事情会不由自主地专心致志？”</li>
-<li>认真地去做这些事情，不只是做这些事，同时你还在感激生活</li>
-</ul>
-</li>
-</ul>
-<h5 id="在每晚睡前写下五件让你感激的事物"><a href="# 在每晚睡前写下五件让你感激的事物" class="headerlink" title="在每晚睡前写下五件让你感激的事物"></a>在每晚睡前写下五件让你感激的事物</h5><ul>
-<li>如何解决“习以为常”？当这件事已经失去新鲜感之后呢？当这件事已经变成例行公事之后呢？</li>
-<li><p>解决方法：</p>
-<ul>
-<li>引入多种多样的人和事物</li>
-<li>同样的事情多角度描写</li>
-<li><em>艾伦·朗格</em> –&gt; “用心法则”：用心 –&gt; 创造新的区别<ul>
-<li>用心观察，专注于此，发现新的区别</li>
-<li>从专注中保持新鲜感</li>
-</ul>
-</li>
-<li>词语形象化</li>
-</ul>
-<hr>
-<blockquote>
-<p>善用你的眼睛吧，犹如明天你将遭到失明的灾难；聆听乐曲的妙音，似乎你明天就会失聪。<br>抚摸每一件你想要抚摸的物品吧，犹如你明天的触觉将会衰减。嗅闻每一件你想要抚摸的物件 <br> 吧，犹如你明天即将失去嗅觉和味觉一样。 – 海伦·凯勒</p>
-</blockquote>
 </li>
 </ul>
 ]]></content>
@@ -2827,36 +2147,123 @@
     </entry>
     
     <entry>
-      <title><![CDATA[9 积极情绪]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/9.0-positive-emotions/</url>
-      <content type="html"><![CDATA[<h2 id="处理痛苦和积极情绪"><a href="# 处理痛苦和积极情绪" class="headerlink" title="处理痛苦和积极情绪"></a>处理痛苦和积极情绪 </h2><p><em> 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究</em></p>
+      <title><![CDATA[11 习惯]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/11-habit/</url>
+      <content type="html"><![CDATA[<h2 id="自制力和成功"><a href="# 自制力和成功" class="headerlink" title="自制力和成功"></a>自制力和成功</h2><ul>
+<li>自制力大小和成功没有必然联系<ul>
+<li>大部分人的自制力都是固定的，不会发生改变的</li>
+<li>仅有自制力比用不足以获得成功、获得改变或获得幸福</li>
+<li>“自制力有限假说” &lt;–&gt; <em>罗伊·鲍迈斯特(Roy Baumeister) 研究</em> </li>
+</ul>
+</li>
+</ul>
+<h2 id="习惯成自然"><a href="# 习惯成自然" class="headerlink" title="习惯成自然"></a>习惯成自然</h2><blockquote>
+<p>养成习惯需要定义严谨的行为模式，还要在特定的时间付诸行动、需要以深深扎根的价值观为驱动力 – 托尼·施瓦茨 (Tony Schwartz) 和吉姆·勒尔(Jim Loehr) </p>
+</blockquote>
 <ul>
-<li>痛苦情绪表达<ul>
-<li>写、说更能化解痛苦情绪</li>
-<li>在脑海中回忆会加剧痛苦情绪</li>
-</ul>
-</li>
-<li>积极情绪<ul>
-<li>说和写反而减弱积极情绪的持续化</li>
-<li>回忆能让积极情绪变得更多</li>
-</ul>
-</li>
-</ul>
-<h3 id="分析和重现情绪"><a href="# 分析和重现情绪" class="headerlink" title="分析和重现情绪"></a>分析和重现情绪</h3><ul>
-<li>分析经历有助于改善痛苦以及消极经历<ul>
-<li>而分析美好的经历并不能增加很多积极情绪</li>
-</ul>
-</li>
-<li>回忆积极情绪能让积极情绪持续更久<ul>
-<li>单纯在脑海里思考只会让该消极情绪更甚<ul>
-<li>PTSD 发生的区域调查</li>
-</ul>
-</li>
+<li>成功离不开孜孜不倦的训练和学习<ul>
+<li>自制力有限所以并非全然依靠自制力去学习或行动</li>
+<li>养成习惯之后更容易进行训练和学习 &lt;–&gt; 海明威和达芬奇</li>
 </ul>
 </li>
 </ul>
 <ul>
-<li><strong>感激练习就是重现经历的练习</strong></li>
+<li>将行为养成习惯之后，付出的自制力将大幅降低甚至为 0 <ul>
+<li>早上起床刷牙</li>
+<li>运动员长年累月的训练</li>
+</ul>
+</li>
+<li>养成习惯需要足够的自制力<ul>
+<li>不要尝试在一段时间内养成多个习惯，因为自制力是有限的，这样更容易导致全盘皆输</li>
+<li>​</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[3 如何避免惬意的麻木]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/3.0-how-can-we-get-beyond-the-comfortably-nomb/</url>
+      <content type="html"><![CDATA[<ul>
+<li>惬意的麻木(Confortably numb)</li>
+<li>积极心理学主要关注的是健康模式（health model） <ul>
+<li>Saluto-genesis</li>
+<li>生理、身体和心理的健康之源在哪？</li>
+</ul>
+</li>
+<li>健康模式下不同层面的解决方式<ul>
+<li>缺陷：我们只关注自身的不足</li>
+<li>改善：应该给予优点同样程度的关注，将成功和愉悦联系在一起</li>
+<li>问题：我们到底擅长什么？如何充分改进？我们的自然倾向是什么？我们将如何度过我们的一生？</li>
+<li>行动：认清兴趣、培养优势以及追求激情<ul>
+<li>问问自己：生活的意义是什么？我的人生目标是什么？我为什么在这里？我毕业之后想做什么？</li>
+</ul>
+</li>
+<li>培养积极心理（乐观、目的性、意义等）等同于增强心理免疫能</li>
+</ul>
+</li>
+</ul>
+<h3 id="积极心理学的基础（本课程的前提"><a href="# 积极心理学的基础（本课程的前提" class="headerlink" title="积极心理学的基础（本课程的前提"></a>积极心理学的基础（本课程的前提</h3><ul>
+<li>搭建桥梁：不同学科、学术和社会等</li>
+<li>幸福与否不知取决于外界因素，更多的是个人理解和感受世界的能力</li>
+<li>承认人性的缺漏还是从心理层面完善他？</li>
+<li>幸福是并且应当是我们的最终追求和道德追求</li>
+</ul>
+<h4 id="桥梁"><a href="# 桥梁" class="headerlink" title="桥梁"></a>桥梁</h4><ul>
+<li>世界需要 <strong> 具有实践精神的理想主义者</strong>(practical idealists)<ul>
+<li>相信改变是会发生的</li>
+</ul>
+</li>
+<li>理论和实践之间有很多代沟<ul>
+<li>教师和学生：马福·科林斯计划，皮革马利温效应</li>
+<li>如何赞扬别人和提高自信？如何培训自我效能？</li>
+<li>瑜伽能减少入狱人员的重新犯罪几率</li>
+<li>冥想可以改变大脑，提高人对消极情绪的抵抗能力</li>
+<li>每周进行 3 次 /30min 以上的运动与现最有效的心理药物效果是一样的</li>
+<li>解决矛盾的方法不只是创造接触（双方见面交流），更要创建一个只有双方努力才能达到的目标</li>
+</ul>
+</li>
+<li>考虑实际，消除象牙塔和社会之间的隔阂<ul>
+<li>作为学生要承担起上述责任</li>
+</ul>
+</li>
+<li>“生长锥统计学”<ul>
+<li>研究一般情况有助于观察当下，但无助于改善当下</li>
+<li>研究基因演变最激烈的地方，这样我们可以知道最可能发生的可能</li>
+<li>心理学上的作为“普通”，实际上是“平均精神状态”<ul>
+<li>这一概念会导致全体精神状态下降</li>
+</ul>
+</li>
+<li>与“精英主义”的区别<ul>
+<li>研究最优秀的人同时也研究普通的人</li>
+<li>研究最优秀的人对所有人是有益的</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 ]]></content>
       
@@ -3026,15 +2433,208 @@
     </entry>
     
     <entry>
-      <title><![CDATA[积极心理学资料索引与声明]]></title>
-      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%A3%B0%E6%98%8E/</url>
-      <content type="html"><![CDATA[<p>《积极心理学》 系列 <strong> 笔记 </strong>，是笔者个人的学习记录摘抄。<br> 其中主要的参考资料是（文章中将不再列出，除非特殊来源）：<br><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank" rel="external">哈佛大学公开课：幸福课</a></p>
-<ul>
-<li>多数结论、文字皆为摘抄自视频中，少数为笔者自己的总结。</li>
-<li>本系列的文章内容架构为笔者自行梳理。</li>
-<li>多数图片为笔者自行制作，少数来自网上或公开的资料</li>
+      <title><![CDATA[7 更灵活的定位内存地址的方法]]></title>
+      <url>/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%8A%80%E8%83%BD/%E6%B1%87%E7%BC%96%E5%9F%BA%E7%A1%80/7-more-flexible-way-to-locate-the-memory-address/</url>
+      <content type="html"><![CDATA[<h1 id="7-1-and 和 or 指令"><a href="#7-1-and 和 or 指令" class="headerlink" title="7.1 and 和 or 指令"></a>7.1 <code>and</code>和 <code>or</code> 指令</h1><ul>
+<li><code>and</code>指令：逻辑与运算指令，按位进行与运算<ul>
+<li>通过该指令可将操作对象的相应位设为 0 ，其他为不变</li>
 </ul>
-<p>如果本系列文章有侵犯到您权利的地方，请立刻联系笔者！</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">and al, 00111011B</span><br></pre></td></tr></table></figure>
+<p>执行后<code>al = 00100011B</code>。</p>
+<ul>
+<li><code>or</code>指令：逻辑或指令，按位进行或运算<ul>
+<li>通过该指令可将操作对象的相应位设为 1，其他为不变</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov al, 01100011B</span><br><span class="line">or al, 00111011B</span><br></pre></td></tr></table></figure>
+<p>结果为：<code>01111011B</code></p>
+<h1 id="7-2- 关于 -ASCII- 码"><a href="#7-2- 关于 -ASCII- 码" class="headerlink" title="7.2 关于 ASCII 码"></a>7.2 关于 ASCII 码</h1><ul>
+<li>Ascii 码是一种编码方案<ul>
+<li>他约定了计算机用此种方案来表示信息<ul>
+<li>比如 <code>61h</code> 表示 <code>a</code>， <code>62h</code> 表示<code>b</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文本编辑过程中，就按照 ASCII 编码规则进行编码和解码</li>
+<li>键盘输入到屏幕显示的流程<ul>
+<li>按下 <code>a</code> 键，这个键的信息被送入计算机</li>
+<li>计算机使用 ASCII 编码规则将其转换为 <code>61H</code> 存储在内存的指定空间中</li>
+<li>文本编辑器软件从内存中取出<code>61H</code>，将其送到显卡的显存中</li>
+<li>工作在文本模式下的显卡用 ASCII 码的规则解释显存中的内容</li>
+<li>显卡驱动器将解释后的内容，也就是 <code>a</code> 的图像画到屏幕上</li>
+</ul>
+</li>
+</ul>
+<p>也就是说，要想在屏幕上显示出 <code>a</code>，就要给显卡提供<code>a</code> 的 ASCII 码（61H）。</p>
+<p>我们通过向显卡显存写入数据实现。</p>
+<h1 id="7-3- 以字符的形式给出数据"><a href="#7-3- 以字符的形式给出数据" class="headerlink" title="7.3 以字符的形式给出数据"></a>7.3 以字符的形式给出数据</h1><ul>
+<li>在汇编程序中，用单引号括起来的方式指明数据是以字符的形式给出的<ul>
+<li>编译器将他们转换为相对应的 ASCII 码</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code,ds:data</span><br><span class="line">data segment</span><br><span class="line">	db &apos;unIX&apos;</span><br><span class="line">	db &apos;foRK&apos;</span><br><span class="line">data ends</span><br><span class="line">code segment</span><br><span class="line">start:</span><br><span class="line">	mov al, &apos;a&apos;</span><br><span class="line">	mov bl, &apos;b&apos;</span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<p><em>解析</em>：</p>
+<ul>
+<li><code>db &#39;unIX&#39;</code>相当于：<code>db 75H,6EH,49H,58H</code><ul>
+<li>因为 <code>u,n,I,X</code> 的 ASCII 码分别为 75H, 6EH, 49H 和 58H</li>
+</ul>
+</li>
+<li><code>mov al, &#39;a&#39;</code>相当于：<code>mov al, 61h</code><ul>
+<li>‘a’ 的 ASCII 码为<code>61H</code></li>
+</ul>
+</li>
+</ul>
+<h1 id="7-4- 大小写转换问题"><a href="#7-4- 大小写转换问题" class="headerlink" title="7.4 大小写转换问题"></a>7.4 大小写转换问题</h1><blockquote>
+<p>在 <code>codeseg</code> 中填写代码，将 <code>dataseg</code> 中的第一个字符串转换为大写，第二个字符串转换为小写</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分析大小写字符的 ASCII 码表规律</li>
+</ul>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_7fa815.png" alt="字母 ASCII 码表规律"></p>
+<p>可以看到两个规律：</p>
+<ol>
+<li>小写字母的 ASCII 码总比相应大写字母的大<code>20H</code></li>
+<li>无论是哪一个字母，只要是大写的，其二进制第 5 位总是 0，而小写字母第 5 位总是 1</li>
+</ol>
+<p>所以思路就是：</p>
+<ul>
+<li>使用与操作将第一个字符串中所有字符的第 5 位设为 0</li>
+<li>使用或操作将第二个字符串中所有字符的第 5 位设为 1</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">assume cs:codeseg, ds:dataseg</span><br><span class="line">dataseg segment</span><br><span class="line">	db &apos;BaSic&apos;</span><br><span class="line">	db &apos;iNfOrMaTiOn&apos;</span><br><span class="line">dataseg ends</span><br><span class="line">codeseg segment</span><br><span class="line">start:</span><br><span class="line">	mov ax, dataseg</span><br><span class="line">	mov bx, 0</span><br><span class="line">	mov cx, 5</span><br><span class="line">	</span><br><span class="line">s:	mov al, [bx]</span><br><span class="line">	and al, 11011111B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s</span><br><span class="line"></span><br><span class="line">	mov bx, 5</span><br><span class="line">	mov cx, 11</span><br><span class="line"></span><br><span class="line">s0: mov al, [bx]</span><br><span class="line">	or al, 00100000B</span><br><span class="line">	mov [bx], al</span><br><span class="line">	inc bx</span><br><span class="line">	loop s0</span><br><span class="line"></span><br><span class="line">	mov ax, 4c00h</span><br><span class="line">	int 21h</span><br><span class="line">codeseg ends</span><br><span class="line">end start</span><br></pre></td></tr></table></figure>
+<h1 id="7-5-bx-data"><a href="#7-5-bx-data" class="headerlink" title="7.5 [bx+data]"></a>7.5 <code>[bx+data]</code></h1><p>我们之前使用 <code>[bx]</code> 来指定一个内存单元，也可以使用 <code>[bx + idata]</code> 的方式指定内存单元。</p>
+<ul>
+<li><code>[bx + idata]</code>表示一个内存单元，他的偏移地址为<code>(bx) + idata</code><ul>
+<li>也就是 <code>bx</code> 中的数值加上<code>idata</code></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [bx+200]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将一个内存单元的内容送入 <code>ax</code>，这个内存单元长度为 2 个字节（1 字单元），存放一个字，偏移地址为<code>bx</code> 中的数值加上 <code>200</code>，段地址在<code>ds</code> 中</li>
+<li>数字化描述：<code>(ax) = ((ds)*16 + (bx) + 200)</code></li>
+</ul>
+<p>也可作一下形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov ax, [200+bx]</span><br><span class="line">mov ax, 200[bx]</span><br><span class="line">mov ax, [bx].200</span><br></pre></td></tr></table></figure>
+<h4 id="补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思"><a href="# 补课：关于 -8086- 中单元、字单元、字节和 D 指令输出的迷思" class="headerlink" title="补课：关于 8086 中单元、字单元、字节和 D 指令输出的迷思"></a>补课：关于 8086 中单元、字单元、字节和 <code>D</code> 指令输出的迷思</h4><ol>
+<li>在 <code>debug</code> 中使用 <code>D</code> 指令输出</li>
+</ol>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_e86146.png" alt="D 输出"></p>
+<p>可以看到，每一排整整齐齐地格式：</p>
+<ul>
+<li>左边为地址<ul>
+<li>十六进制格式输出</li>
+<li>每一行为 16 的整数倍地址</li>
+</ul>
+</li>
+<li>右边为地址区段单元的内容<ul>
+<li>每两个数字代表一个内存单元，大小为一个字节，也就是 8 位<ul>
+<li><code>74</code>代表 <code>2000:1000H</code> 这个内存单元所存储的值<ul>
+<li>由两个十六进制的数组成</li>
+<li>每一个为 4 位，故而为 8 位</li>
+</ul>
+</li>
+<li><code>79</code>代表 <code>2000:1001H</code> 这个内存单元所存储的值</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>8086 中一个字单元为 2 个字节，也就是 16 位</li>
+</ul>
+<p>下面语句执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mov ax, 2000h</span><br><span class="line">mov ds, ax</span><br><span class="line">mov bx, 1000</span><br><span class="line"></span><br><span class="line">mov ax, ds:[bx]</span><br></pre></td></tr></table></figure>
+<p>此时，<code>ax =7974</code>。因为 8086 中，<code>ax</code>寄存器为 16 位，那么你使用 <code>mov</code> 指令的话，默认移动 2 个字节，即是 16 位，所以会移动：</p>
+<ul>
+<li><code>2000:1000H</code></li>
+<li><code>2000:1001H</code></li>
+</ul>
+<p>两个内存单元中的内容，并且先移动，到低位，后移动，到高位。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 计算机技能 </category>
+            
+            <category> 汇编基础 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> assembly </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[2 为什么要学习积极心理学]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/2.0-The-reason-of-learning-positive-psychology/</url>
+      <content type="html"><![CDATA[<p><em>2017-8-2 09:28:38</em></p>
+<ul>
+<li> 心理学研究的领域的选择，是人类社会心理趋势或关注驱使的一种反映 <ul>
+<li>1967 ~ 2000，消极心理学和积极心理学研究比例将近 21:1 </li>
+</ul>
+</li>
+<li> 为什么要学习积极心理学？<ul>
+<li> 研究有效的方法（积极心理学）至关重要：有效的方法对现实具有能动作用 <ul>
+<li> 如果我们研究的方法在研究时有效，很大概率上这个方法在日常生活中会更有效 </li>
+</ul>
+</li>
+<li> 快乐并不只是对痛苦的否定 </li>
+<li> 研究如何培养积极心态是预防焦虑、抑郁等疑难问题最有效的方法 </li>
+</ul>
+</li>
+</ul>
+<ul>
+<li> 如何研究出有效的方法？（如何探究积极心理学？<ul>
+<li> 解决方法就在问题本身：特定问题创造特定现实 </li>
+<li> 我们会因为事先的一个问题，然后预设立场；导致在观测客观现实的时候忽略于该问题“无关”的其他东西 <ul>
+<li> 比如，夫妻之前总是提问“该如何改善关系”，就会陷入过度放大关系中的缺点而忽略更多的感情的险境中 </li>
+<li>“吾日三省吾身” –&gt; 避免过度关注缺点 </li>
+</ul>
+</li>
+<li> 我们应该在关注缺点、消极状态的同时，多关注优点、积极心理 </li>
+</ul>
+</li>
+<li> 改善眼界 <ul>
+<li> 关注优点、设立目标 –&gt; 内心理想主义 </li>
+<li> 注意现实、立刻行动 –&gt; 客观现实主义 </li>
+</ul>
+</li>
+<li> 利人利己的上升螺旋 <ul>
+<li> 承认需要（承认弱点）</li>
+<li> 接受帮助并帮助他人 </li>
+<li> 善于选择优良的社会帮助 </li>
+</ul>
+</li>
+<li> 适应力 <ul>
+<li> 含义：在复杂、难堪、困难的环境下仍然保持乐观的态度和实干的精神 </li>
+<li> 养成：<ul>
+<li> 一个榜样 </li>
+<li>“我们要好好树立自己的信念”<ul>
+<li>“我相信你” “你能做好” “你能成功” “你要自己承担生活的责任”</li>
+<li>“别再埋怨”“别再埋怨社会、老师、父母”</li>
+</ul>
+</li>
+<li> 将目光放在长处和优点上并加以培养 </li>
+<li> 自我激励 </li>
+</ul>
+</li>
+<li>“如何让自己的大学时光变得更加有意义？”<ul>
+<li> 你要为这段时光负起责任 </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 ]]></content>
       
         <categories>
@@ -3051,6 +2651,375 @@
             <tag> 哈佛幸福课 </tag>
             
             <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[9 使用布局和组件创建用户界面]]></title>
+      <url>/Android-%E5%BC%80%E5%8F%91/9-Using-layouts-and-Widgets-to-create-UI/</url>
+      <content type="html"><![CDATA[<h1 id="9-1- 使用图形布局工具"><a href="#9-1- 使用图形布局工具" class="headerlink" title="9.1 使用图形布局工具"></a>9.1 使用图形布局工具 </h1><p> 除了手动输入 XML 的方式创建，我们还可以使用图形布局工具来创建布局。</p>
+<p>图形布局工具界面：</p>
+<ul>
+<li>中间区域是界面预览窗口</li>
+<li>右边是蓝图视图，可以看出各组件视图的轮廓、大小和比例</li>
+<li>左边是组件面板</li>
+<li>左下是组件树</li>
+<li>右边是属性界面</li>
+</ul>
+<h1 id="9-2- 引入 ConstraintLayout"><a href="#9-2- 引入 ConstraintLayout" class="headerlink" title="9.2 引入 ConstraintLayout"></a>9.2 引入<code>ConstraintLayout</code></h1><ul>
+<li><code>ConstraintLayout</code>工具可以为布局添加一系列约束<ul>
+<li>组件位置关系因为约束而发生变化</li>
+</ul>
+</li>
+<li>在 <code>ConstraintLayout</code> 里布置视图，只需要添加约束就可以<ul>
+<li>组件的大小调整方式有三<ul>
+<li>组件自己决定（<code>wrap_content</code></li>
+<li>手动调整</li>
+<li>让组件充满约束布局</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="引入步骤"><a href="# 引入步骤" class="headerlink" title="引入步骤"></a>引入步骤</h4><ol>
+<li>切换到 <code>design</code> 布局</li>
+<li>右击要转换的布局</li>
+<li>选中 <code>convert ... to ConstraintLayout</code> 即可</li>
+</ol>
+<p>现在 Android Studio 会自动添加依赖，所以不需要手动家加入。</p>
+<h4 id="约束编辑器"><a href="# 约束编辑器" class="headerlink" title="约束编辑器"></a>约束编辑器 </h4><p> 在布局预览窗口顶部的工具栏上，有一些约束选项：</p>
+<ul>
+<li>显示所有约束</li>
+<li>自动连接切换开关<ul>
+<li>启动后，在预览界面拖移视图时，约束会自动配置</li>
+<li>Android Studio 会猜测你的布局配置意图，然后自动连接</li>
+</ul>
+</li>
+<li>清除全部约束</li>
+<li>猜测约束<ul>
+<li>类似自动连接</li>
+<li>Android Studio 会自动帮你创建约束</li>
+</ul>
+</li>
+</ul>
+<p>我们先手动清除根视图的所有约束，然后一步一步添加回来。</p>
+<h4 id="腾出空间"><a href="# 腾出空间" class="headerlink" title="腾出空间"></a>腾出空间 </h4><p> 选中某个组件，右边就可以编辑该组件的属性了。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_b86613.png" alt="TextView 的属性"></p>
+<ul>
+<li>组件的水平和竖直方向的尺寸是分别由宽度设置和高度设置决定的</li>
+</ul>
+<p>能设置的值有以下三种：</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_d75c2a.png" alt="三种视图尺寸设置"></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">设置类型</th>
+<th style="text-align:center">设置值</th>
+<th style="text-align:center">用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">固定大小</td>
+<td style="text-align:center">Xdp</td>
+<td style="text-align:center">以 dp 为单元，为视图指定固定值</td>
+</tr>
+<tr>
+<td style="text-align:center">包裹内容</td>
+<td style="text-align:center">wrap_content</td>
+<td style="text-align:center">设置视图想要的尺寸（随内容走），大到足够容纳内容</td>
+</tr>
+<tr>
+<td style="text-align:center">动态适应</td>
+<td style="text-align:center">0dp</td>
+<td style="text-align:center">允许视图缩放以满足指定约束</td>
+</tr>
+</tbody>
+</table>
+<p>至于添加约束的方式，其实就是拉动组件轮廓四周的四个圆圈，然后吸附到另一个组件轮廓上。</p>
+<p><img src="https://img.rosuh.me/wiki/wiki_201712_bcea44.png" alt="设置约束"></p>
+<h4 id="约束的 -XML- 格式"><a href="# 约束的 -XML- 格式" class="headerlink" title="约束的 XML 格式"></a>约束的 XML 格式 </h4><p> 刚刚添加了一个 <code>ImgaeVIew</code> 组件，并为之三个边添加了约束，使之呆在布局的右边。</p>
+<p>我们来看看刚刚添加的组件的约束 XML 代码：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/imageView"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginEnd</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginTop</span>=<span class="string">"8dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintBottom_toBottomOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintEnd_toEndOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:layout_constraintTop_toTopOf</span>=<span class="string">"parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">app:srcCompat</span>=<span class="string">"@drawable/ic_solved"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到约束相关的属性皆是 <code>app:layout_constraint</code> 开头的：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app:layout_constraintBottom_toBottomOf="parent"</span><br><span class="line">app:layout_constraintEnd_toEndOf="parent"</span><br><span class="line">app:layout_constraintTop_toTopOf="parent"</span><br></pre></td></tr></table></figure>
+<ul>
+<li>属性以 <code>layout_</code> 开头皆属于布局参数（<code>layout parameter</code>）<ul>
+<li>组件的布局参数是用来向其父组件做指示用的：用来告诉父布局如何安排自己</li>
+</ul>
+</li>
+</ul>
+<p>想想之前那个<code>layout_margin</code>，还有<code>layout_height</code>，都是布局参数。</p>
+<ul>
+<li>约束的名字是 <code>constraintTop</code>，这表示它是<code>ImageView</code> 的顶部约束</li>
+<li>属性以 <code>toTopof=&quot;parent&quot;</code> 结束，表示约束是连接到父组件的</li>
+</ul>
+<h4 id="编辑属性"><a href="# 编辑属性" class="headerlink" title="编辑属性"></a>编辑属性 </h4><p> 可视化界面的编辑属性功能十分易用。选中组件后即可编辑。</p>
+<h4 id="动态设置列表项"><a href="# 动态设置列表项" class="headerlink" title="动态设置列表项"></a>动态设置列表项 </h4><p> 为了有选择性地显示一些组件（此处是手铐图片），我们可以通过修改 <code>ImageView</code> 组件解决。</p>
+<ul>
+<li>更新 <code>ImageView</code> 组件的 ID</li>
+<li>在组件树里选中它，然后在视图属性窗口将 ID 修改为<code>crime_solved</code></li>
+</ul>
+<p>接下来要在代码中使用这个组件。</p>
+<p><em>控制图片显示（<code>CrimeListFragment.java</code>）</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeListFragment</span> <span class="keyword">extends</span> <span class="title">Fragment</span> </span>&#123;</span><br><span class="line"> ...</span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">CrimeHolder</span> <span class="keyword">extends</span> <span class="title">RecyclerView</span>.<span class="title">ViewHolder</span></span></span><br><span class="line"><span class="class">            <span class="keyword">implements</span> <span class="title">View</span>.<span class="title">OnClickListener</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span>  Crime mCrime;</span><br><span class="line">        <span class="keyword">private</span> TextView mTitleTextView;</span><br><span class="line">        <span class="keyword">private</span> TextView mDateTextView;</span><br><span class="line">        <span class="keyword">private</span> ImageView mSolvedImageView;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">CrimeHolder</span><span class="params">(LayoutInflater inflater, ViewGroup parent)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(inflater.inflate(R.layout.list_item_crime, parent,<span class="keyword">false</span>));</span><br><span class="line"></span><br><span class="line">            mTitleTextView = (TextView)itemView.findViewById(R.id.crime_title);</span><br><span class="line">            mDateTextView = (TextView)itemView.findViewById(R.id.crime_date);</span><br><span class="line">            mSolvedImageView = (ImageView)itemView.findViewById(R.id.crime_solved);</span><br><span class="line">            itemView.setOnClickListener(<span class="keyword">this</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Crime crime)</span> </span>&#123;</span><br><span class="line">            mCrime = crime;</span><br><span class="line">            mTitleTextView.setText(mCrime.getTitle());</span><br><span class="line">            mDateTextView.setText(mCrime.getDate().toString());</span><br><span class="line">            mSolvedImageView.setVisibility(crime.isSolved() ? View.VISIBLE : View.GONE);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此处书里的做法是：</p>
+<ul>
+<li>在 <code>crime</code> 数据中存放一个标志<code>solved</code><ul>
+<li><code>crimeLab</code>中使用 <code>crime.setSolved(i % 2 == 0)</code> 将偶数项的 <code>solved</code> 置为<code>1</code></li>
+</ul>
+</li>
+<li>在 <code>bind</code> 中判断是否需要将 <code>mSolvedImageView</code> 设置为<code>View.GONE</code></li>
+</ul>
+<p>这样的方法比我之前自己想的使用 <code>RecyclerView.viewType</code> 的方法要方便、简洁和易操作。</p>
+<h1 id="9-3- 深入学习布局属性"><a href="#9-3- 深入学习布局属性" class="headerlink" title="9.3 深入学习布局属性"></a>9.3 深入学习布局属性 </h1><h4 id="dp，sp 以及屏幕像素密度"><a href="#dp，sp 以及屏幕像素密度" class="headerlink" title="dp，sp 以及屏幕像素密度"></a><code>dp</code>，<code>sp</code> 以及屏幕像素密度</h4><ul>
+<li>常见的视图属性值<ul>
+<li>文字大小：指定设备上显示的文字的像素高度</li>
+<li>边距：指定视图组件间的举例</li>
+<li>内边距：指定视图外边框与其内容之间的举例</li>
+</ul>
+</li>
+<li>不同设备之间的兼容问题<ul>
+<li>Android 提供了与密度无关的尺寸单位，应用这种单位可在不通的屏幕像素密度的设备上获得相同的尺寸</li>
+</ul>
+</li>
+<li>常见的单位<ul>
+<li><code>px</code><ul>
+<li>英文 pixel 的缩写，即像素</li>
+<li>无论屏幕密度多少，一个像素单位对应一个屏幕像素单位</li>
+<li><strong>不推荐使用，因为他不会根据屏幕密度自动缩放</strong></li>
+</ul>
+</li>
+<li><code>dp (dip)</code><ul>
+<li>英文 density-independent pixel 的缩写，意为 <strong> 密度无关像素</strong></li>
+<li>在设置边距、内边距或任何不打算按像素值指定尺寸的情况下，通常都使用 <code>dp</code> 这种单位</li>
+<li>如果屏幕密度较高，密度无关像素会相应扩展到整个屏幕</li>
+<li><strong>无论屏幕密度任何，总能获得同样的尺寸</strong></li>
+</ul>
+</li>
+<li><code>sp</code><ul>
+<li>英文 cale-independet pixel 的缩写，意思为缩放无关像素</li>
+<li>它是一种与密度无关的像素，这种像素会受用户字体偏好设置的影响</li>
+<li>通常使用 <code>sp</code> 来设置屏幕上的字体大小</li>
+</ul>
+</li>
+<li><code>pt, mm, in</code><ul>
+<li>类似于 <code>dp</code> 的缩放单位，允许以点、毫米或尺寸为单位指定用户界面尺寸</li>
+<li>在实际开发中不建议使用这些单位，因为并不是所有设备都能按照这些单位进行正确的尺寸缩放配置</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对于我们常用的 <code>sp</code> 和<code>dp</code>，Android 会在运行时自动将他们转换为像素单位</li>
+</ul>
+<h4 id="边距与内边距"><a href="# 边距与内边距" class="headerlink" title="边距与内边距"></a>边距与内边距</h4><ul>
+<li><strong>边距属性是布局参数</strong><ul>
+<li>决定了组件之间的举例</li>
+<li>组件对外界一无所知，边距必须由该组件的父组件负责</li>
+</ul>
+</li>
+<li><strong>内边距不是布局参数</strong><ul>
+<li><code>android:padding</code>告诉组件：在绘制组件自身时，要比所含内容大多少</li>
+</ul>
+</li>
+</ul>
+<h4 id="样式、主题及主题属性"><a href="# 样式、主题及主题属性" class="headerlink" title="样式、主题及主题属性"></a>样式、主题及主题属性</h4><ul>
+<li>样式 (style) 是 <code>XML</code> 资源文件，含有用来描述组件行为和外观的属性定义</li>
+<li>可以自己创建自己的样式文件<ul>
+<li>然后在布局文件中以 <code>@style/my_own_style</code> 的形式引用</li>
+</ul>
+</li>
+<li>例子中的两个 <code>TextView</code> 组件都有一个引用 Android 自带样式文件的 <code>style</code> 属性<ul>
+<li>该预定义样式来自于应用主题</li>
+</ul>
+</li>
+<li>主题是各种样式的集合<ul>
+<li>从结构上来说，主题本身也是一种资源，只不过他的属性指向了其他样式资源</li>
+<li>使用主题属性引用，可将预定义的应用主题样式添加给指定组件<ul>
+<li>比如<code>?android:listSeparatorTextViewStyle</code></li>
+<li>使用主题属性引用就是告诉 Android 运行资源管理器：“在应用主题里找到 <code>listSeparatorTextViewStyle</code> 的属性。该属性指向其他样式资源，请将其资源的值放在这里”</li>
+</ul>
+</li>
+<li>所有 Android 主题都包括名为 <code>listSeparatorTextViewStyle</code> 的属性，不过他们的定义略有不同</li>
+<li>使用主题引用，可以确保 <code>TextView</code> 组件在应用中拥有正确一致的显示风格</li>
+</ul>
+</li>
+</ul>
+<h4 id="Android- 应用的设置原则"><a href="#Android- 应用的设置原则" class="headerlink" title="Android 应用的设置原则"></a>Android 应用的设置原则</h4><p><a href="https://material.io/guidelines/" target="_blank" rel="external">Material Design</a></p>
+<h1 id="9-4- 图形布局工具使用小结"><a href="#9-4- 图形布局工具使用小结" class="headerlink" title="9.4 图形布局工具使用小结"></a>9.4 图形布局工具使用小结 </h1><p> 图形化很好用，直接编写 <code>XML</code> 也很不错，哪个方便就用哪个。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Android 开发 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> RecyclerView </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[9 积极情绪]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/9.0-positive-emotions/</url>
+      <content type="html"><![CDATA[<h2 id="处理痛苦和积极情绪"><a href="# 处理痛苦和积极情绪" class="headerlink" title="处理痛苦和积极情绪"></a>处理痛苦和积极情绪 </h2><p><em> 基于 桑佳·吕波密尔斯基（Sonja Lyubomirsky）的研究</em></p>
+<ul>
+<li>痛苦情绪表达<ul>
+<li>写、说更能化解痛苦情绪</li>
+<li>在脑海中回忆会加剧痛苦情绪</li>
+</ul>
+</li>
+<li>积极情绪<ul>
+<li>说和写反而减弱积极情绪的持续化</li>
+<li>回忆能让积极情绪变得更多</li>
+</ul>
+</li>
+</ul>
+<h3 id="分析和重现情绪"><a href="# 分析和重现情绪" class="headerlink" title="分析和重现情绪"></a>分析和重现情绪</h3><ul>
+<li>分析经历有助于改善痛苦以及消极经历<ul>
+<li>而分析美好的经历并不能增加很多积极情绪</li>
+</ul>
+</li>
+<li>回忆积极情绪能让积极情绪持续更久<ul>
+<li>单纯在脑海里思考只会让该消极情绪更甚<ul>
+<li>PTSD 发生的区域调查</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><strong>感激练习就是重现经历的练习</strong></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[1 信息、变形和课程简介]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/1.0-Information-transforation-and-introduction/</url>
+      <content type="html"><![CDATA[<h1 id="01- 信息、变形与课程简介"><a href="#01- 信息、变形与课程简介" class="headerlink" title="01 信息、变形与课程简介"></a>01 信息、变形与课程简介</h1><p><em>2017-8-1 11:36:36</em> </p>
+<ul>
+<li>授课对象：对积极心理学有兴趣或者想要变得更开心的人<ul>
+<li>不需要为了弄清楚某个概念而殚精竭虑，只需要把你觉得对你有用的知识应用到你的生活中</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>关注点<ul>
+<li>信息本身而不是信息的传递者</li>
+</ul>
+</li>
+<li>以往“自助运动”的鄙陋<ul>
+<li>语言上的巨人和行动上的矮子（over-promising and under-delivering）</li>
+</ul>
+</li>
+<li>两个阶段<ul>
+<li>学术阶段</li>
+<li>应用阶段：我如何将这些东西应用到生活中</li>
+</ul>
+</li>
+<li>积极心理学<ul>
+<li>解释：<a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E4%B9%89%E5%BF%83%E7%90%86%E5%AD%A6" target="_blank" rel="external">人本主义心理学 </a> 的产物和衍生 </li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><a href="https://zh.wikipedia.org/wiki/%E4%BA%BA%E6%9C%AC%E4%B8%BB%E7%BE%A9" target="_blank" rel="external">人本主义 </a> 和其他学派最大的不同是特别强调人的正面本质和价值，而并非集中研究人的问题行为，并强调人的成长和发展，称为 <a href="https://zh.wikipedia.org/wiki/%E8%87%AA%E6%88%91%E5%AF%A6%E7%8F%BE" target="_blank" rel="external"> 自我实现</a>。 – Wiki</p>
+</blockquote>
+<ul>
+<li>本课程传授的两个重要知识：信息（information）和变形（transformation）<ul>
+<li><strong>什么是信息</strong><ul>
+<li>人就像一个容器，接受外界的信息，直到填满整个容器</li>
+<li>信息并不能提高人的生存、生活质量</li>
+<li>信息是客观的，是多面的</li>
+</ul>
+</li>
+<li><strong>什么是变形</strong><ul>
+<li>改变容器的形状</li>
+<li>让信息为我所用</li>
+</ul>
+</li>
+<li><strong>利用信息</strong><ul>
+<li>如何解读信息？如何理解以及关注点？</li>
+<li>不止要获取信息，更要挖掘我们自己的潜能</li>
+</ul>
+</li>
+<li><strong>挖掘潜能</strong><ul>
+<li>“减法比加法更能让人的灵魂成长”</li>
+<li>“凿去”无用的、功利主义的、浮躁的等等人性弊端</li>
+</ul>
+</li>
+<li><strong>两面性</strong><ul>
+<li>美好的生活包含成功和失败，或者说是失败之后奋斗的快感</li>
+</ul>
+</li>
+<li><strong>本课程的其中一个目的</strong>：让常识更为人所知</li>
+<li><strong>本课程的最终内容</strong>：让你成为最好的你</li>
+</ul>
+</li>
+<li>保持向上的生活态度，自信并且保持提问</li>
+</ul>
+<hr>
+<p><em>2017-8-1_第一节课</em></p>
+<p>看了想睡觉…</p>
+<p>看第一遍的时候没觉得主讲讲了那么多“话”，直到第二遍开始做笔记的时候才发现他有许多重复的观点的地方，可能是为了举多个例子解释吧。</p>
+<p>毕竟第一节课，内容实质性不是很强，大多是介绍内容。</p>
+<p>上述笔记多是基于快速跳跃而做的笔记，没有一秒一秒地过，难免有一些缺漏。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
+            
+            <tag> 视频 </tag>
+            
+            <tag> 幸福 </tag>
             
         </tags>
         
@@ -3147,6 +3116,37 @@
             <tag> huawei </tag>
             
             <tag> A199 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[积极心理学资料索引与声明]]></title>
+      <url>/%E8%BD%AF%E6%8A%80%E8%83%BD/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6%E8%B5%84%E6%96%99%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%A3%B0%E6%98%8E/</url>
+      <content type="html"><![CDATA[<p>《积极心理学》 系列 <strong> 笔记 </strong>，是笔者个人的学习记录摘抄。<br> 其中主要的参考资料是（文章中将不再列出，除非特殊来源）：<br><a href="http://open.163.com/special/opencourse/positivepsychology.html" target="_blank" rel="external">哈佛大学公开课：幸福课</a></p>
+<ul>
+<li>多数结论、文字皆为摘抄自视频中，少数为笔者自己的总结。</li>
+<li>本系列的文章内容架构为笔者自行梳理。</li>
+<li>多数图片为笔者自行制作，少数来自网上或公开的资料</li>
+</ul>
+<p>如果本系列文章有侵犯到您权利的地方，请立刻联系笔者！</p>
+]]></content>
+      
+        <categories>
+            
+            <category> 软技能 </category>
+            
+            <category> 积极心理学 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> 哈佛幸福课 </tag>
+            
+            <tag> 笔记 </tag>
             
         </tags>
         
