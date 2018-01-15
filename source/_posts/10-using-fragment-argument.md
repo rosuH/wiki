@@ -194,6 +194,7 @@ args.outCharSequence(ARG_MY_STRING, myString);
 
 - 调用`Fragment.setArguement(Bundle)`方法来附加`argument bundle`给`fragment`
   - 附加时机需要在 `fragment`创建后，添加给`acticity`之前
+  - 比如本例子中，我们使用的是`activity` 继承`SingleFragmentActivity.java`来创建具体`fragment`的方法；那么你查看一下`SingleFragmentActivity`就知道，内部先调用`activity`实现的`createFragment()`，然后才在`FragmentManager`事务中使用`add`操作添加给`activity`
 - 合适的做法：`newInstance()`
   - 添加一个名为`newInstance()`的静态方法给`Fragment`类
   - 使用该方法完成`fragment`实例以及`Bundle`对象的创建
@@ -314,11 +315,61 @@ private void updateUI() {
 
 #  10.4 通过`fragment`获取返回结果
 
+记得我们之前使用`intent`的时候吗？传递完数据之后，我们可以在`Activity.startActivityForResult(...)`方法中获得返回结果。
+
+对比着来看的话，`fragment argument`也是同样的道理哦。
+
+- 调用`fragment.startActivityResult(...)`
+- 覆盖`fragment.startActivityResult(...)`方法
+
+*`CrimeListFragment.java`*
+
+```java
+@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CRIME){
+            // Handle result
+        }
+    }
+```
 
 
 
+- 结果处理
+  - `fragment`能够从`activity`中接受返回结果，但是**其本身无法持有返回结果**
+    - 只有`activity`拥有返回结果
+  - `fragment`没有`setResult()`方法
+
+我们应该让托管`activity`返回结果值：
+
+```java
+public class CrimeFragment extends Fragment {
+  ...
+  public void returnResult() {
+    getActivity().setResult(Activity.RESULT_OK, null);
+}
+```
+
+注意：结果处理指的是接受数据的`activity`和`fragment`来完成的步骤，本例中指的是被启动的`CrimeFragment.java`哦。
 
 
+
+#  10.5 深入学习：为何使用`fragment argument`
+
+#### 直接在`CrimeFragment`里创建一个实例变量有什么坏处吗？
+
+在本例中：在`CrimeFragment.java`中创建一个实例变量`CrimeID`，然后`CrimeListFragment`通过`setCrimeID()`方法来传递数据。这样做的缺点：
+
+- 操作系统再重建`fragment`时，用户暂时离开当前 应用（系统按需回收内存），任何实例变量都将不复存在
+  - 尤其是内存不够的时候，操作系统强制杀掉应用
+
+#### 那么实例状态保存机制呢？
+
+本例中：在`CrimeFragment.java`， 将`crimeID`赋值给实例变量，然后在`onSaveInstanceState(Bundle)`方法中保存下来；要使用时再从`onCreate(Bundle)`方法中的`Bundle`中取回
+
+- 维护成本高
+  - 我们总是需要把其他`fragment`的`argument`添加到`onSaveInstanceState(Bundle)`里面，这样导致代码结构不清晰，不利于理解代码
+  - 与之相比，在专门的方法(`newInstance()`)一揽子解决这些问题，以后看起来就会清晰很多了。
 
 
 
