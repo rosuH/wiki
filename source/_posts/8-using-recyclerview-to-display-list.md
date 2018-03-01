@@ -19,7 +19,7 @@ categories:
 - 显示`crime`列表需要在应用控制器层新增一个`activity`和一个`fragment`
   - `CrimeListActivity`和`CrimeListFragment`
 
-![CriminalIntent 应用对象](https://img.rosuh.me/wiki/wiki_201712_a47d61.png)
+![CriminalIntent 应用对象](https://img.ioioi.top/wiki/wiki_201712_a47d61.png)
 
 
 
@@ -277,7 +277,7 @@ public class CrimeListFragment extends Fragment{
 
 
 
-![带有子 View 的 RecyclerView](https://img.rosuh.me/wiki/wiki_201712_3ab907.png)
+![带有子 View 的 RecyclerView](https://img.ioioi.top/wiki/wiki_201712_3ab907.png)
 
 
 
@@ -296,7 +296,7 @@ public class CrimeListFragment extends Fragment{
 
 - `ViewHolder`只做一件事：容纳`View`视图
 
-![被吐嘈的 ViewHolder](https://img.rosuh.me/wiki/wiki_201712_ef918e.png)
+![被吐嘈的 ViewHolder](https://img.ioioi.top/wiki/wiki_201712_ef918e.png)
 
 下面是*典型的`ViewHolder`子类*：
 
@@ -328,7 +328,7 @@ ImageView thumbnailView = row.mThumbnail;
 
 - `RecyclerView`本身不会创建视图，它创建的是`ViewHolder`，而`ViewHolder`引用着`itemView`
 
-![ViewHolder 配合 RecyclerView 使用](https://img.rosuh.me/wiki/wiki_201712_7eabb8.png)
+![ViewHolder 配合 RecyclerView 使用](https://img.ioioi.top/wiki/wiki_201712_7eabb8.png)
 
 #### `Adapter`
 
@@ -343,7 +343,7 @@ ImageView thumbnailView = row.mThumbnail;
 - `RecyclerView`需要显示视图对象时，就会找他的`Adapter`
 
 
-![生动有趣的 RecyclerView-Adapter 对话](https://img.rosuh.me/wiki/wiki_201712_fb0cd7.png)
+![生动有趣的 RecyclerView-Adapter 对话](https://img.ioioi.top/wiki/wiki_201712_fb0cd7.png)
 
 
 

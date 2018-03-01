@@ -36,7 +36,7 @@ categories:
   - 多个 fragment 则需要预留多个位置以供插入
 - activity 视图和 fragment 的关系和切换如下
 
-![明细 fragment 的切换](https://img.rosuh.me/wiki/wiki_2017_1.png)
+![明细 fragment 的切换](https://img.ioioi.top/wiki/wiki_2017_1.png)
 
 - fragment 可以带来灵活多变的布局，代价就是复杂的应用、更多的组件以及大量实现的代码
 
@@ -50,7 +50,7 @@ categories:
 
 ##### 我们先来看一下整个`CriminalIntent`项目的对象图解，以便我们更好地理解开发流程
 
-![项目对象图解](https://img.rosuh.me/wiki/wiki_2017_d.png)
+![项目对象图解](https://img.ioioi.top/wiki/wiki_2017_d.png)
 
 **解析**：
 
@@ -72,7 +72,7 @@ categories:
   - activity 在其视图层内提供一处位置，用来放置`fragment`视图
   - `fragment`视图本身没有在屏幕上显示视图的能力；只有将它放置在 activiti 视图层级结构中，`fragment`视图才能显示在屏幕上
 
-![CrimeActivity 托管 CrimeFragment](https://img.rosuh.me/wiki/wiki_2017_4.png)
+![CrimeActivity 托管 CrimeFragment](https://img.ioioi.top/wiki/wiki_2017_4.png)
 
 #### 两类 fragment
 
@@ -150,7 +150,7 @@ public class Crime {
 
 下图展示了`fragment`的生命周期：
 
-![fragment 的生命周期图解](https://img.rosuh.me/wiki/wiki_2017_724ee3.png)
+![fragment 的生命周期图解](https://img.ioioi.top/wiki/wiki_2017_724ee3.png)
 
 
 
@@ -186,7 +186,7 @@ public class Crime {
 
 在`CrimeActivity`的布局中，该位置就是下图所示的`FrameLayout`：
 
-![CrimeActivity 类的 fragment 托管布局](https://img.rosuh.me/wiki/wiki_201712_d7c848.png)
+![CrimeActivity 类的 fragment 托管布局](https://img.ioioi.top/wiki/wiki_201712_d7c848.png)
 
 - `FragmentLayout`是服务于`CrimeFragment`的容器视图
   - 此容器视图是个通用性视图，不单用于`CrimeFragment`类，你还可以用它托管其他的`fragment`
@@ -362,7 +362,7 @@ public View onCrateView(LayoutInflater inflater, ViewGroup container,
 - `FragmentManager`类负责管理`fragment`并将它们的视图添加到`activity`的视图层级结构中
   - `Activity`类中添加了`FragmentManager`
 
-![FragmentManager 图解](https://img.rosuh.me/wiki/wiki_201712_720ea7.png)
+![FragmentManager 图解](https://img.ioioi.top/wiki/wiki_201712_720ea7.png)
 
 - `FragmentManager`具体管理
   - `fragment`队列
@@ -431,13 +431,13 @@ if (fragment == null) {
 
 总结起来，其是就是：
 
-![总结](https://img.rosuh.me/wiki/wiki_201712_04aff3.png)
+![总结](https://img.ioioi.top/wiki/wiki_201712_04aff3.png)
 
 
 
 #### `FragmentManafer`和`fragment`生命周期
 
-![再探 fragment 生命周期](https://img.rosuh.me/wiki/wiki_201712_5265c7.png)
+![再探 fragment 生命周期](https://img.ioioi.top/wiki/wiki_201712_5265c7.png)
 
 - `activity`的`FragmentManager`负责调用队列中的`fragment`的生命周期方法
   - 添加`fragment`供`FragmentManager`管理时，`onAttach(Context), onCreate(Bundle)`和`onCreateView(...)`方法会被调用
@@ -457,7 +457,7 @@ if (fragment == null) {
   - 如果由很多零碎的晓组件需要复用，比较好的架构设计时使用定制视图
 - 实践证明：**应用单屏最多使用 2 ~ 3 个 `fragment`** 
 
-![少就是多的哲学](https://img.rosuh.me/wiki/wiki_201712_e4ee9d.png)
+![少就是多的哲学](https://img.ioioi.top/wiki/wiki_201712_e4ee9d.png)
 
 
 
@@ -479,7 +479,7 @@ if (fragment == null) {
 
 
 
-![AppCompatActivity 继承树](https://img.rosuh.me/wiki/wiki_201712_b243e8.png)
+![AppCompatActivity 继承树](https://img.ioioi.top/wiki/wiki_201712_b243e8.png)
 
 
 

@@ -45,7 +45,7 @@ top:
 
 华为官方的搜索界面都找不到这机子了...滑到列表最下面，看到`HUAWEI Stick UTPS-V200R003B015D11SP01C983( for win10)`这个选项：
 
-![HUAWEI Stick UTPS-V200R003B015D11SP01C983( for win10)](https://img.rosuh.me/wiki/58ca9d2bd48d2.png)
+![HUAWEI Stick UTPS-V200R003B015D11SP01C983( for win10)](https://img.ioioi.top/wiki/58ca9d2bd48d2.png)
 
 然后下载下来。如果官方撤了这个文件，可以到我分享的度盘下载：
 
@@ -107,7 +107,7 @@ https://dl.google.com/android/repository/platform-tools-latest-windows.zip
 
 选择`Update File`右边的按钮选择官方 ROM
 
-![HuaweiUpdateExtractor](https://img.rosuh.me/wiki/58ca9fa275ed9.png)
+![HuaweiUpdateExtractor](https://img.ioioi.top/wiki/58ca9fa275ed9.png)
 
 
 
@@ -115,7 +115,7 @@ https://dl.google.com/android/repository/platform-tools-latest-windows.zip
 
 选择 ROM 之后，右键单击`RECOVERY`解压出来：
 
-![解压 REC](https://img.rosuh.me/wiki/58caa084186d0.png)
+![解压 REC](https://img.ioioi.top/wiki/58caa084186d0.png)
 
 
 
@@ -127,7 +127,7 @@ https://dl.google.com/android/repository/platform-tools-latest-windows.zip
 
 按住键盘的`Shift`键，同时鼠标右键单击该文件夹的空白处，选择“在此处打开命令行窗口”：
 
-![open ps](https://img.rosuh.me/wiki/58caa1a512317.png)
+![open ps](https://img.ioioi.top/wiki/58caa1a512317.png)
 
 我这里是`Powershell`窗口，大部分时候显示为`cmd`窗口。
 
@@ -149,11 +149,11 @@ fastboot.exe flash recovery RECOVERY.img
 
 输入回车之后应该就开始刷入了。命令行窗口会有提示：
 
-![Flash REC](https://img.rosuh.me/wiki/58caa385361f6.png)
+![Flash REC](https://img.ioioi.top/wiki/58caa385361f6.png)
 
 由于我之前是升级过程卡住了，刷入 REC 之后自动开始了流程，这点还是很赞的：
 
-![show time](https://img.rosuh.me/wiki/58caa3eaaed61.jpg)
+![show time](https://img.ioioi.top/wiki/58caa3eaaed61.jpg)
 
 接着就可以进行愉快地玩耍啦~
 

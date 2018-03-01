@@ -77,13 +77,13 @@ end
 
 `u`指令：
 
-![U 指令](https://img.rosuh.me/wiki/wiki_201712_42be46.png)
+![U 指令](https://img.ioioi.top/wiki/wiki_201712_42be46.png)
 
 可以看到，在`0b3d:0013`以前的代码几乎是“看不懂”的。因为这一段存储的是原始的二进制数据，所以`debug`无法解析出对应的汇编语句。
 
 当我们使用`d`语句就可以看到该代码段存放的其实就是那 8 个字型数据了。
 
-![原始二进制数据](https://img.rosuh.me/wiki/wiki_201712_035d52.png)
+![原始二进制数据](https://img.ioioi.top/wiki/wiki_201712_035d52.png)
 
 
 
@@ -477,11 +477,11 @@ end start
 
 - `data`段中数据为：
 
-![data 段中数据](https://img.rosuh.me/wiki/wiki_201712_8986c0.png)
+![data 段中数据](https://img.ioioi.top/wiki/wiki_201712_8986c0.png)
 
 - cs = __ , ss = __ ,  ds = __
 
-![寄存器的值](https://img.rosuh.me/wiki/wiki_201712_40ec33.png)
+![寄存器的值](https://img.ioioi.top/wiki/wiki_201712_40ec33.png)
 
 
 

@@ -62,13 +62,13 @@ categories:
 
 选中某个组件，右边就可以编辑该组件的属性了。
 
-![TextView 的属性](https://img.rosuh.me/wiki/wiki_201712_b86613.png)
+![TextView 的属性](https://img.ioioi.top/wiki/wiki_201712_b86613.png)
 
 - 组件的水平和竖直方向的尺寸是分别由宽度设置和高度设置决定的
 
 能设置的值有以下三种：
 
-![三种视图尺寸设置](https://img.rosuh.me/wiki/wiki_201712_d75c2a.png)
+![三种视图尺寸设置](https://img.ioioi.top/wiki/wiki_201712_d75c2a.png)
 
 | 设置类型 |     设置值      |            用法            |
 | :--: | :----------: | :----------------------: |
@@ -80,7 +80,7 @@ categories:
 
 至于添加约束的方式，其实就是拉动组件轮廓四周的四个圆圈，然后吸附到另一个组件轮廓上。
 
-![设置约束](https://img.rosuh.me/wiki/wiki_201712_bcea44.png)
+![设置约束](https://img.ioioi.top/wiki/wiki_201712_bcea44.png)
 
 ####  约束的 XML 格式
 

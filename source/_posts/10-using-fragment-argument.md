@@ -14,7 +14,7 @@ categories:
 
 我们之前的应用实现了从`activity`中启动`activity`的功能。现在我们要实现从`fragment`中启动`activity`。在本例中，就是从`CrimeListFragment`中启动`CrimeActivity`实例。
 
-![示意图](https://img.rosuh.me/wiki/wiki_201712_602156.png)
+![示意图](https://img.ioioi.top/wiki/wiki_201712_602156.png)
 
 在本例中，我们将关联`CriminalIntent`应用的列表与明细部分。用户点击某个`Cirme`列表项时，会创建一个托管`CrimeFragment`的`CrimeActivity`。
 

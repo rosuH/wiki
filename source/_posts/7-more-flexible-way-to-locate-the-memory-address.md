@@ -104,7 +104,7 @@ end start
 
 - 分析大小写字符的 ASCII 码表规律
 
-![字母 ASCII 码表规律](https://img.rosuh.me/wiki/wiki_201712_7fa815.png)
+![字母 ASCII 码表规律](https://img.ioioi.top/wiki/wiki_201712_7fa815.png)
 
 可以看到两个规律：
 
@@ -179,7 +179,7 @@ mov ax, [bx].200
 
 1. 在`debug`中使用`D`指令输出
 
-![D 输出](https://img.rosuh.me/wiki/wiki_201712_e86146.png)
+![D 输出](https://img.ioioi.top/wiki/wiki_201712_e86146.png)
 
 
 

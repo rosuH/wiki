@@ -103,7 +103,7 @@ XXX ends
 
 **源程序汇总最终由计算机执行、处理的程序或数据，称为程序**。**程序最先以汇编指令的形式存在于源程序中，经过编译、链接后转变为机器码，存储在可执行文件中**。
 
-![程序经编译链接后变为机器码](https://img.rosuh.me/wiki/wiki_2017_f.png)
+![程序经编译链接后变为机器码](https://img.ioioi.top/wiki/wiki_2017_f.png)
 
 ## 标号
 
@@ -245,7 +245,7 @@ debug 1.exe
 - 从这段内存区的 256 字节处开始（在 PSP 的后面），将程序装入，程序的地址被设为`SA+10H:0`
 - 将该段内存区的段地址存入`ds`中，初始化其他相关寄存器后，设置`CS:IP`指向程序的入口
 
-![EXE 文件中程序的加载过程](https://img.rosuh.me/wiki/wiki_2017_7.png)
+![EXE 文件中程序的加载过程](https://img.ioioi.top/wiki/wiki_2017_7.png)
 
 - `int 21` 执行之后，程序显示出`Program terminated normally`返回到`debug`中，则表示程序正常结束了
   - 要使用`P`命令执行`int 21`
