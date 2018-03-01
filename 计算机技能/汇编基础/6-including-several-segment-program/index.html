@@ -17,15 +17,15 @@
 <meta property="og:site_name" content="rosu&#39;s wiki">
 <meta property="og:description" content="前言 在操作系统环境中，合法地通过操作系统取得的空间都是合法的 在操作系统允许的情况下，程序可以取得任意容量的空间   程序取得所需空间的方法 加载程序时候为程序分配 在源码这种做出说明 通过定义段来获取内存空间   程序执行过程中向系统申请    在本课程中，我们只讨论第一种。  在一个段中存放数据、代码和栈，我们先来体会一下不使用多个段的情况 将数据、代码和栈放入不同的段中  6.1 在代码段">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_42be46.png">
-<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_035d52.png">
-<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_8986c0.png">
-<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_201712_40ec33.png">
-<meta property="og:updated_time" content="2017-12-27T03:17:40.000Z">
+<meta property="og:image" content="https://img.ioioi.top/wiki/wiki_201712_42be46.png">
+<meta property="og:image" content="https://img.ioioi.top/wiki/wiki_201712_035d52.png">
+<meta property="og:image" content="https://img.ioioi.top/wiki/wiki_201712_8986c0.png">
+<meta property="og:image" content="https://img.ioioi.top/wiki/wiki_201712_40ec33.png">
+<meta property="og:updated_time" content="2018-03-01T07:39:55.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="6 包含多个段的程序">
 <meta name="twitter:description" content="前言 在操作系统环境中，合法地通过操作系统取得的空间都是合法的 在操作系统允许的情况下，程序可以取得任意容量的空间   程序取得所需空间的方法 加载程序时候为程序分配 在源码这种做出说明 通过定义段来获取内存空间   程序执行过程中向系统申请    在本课程中，我们只讨论第一种。  在一个段中存放数据、代码和栈，我们先来体会一下不使用多个段的情况 将数据、代码和栈放入不同的段中  6.1 在代码段">
-<meta name="twitter:image" content="https://img.rosuh.me/wiki/wiki_201712_42be46.png">
+<meta name="twitter:image" content="https://img.ioioi.top/wiki/wiki_201712_42be46.png">
 <meta name="twitter:creator" content="@rosu_h">
     
 
@@ -208,7 +208,7 @@
                             &nbsp;
                             汇编基础
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/计算机技能/汇编基础/6-including-several-segment-program/">6 包含多个段的程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/">7 更灵活的定位内存地址的方法</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/计算机技能/汇编基础/6-including-several-segment-program/">6 包含多个段的程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/">7 更灵活的定位内存地址的方法</a></li>  <li class="file"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -324,7 +324,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/计算机技能/汇编基础/6-including-several-segment-program/">
-            <time datetime="2018-01-02T06:56:50.643Z" itemprop="datePublished">2018-01-02</time>
+            <time datetime="2018-03-01T07:39:55.112Z" itemprop="datePublished">2018-03-01</time>
         </a>
     </div>
 
@@ -410,10 +410,10 @@
 </ul>
 <p>使用 <code>dw</code> 定义的数据，在内存中也被以二进制的形式存放进去。通过 <code>debug</code> 调试查看上述程序。</p>
 <p><code>u</code>指令：</p>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_42be46.png" alt="U 指令"></p>
+<p><img src="https://img.ioioi.top/wiki/wiki_201712_42be46.png" alt="U 指令"></p>
 <p>可以看到，在 <code>0b3d:0013</code> 以前的代码几乎是“看不懂”的。因为这一段存储的是原始的二进制数据，所以 <code>debug</code> 无法解析出对应的汇编语句。</p>
 <p>当我们使用 <code>d</code> 语句就可以看到该代码段存放的其实就是那 8 个字型数据了。</p>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_035d52.png" alt="原始二进制数据"></p>
+<p><img src="https://img.ioioi.top/wiki/wiki_201712_035d52.png" alt="原始二进制数据"></p>
 <p>当然这个时候你就不能直接使用 <code>t</code> 指令来执行语句了。正如前面所说的，<code>CS:IP</code>指向了程序的开头，也就是存放 <code>dw</code> 定义的字型数据的地方，哪些地方根本不对应那些汇编语句。</p>
 <p>我们需要手动将 <code>IP</code> 设置为 <code>10h</code>，从而使<code>CS:IP</code> 执行程序中的第一条指令。接着再用 <code>t</code> 或<code>p</code>或 <code>g</code> 命令执行。</p>
 <p>这样的程序有显而易见的缺漏：</p>
@@ -568,11 +568,11 @@
 <ul>
 <li><code>data</code>段中数据为：</li>
 </ul>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_8986c0.png" alt="data 段中数据"></p>
+<p><img src="https://img.ioioi.top/wiki/wiki_201712_8986c0.png" alt="data 段中数据"></p>
 <ul>
 <li>cs = <strong> , ss = </strong> ,  ds = __</li>
 </ul>
-<p><img src="https://img.rosuh.me/wiki/wiki_201712_40ec33.png" alt="寄存器的值"></p>
+<p><img src="https://img.ioioi.top/wiki/wiki_201712_40ec33.png" alt="寄存器的值"></p>
 <ul>
 <li><code>data = X - 2</code>， <code>stack = X -1</code></li>
 </ul>
@@ -588,19 +588,10 @@
     
 <nav id="article-nav">
     
-        <a href="/计算机技能/汇编基础/4-the-first-program/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Más nuevo</strong>
-            <div class="article-nav-title">
-                
-                    4 第一个程序
-                
-            </div>
-        </a>
     
-    
-        <a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/玩机技巧/save-blocked-in-A199/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Más viejo</strong>
-            <div class="article-nav-title">5 [BX] 和 loop 指令</div>
+            <div class="article-nav-title">华为 A199 救砖札记</div>
         </a>
     
 </nav>

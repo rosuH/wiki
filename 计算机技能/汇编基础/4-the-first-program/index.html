@@ -17,13 +17,13 @@
 <meta property="og:site_name" content="rosu&#39;s wiki">
 <meta property="og:description" content="4.1 一个源程序从写出到执行的过程 编写汇编源程序 产生一个存储源程序的文本文件   对源程序进行编译链接 使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件     可执行文件包含两部分内容 程序和数据 程序：从源程序中的汇编指令翻译过来的机器码 数据：源程序中定义的数据   相关的描述信息 描述类似程序多大、占用多少内存空间等等">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_2017_f.png">
-<meta property="og:image" content="https://img.rosuh.me/wiki/wiki_2017_7.png">
-<meta property="og:updated_time" content="2017-12-26T08:23:07.000Z">
+<meta property="og:image" content="https://img.ioioi.top/wiki/wiki_2017_f.png">
+<meta property="og:image" content="https://img.ioioi.top/wiki/wiki_2017_7.png">
+<meta property="og:updated_time" content="2018-03-01T07:39:55.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="4 第一个程序">
 <meta name="twitter:description" content="4.1 一个源程序从写出到执行的过程 编写汇编源程序 产生一个存储源程序的文本文件   对源程序进行编译链接 使用汇编语言编译程序对源程序文件中的源程序进行编译，产生目标文件进行链接。生成可在操作系统中直接运行的可执行文件     可执行文件包含两部分内容 程序和数据 程序：从源程序中的汇编指令翻译过来的机器码 数据：源程序中定义的数据   相关的描述信息 描述类似程序多大、占用多少内存空间等等">
-<meta name="twitter:image" content="https://img.rosuh.me/wiki/wiki_2017_f.png">
+<meta name="twitter:image" content="https://img.ioioi.top/wiki/wiki_2017_f.png">
 <meta name="twitter:creator" content="@rosu_h">
     
 
@@ -206,7 +206,7 @@
                             &nbsp;
                             汇编基础
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/6-including-several-segment-program/">6 包含多个段的程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/">7 更灵活的定位内存地址的方法</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  <li class="file active"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/计算机技能/汇编基础/6-including-several-segment-program/">6 包含多个段的程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/">7 更灵活的定位内存地址的方法</a></li>  <li class="file active"><a href="/计算机技能/汇编基础/4-the-first-program/">4 第一个程序</a></li>  <li class="file"><a href="/计算机技能/汇编基础/5-BX-and-loop-instruction/">5 [BX] 和 loop 指令</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -322,7 +322,7 @@
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/计算机技能/汇编基础/4-the-first-program/">
-            <time datetime="2018-01-02T06:56:50.643Z" itemprop="datePublished">2018-01-02</time>
+            <time datetime="2018-03-01T07:39:55.111Z" itemprop="datePublished">2018-03-01</time>
         </a>
     </div>
 
@@ -443,7 +443,7 @@
 <li>源程序中的伪指令由编译器执行</li>
 </ul>
 <p><strong>源程序汇总最终由计算机执行、处理的程序或数据，称为程序 </strong>。<strong> 程序最先以汇编指令的形式存在于源程序中，经过编译、链接后转变为机器码，存储在可执行文件中</strong>。</p>
-<p><img src="https://img.rosuh.me/wiki/wiki_2017_f.png" alt="程序经编译链接后变为机器码"></p>
+<p><img src="https://img.ioioi.top/wiki/wiki_2017_f.png" alt="程序经编译链接后变为机器码"></p>
 <h2 id="标号"><a href="# 标号" class="headerlink" title="标号"></a>标号</h2><ul>
 <li>源程序中除了汇编指令和伪指令外，还有一些标号，比如<code>codeseg</code></li>
 <li>一个标号指代了一个地址<ul>
@@ -532,7 +532,7 @@
 <li>从这段内存区的 256 字节处开始（在 PSP 的后面），将程序装入，程序的地址被设为<code>SA+10H:0</code></li>
 <li>将该段内存区的段地址存入 <code>ds</code> 中，初始化其他相关寄存器后，设置 <code>CS:IP</code> 指向程序的入口</li>
 </ul>
-<p><img src="https://img.rosuh.me/wiki/wiki_2017_7.png" alt="EXE 文件中程序的加载过程"></p>
+<p><img src="https://img.ioioi.top/wiki/wiki_2017_7.png" alt="EXE 文件中程序的加载过程"></p>
 <ul>
 <li><code>int 21</code> 执行之后，程序显示出 <code>Program terminated normally</code> 返回到 <code>debug</code> 中，则表示程序正常结束了<ul>
 <li>要使用 <code>P</code> 命令执行<code>int 21</code></li>
@@ -551,19 +551,19 @@
     
 <nav id="article-nav">
     
-        <a href="/Android-开发/10-using-fragment-argument/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/计算机技能/汇编基础/7-more-flexible-way-to-locate-the-memory-address/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Más nuevo</strong>
             <div class="article-nav-title">
                 
-                    10 使用 fragment argument
+                    7 更灵活的定位内存地址的方法
                 
             </div>
         </a>
     
     
-        <a href="/计算机技能/汇编基础/6-including-several-segment-program/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/Android-开发/8-using-recyclerview-to-display-list/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">Más viejo</strong>
-            <div class="article-nav-title">6 包含多个段的程序</div>
+            <div class="article-nav-title">8 使用 RecyclerView 显示列表</div>
         </a>
     
 </nav>
